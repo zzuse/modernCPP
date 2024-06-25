@@ -1,5 +1,11 @@
 //
 // Created by 张臻 on 2024-06-24.
+// Rule of 5
+// Destructor
+// Copy Constructor
+// Copy assignment operator
+// Move Constructor
+// Move assignment operator
 //
 
 #ifndef COPYCTOR_INTEGER_H
@@ -7,17 +13,23 @@
 #include <iostream>
 class Integer {
     int *m_pInt;
+
 public:
-    //Default constructor
+    // Default constructor
     Integer();
-    //Parameterized constructor
+    // Parameterized constructor
     Integer(int value);
-    //Copy constructor
+    // Copy constructor
     Integer(const Integer &obj);
-    //Move constructor
+    // Move constructor
     Integer(Integer &&obj);
+    // Copy assignment
+    Integer &operator=(const Integer &obj);
+    // Move assignment
+    Integer &operator=(Integer &&obj);
+
     int GetValue() const;
     void SetValue(int value);
     ~Integer();
 };
-#endif //COPYCTOR_INTEGER_H
+#endif // COPYCTOR_INTEGER_H

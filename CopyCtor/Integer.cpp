@@ -24,6 +24,26 @@ Integer::Integer(Integer && obj) {
     obj.m_pInt = nullptr;
 }
 
+Integer& Integer::operator=(const Integer& obj) {
+    std::cout << "operator=(const Integer& ojb)" << std::endl;
+    if (this== &obj) {
+        return *this;
+    }
+    delete m_pInt;
+    m_pInt = new int(*obj.m_pInt);
+    return *this;
+}
+
+Integer& Integer::operator=(Integer &&obj) {
+    std::cout << "operator=(Integer&& obj)" << std::endl;
+    if(this == &obj) {
+        return *this;
+    }
+    delete m_pInt;
+    m_pInt = obj.m_pInt;
+    obj.m_pInt = nullptr;
+    return *this;
+}
 int Integer::GetValue() const {
     return *m_pInt;
 }
