@@ -1,0 +1,23 @@
+//
+// Created by 张臻 on 2024-06-24.
+//
+
+#ifndef COPYCTOR_INTEGER_H
+#define COPYCTOR_INTEGER_H
+#include <iostream>
+class Integer {
+    int *m_pInt;
+public:
+    //Default constructor
+    Integer();
+    //Parameterized constructor
+    Integer(int value);
+    //Copy constructor
+    Integer(const Integer &obj);
+    //Move constructor
+    Integer(Integer &&obj);
+    int GetValue() const;
+    void SetValue(int value);
+    ~Integer();
+};
+#endif //COPYCTOR_INTEGER_H
