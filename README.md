@@ -13,4 +13,5 @@ chapter 04. 容器汇编 I：比较简单的若干容器 -- commit a99b1984aa3b2
 ```sh
 chapter 55. Move Semantics - Implementation (C++11) -- commit 16c3f5cd8384bfb7e22e878eb921cdbc2894f71d
 chapter 56. Rule of 5 & 0 -- commit 2d033153b691c5fabf6b0648662fcb3783511e2e
+chapter 64. Operator Overloading - Part V (Smart Pointer Basics)
 ```

@@ -1,6 +1,25 @@
 #include "Integer.h"
 #include <iostream>
 
+class IntPtr {
+    Integer *m_p;
+public:
+    IntPtr(Integer *p): m_p(p) {
+
+    }
+
+    ~IntPtr() {
+        delete m_p;
+    }
+
+    Integer *operator ->() {
+        return m_p;
+    }
+
+    Integer & operator *() {
+        return *m_p;
+    }
+};
 Integer Add(const Integer &a, const Integer &b)
 {
     Integer temp;
@@ -36,18 +55,27 @@ Number CreateNumber(int num)
     return n;
 }
 
+void CreateInteger() {
+    IntPtr p = new Integer;
+    p->SetValue(3);
+    (*p).SetValue(4);
+    std::cout << p->GetValue() << std::endl;
+}
+
 int main()
 {
-    //    Example 1
-    //    Integer a(1), b(3);
-    //    a.SetValue(Add(a,b).GetValue());
-    Number n1{1};
-    auto n2{n1};
-    n2 = n1;
-    std::cout << "Hello, World!" << std::endl;
+//    // Example 1
+//    Integer a(1), b(3);
+//    a.SetValue(Add(a,b).GetValue());
+//    // Example 2
+//    Number n1{1};
+//    auto n2{n1};
+//    n2 = n1;
+//    std::cout << "Hello, World!" << std::endl;
+//
+//    auto n3{CreateNumber(3)};
+//    n3 = CreateNumber(3);
 
-    auto n3{CreateNumber(3)};
-    n3 = CreateNumber(3);
-
+    CreateInteger();
     return 0;
 }
