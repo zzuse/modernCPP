@@ -76,6 +76,13 @@ int main()
 //    auto n3{CreateNumber(3)};
 //    n3 = CreateNumber(3);
 
-    CreateInteger();
+//    // Example 3
+//    CreateInteger();
+    int a = 5, b =2;
+    float f = static_cast<float>(a)/b;
+    char* p = reinterpret_cast<char*>(&a);
+    const int x =1;
+    int *q = const_cast<int*> (&x);
+    std::cout << f << std::endl;
     return 0;
 }
