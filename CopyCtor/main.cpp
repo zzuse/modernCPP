@@ -3,22 +3,18 @@
 
 class IntPtr {
     Integer *m_p;
+
 public:
-    IntPtr(Integer *p): m_p(p) {
-
+    IntPtr(Integer *p)
+        : m_p(p)
+    {
     }
 
-    ~IntPtr() {
-        delete m_p;
-    }
+    ~IntPtr() { delete m_p; }
 
-    Integer *operator ->() {
-        return m_p;
-    }
+    Integer *operator->() { return m_p; }
 
-    Integer & operator *() {
-        return *m_p;
-    }
+    Integer &operator*() { return *m_p; }
 };
 Integer Add(const Integer &a, const Integer &b)
 {
@@ -55,13 +51,30 @@ Number CreateNumber(int num)
     return n;
 }
 
-void CreateInteger() {
+void CreateInteger()
+{
     IntPtr p = new Integer;
     p->SetValue(3);
     (*p).SetValue(4);
     std::cout << p->GetValue() << std::endl;
 }
 
+class Product {
+    Integer m_Id;
+public:
+    Product(const Integer &id):m_Id{id} {
+        std::cout << "Product(const Integer &)" << std::endl;
+    }
+    ~Product() {
+        std::cout << "~";
+    }
+    const Integer & GetInteger()const {
+        return m_Id;
+    }
+    operator Integer() {
+        return m_Id;
+    }
+};
 int main()
 {
 //    // Example 1
@@ -75,14 +88,28 @@ int main()
 //
 //    auto n3{CreateNumber(3)};
 //    n3 = CreateNumber(3);
-
+//
 //    // Example 3
 //    CreateInteger();
-    int a = 5, b =2;
-    float f = static_cast<float>(a)/b;
-    char* p = reinterpret_cast<char*>(&a);
-    const int x =1;
-    int *q = const_cast<int*> (&x);
-    std::cout << f << std::endl;
+//
+//    // Example 4
+//    int a = 5, b = 2;
+//    float f = static_cast<float>(a) / b;
+//    char *p = reinterpret_cast<char *>(&a);
+//    const int x = 1;
+//    int *q = const_cast<int *>(&x);
+//
+//    // Example 5
+//    // user type to primitive type
+//    Integer a1{5};
+//    a1 = 7;
+//    int x = static_cast<int>(a1);
+
+    // Example 6
+    Product p{5};
+    Integer id{5};
+    if (id == p.GetInteger()) {
+        std::cout << id.GetValue() << std::endl;
+    }
     return 0;
 }

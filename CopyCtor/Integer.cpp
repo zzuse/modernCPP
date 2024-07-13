@@ -3,30 +3,35 @@
 //
 #include "Integer.h"
 #include <iostream>
-Integer::Integer() {
+Integer::Integer()
+{
     std::cout << "Integer()" << std::endl;
     m_pInt = new int(0);
 }
 
-Integer::Integer(int value) {
+Integer::Integer(int value)
+{
     std::cout << "Integer(int)" << std::endl;
     m_pInt = new int(value);
 }
 
-Integer::Integer(const Integer & obj) {
+Integer::Integer(const Integer& obj)
+{
     std::cout << "Integer(const Integer&)" << std::endl;
     m_pInt = new int(*obj.m_pInt);
 }
 
-Integer::Integer(Integer && obj) {
+Integer::Integer(Integer&& obj)
+{
     std::cout << "Integer(int&&)" << std::endl;
     m_pInt = obj.m_pInt;
     obj.m_pInt = nullptr;
 }
 
-Integer& Integer::operator=(const Integer& obj) {
+Integer& Integer::operator=(const Integer& obj)
+{
     std::cout << "operator=(const Integer& ojb)" << std::endl;
-    if (this== &obj) {
+    if (this == &obj) {
         return *this;
     }
     delete m_pInt;
@@ -34,9 +39,10 @@ Integer& Integer::operator=(const Integer& obj) {
     return *this;
 }
 
-Integer& Integer::operator=(Integer &&obj) {
+Integer& Integer::operator=(Integer&& obj)
+{
     std::cout << "operator=(Integer&& obj)" << std::endl;
-    if(this == &obj) {
+    if (this == &obj) {
         return *this;
     }
     delete m_pInt;
@@ -44,15 +50,19 @@ Integer& Integer::operator=(Integer &&obj) {
     obj.m_pInt = nullptr;
     return *this;
 }
-int Integer::GetValue() const {
-    return *m_pInt;
+
+bool Integer::operator==(const Integer &a) const {
+    return *m_pInt == *a.m_pInt;
 }
 
-void Integer::SetValue(int value) {
-    *m_pInt = value;
-}
+int Integer::GetValue() const { return *m_pInt; }
 
-Integer::~Integer() {
+void Integer::SetValue(int value) { *m_pInt = value; }
+
+Integer::operator int() { return *m_pInt; }
+
+Integer::~Integer()
+{
     std::cout << "~Integer()" << std::endl;
     delete m_pInt;
 }
