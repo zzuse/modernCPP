@@ -15,5 +15,6 @@ chapter 55. Move Semantics - Implementation (C++11) -- commit 16c3f5cd8384bfb7e2
 chapter 56. Rule of 5 & 0 -- commit 499b3d3747b8682425e1fc0bfb3ef56c9bc6389e
 chapter 64. Operator Overloading - Part V (Smart Pointer Basics) -- commit 5cb1bee0919a5803e694c87221048da65417809a
 chapter 67. Type Conversions - Part I (Basics) -- commit 0a0dda95eba551fe39f6091f6aa3c478cef3e68d
-chapter 70. Type Conversions - Part IV (User Defined to User Defined) -- commit
+chapter 70. Type Conversions - Part IV (User Defined to User Defined) -- commit c2446a56ec65bd4f87d2de654b243195f5519ed5
+chapter 72. Raw Pointers -- commit
 ```
