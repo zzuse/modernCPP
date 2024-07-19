@@ -143,6 +143,9 @@ int main()
 //    if (id == p.GetInteger()) {
 //        std::cout << id.GetValue() << std::endl;
 //    }
-    Operate(5);
+//    // Example 7
+//    Operate(5);
+    using namespace std::string_literals;
+    auto n2 = "Zen"s;
     return 0;
 }

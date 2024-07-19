@@ -17,5 +17,6 @@ chapter 64. Operator Overloading - Part V (Smart Pointer Basics) -- commit 5cb1b
 chapter 67. Type Conversions - Part I (Basics) -- commit 0a0dda95eba551fe39f6091f6aa3c478cef3e68d
 chapter 70. Type Conversions - Part IV (User Defined to User Defined) -- commit c2446a56ec65bd4f87d2de654b243195f5519ed5
 chapter 72. Raw Pointers -- commit 16e17121a9b2496569da6367ce79f443f0d1c670
-chapter 73. std::unique_ptr
+chapter 73. std::unique_ptr -- commit 3caf1554718cd40afc020ee03c71dce83d55668a
+chapter 86. String: literals
 ```
