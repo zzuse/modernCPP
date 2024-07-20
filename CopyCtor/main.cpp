@@ -1,6 +1,7 @@
 #include "Integer.h"
 #include <iostream>
 #include <memory>
+#include <string>
 
 class IntPtr {
     Integer *m_p;
@@ -107,6 +108,8 @@ void Operate(int value) {
     *p = 200;
 }
 
+void usingStdString();
+
 int main()
 {
 //    // Example 1
@@ -145,7 +148,29 @@ int main()
 //    }
 //    // Example 7
 //    Operate(5);
+//    // Example 8
+    usingStdString();
+
+    return 0;
+}
+
+void usingStdString()
+{
+    std::string s = "Hello ";
+//    std::getline(std::cin, s);
+    s.length();
+    std::cout << s.length() << std::endl;
+
+    s.insert(6, "World");
+    std::cout << s << std::endl;
+
+    if (s == "Hello World") {
+        std::cout << s << std::endl;
+    }
+
+    s.erase(0, 6);
+    std::cout << s << std::endl;
+
     using namespace std::string_literals;
     auto n2 = "Zen"s;
-    return 0;
 }
