@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <sstream>
 
 class IntPtr {
     Integer *m_p;
@@ -149,8 +150,15 @@ int main()
 //    // Example 7
 //    Operate(5);
 //    // Example 8
-    usingStdString();
+//    usingStdString();
 
+    std::stringstream ss;
+    std::string data= "12 89 21";
+    ss.str(data);
+    int a;
+    while(ss >> a) {
+        std::cout << a << std::endl;
+    }
     return 0;
 }
 
