@@ -20,5 +20,6 @@ chapter 72. Raw Pointers -- commit 16e17121a9b2496569da6367ce79f443f0d1c670
 chapter 73. std::unique_ptr -- commit 3caf1554718cd40afc020ee03c71dce83d55668a
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e
 chapter 88. String Streams -- commit b35d8b09c409d736965bca808c53df70082566d6
-chapter 89. Assignment II tolower -- 
+chapter 89. Assignment II tolower -- commit e83611777e00d20bd0eeb541e3e6b10e53ab0b75
+chapter 90. User-Defined Literals
 ```

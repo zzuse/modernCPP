@@ -81,6 +81,23 @@ public:
     }
 };
 
+class Distance {
+    long double m_Kilometers;
+public:
+    Distance(long double km): m_Kilometers{km} {
+    }
+    long double GetKm() const {
+        return m_Kilometers;
+    }
+    void SetKm(long double val) {
+        m_Kilometers = val;
+    }
+};
+
+Distance operator"" _mi(long double val) {
+    return Distance{val * 1.6};
+}
+
 void Display(Integer *p) {
     if(!p) {
         return;
@@ -159,14 +176,18 @@ int main()
 //    usingStdString();
 
 //    // Example 9
-    std::stringstream ss;
-    std::string data= "12 89 21";
-    ss.str(data);
-    int a;
-    while(ss >> a) {
-        std::cout << a << std::endl;
-    }
-    std::cout << Find("abcd", "CD",  Case::INSENSITIVE) << std::endl;
+//    std::stringstream ss;
+//    std::string data= "12 89 21";
+//    ss.str(data);
+//    int a;
+//    while(ss >> a) {
+//        std::cout << a << std::endl;
+//    }
+//    std::cout << Find("abcd", "CD",  Case::INSENSITIVE) << std::endl;
+
+//    // Example 10
+    Distance dist{32.0_mi};
+    std::cout << dist.GetKm() << std::endl;
     return 0;
 }
 
