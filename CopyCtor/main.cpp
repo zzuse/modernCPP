@@ -4,6 +4,8 @@
 #include <string>
 #include <sstream>
 
+enum class Case{SENSITIVE, INSENSITIVE};
+
 class IntPtr {
     Integer *m_p;
 
@@ -110,6 +112,10 @@ void Operate(int value) {
 }
 
 void usingStdString();
+size_t Find(const std::string &source,
+            const std::string &search_string,
+            Case searchCase,
+            size_t offset=0);
 
 int main()
 {
@@ -152,6 +158,7 @@ int main()
 //    // Example 8
 //    usingStdString();
 
+//    // Example 9
     std::stringstream ss;
     std::string data= "12 89 21";
     ss.str(data);
@@ -159,6 +166,7 @@ int main()
     while(ss >> a) {
         std::cout << a << std::endl;
     }
+    std::cout << Find("abcd", "CD",  Case::INSENSITIVE) << std::endl;
     return 0;
 }
 
@@ -181,4 +189,28 @@ void usingStdString()
 
     using namespace std::string_literals;
     auto n2 = "Zen"s;
+}
+
+std::string ToLower(const std::string& str)
+{
+    std::string returnValue;
+    for (const auto& c : str) {
+        returnValue += std::tolower(c);
+    }
+    return returnValue;
+}
+
+size_t Find(
+        const std::string &source,
+        const std::string &search_string,
+        Case searchCase = Case::INSENSITIVE,
+        size_t offset)
+        {
+    if (searchCase == Case::SENSITIVE) {
+        return source.find(search_string, offset);
+    } else {
+        std::string source_lower = ToLower(source);
+        std::string search_string_upper = ToLower(search_string);
+        return source_lower.find(search_string_upper,offset);
+    }
 }

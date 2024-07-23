@@ -19,4 +19,6 @@ chapter 70. Type Conversions - Part IV (User Defined to User Defined) -- commit 
 chapter 72. Raw Pointers -- commit 16e17121a9b2496569da6367ce79f443f0d1c670
 chapter 73. std::unique_ptr -- commit 3caf1554718cd40afc020ee03c71dce83d55668a
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e
+chapter 88. String Streams -- commit b35d8b09c409d736965bca808c53df70082566d6
+chapter 89. Assignment II tolower -- 
 ```
