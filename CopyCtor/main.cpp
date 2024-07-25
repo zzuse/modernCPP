@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 #include <sstream>
+#include <initializer_list>
+#include <cassert>
 
 enum class Case{SENSITIVE, INSENSITIVE};
 
@@ -48,6 +50,33 @@ public:
     }
     Number &operator=(Number &&) = default;
     Number &operator=(const Number &) = default;
+};
+
+class Bag {
+    int arr[10];
+    int m_Size{};
+public:
+    Bag(std::initializer_list<int> values) {
+        assert(values.size()<10);
+        auto it = values.begin();
+        while(it != values.end()) {
+            Add(*it);
+            ++it;
+        }
+    }
+    void Add(int value) {
+        assert(m_Size < 10);
+        arr[m_Size++] = value;
+    }
+    void Remove() {
+        --m_Size;
+    }
+    int operator [] (int index) {
+        return arr[index];
+    }
+    int GetSize() const {
+        return m_Size;
+    }
 };
 
 Number CreateNumber(int num)
@@ -134,6 +163,12 @@ size_t Find(const std::string &source,
             Case searchCase,
             size_t offset=0);
 
+void Print(std::initializer_list<int> values) {
+    for (auto x : values) {
+        std::cout << x << " ";
+    }
+}
+
 int main()
 {
 //    // Example 1
@@ -186,8 +221,15 @@ int main()
 //    std::cout << Find("abcd", "CD",  Case::INSENSITIVE) << std::endl;
 
 //    // Example 10
-    Distance dist{32.0_mi};
-    std::cout << dist.GetKm() << std::endl;
+//    Distance dist{32.0_mi};
+//    std::cout << dist.GetKm() << std::endl;
+
+//    // Example 11
+    Bag b{3,1,8};
+    for (int i = 0; i < b.GetSize(); ++i) {
+        std::cout << b[i] << " ";
+    }
+    Print({ 8,2,6,7});
     return 0;
 }
 
