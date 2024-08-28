@@ -31,9 +31,27 @@ void Read()
     }
 }
 
+void usingFstream()
+{
+    std::fstream stream("file.txt");
+    if (!stream) {
+        std::cout << "\nFile not exist, creating... " << std::endl;
+        std::ofstream out{"file.txt"};
+        out.close();
+        stream.open("file.txt");
+    }
+    stream << "Hello World" << std::endl;
+
+    std::string line;
+    stream.seekg(0);
+    std::getline(stream, line);
+    std::cout << std::endl << line << std::endl;
+}
+
 int main()
 {
     Write();
     Read();
+    usingFstream();
     return 0;
 }
