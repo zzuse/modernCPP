@@ -2,6 +2,25 @@
 #include <iostream>
 #include <string>
 
+struct Record {
+    int id;
+    char name[10];
+};
+
+void WriteRecord(Record *p)
+{
+    std::ofstream binstream{"records", std::ios::binary | std::ios::out};
+    binstream.write((const char *)p, sizeof(Record));
+}
+
+Record GetRecord()
+{
+    std::ifstream input{"records", std::ios::binary | std::ios::in};
+    Record r;
+    input.read((char *)&r, sizeof(Record));
+    return r;
+}
+
 void Write()
 {
     std::ofstream out("test.txt");
@@ -50,8 +69,18 @@ void usingFstream()
 
 int main()
 {
-    Write();
-    Read();
-    usingFstream();
+    // Example 1, text file IO and seek
+    // Write();
+    // Read();
+    // usingFstream();
+
+    // Example 2, binary file IO and structure RW
+    Record r;
+    r.id = 1024;
+    strncpy(r.name, "Zhen", 10);
+    WriteRecord(&r);
+
+    Record r2 = GetRecord();
+    std::cout << r2.id << ": " << r2.name << std::endl;
     return 0;
 }
