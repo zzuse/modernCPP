@@ -26,5 +26,6 @@ chapter 90. User-Defined Literals -- commit be2ebe057219a42d7220e76f6c86c1022267
 chapter 92. std::initializer_list (C++11) -- commit e5c1a6ff05298297641099a8caec25c2e2391231
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit 52db2bb84b2b4e6d975fe723b01f3aa9bbcd0472
-chapter 126. File IO - Part V (Binary IO) -- 
+chapter 126. File IO - Part V (Binary IO) -- commit 9709264cd7829de317d60317a03f3b6dfdf54023
+chapter 127. Assignment I Copy Utility
 ```

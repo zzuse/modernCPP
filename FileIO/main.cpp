@@ -1,7 +1,9 @@
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 
+// https://en.cppreference.com/w/cpp/header/filesystem
 struct Record {
     int id;
     char name[10];
@@ -75,12 +77,61 @@ int main()
     // usingFstream();
 
     // Example 2, binary file IO and structure RW
-    Record r;
-    r.id = 1024;
-    strncpy(r.name, "Zhen", 10);
-    WriteRecord(&r);
+    // Record r;
+    // r.id = 1024;
+    // strncpy(r.name, "Zhen", 10);
+    // WriteRecord(&r);
 
-    Record r2 = GetRecord();
-    std::cout << r2.id << ": " << r2.name << std::endl;
+    // Record r2 = GetRecord();
+    // std::cout << r2.id << ": " << r2.name << std::endl;
+    // return 0;
+
+    // Example 3 Text File Copy Utility
+    // using namespace std::filesystem;
+    // path source(current_path());
+    // source /= "Source.cpp";
+
+    // path dest(current_path());
+    // dest /= "Copy.cpp";
+
+    // std::ifstream input{source};
+    // if (!input) {
+    //     std::cout << "Source file not found " << std::endl;
+    //     return -1;
+    // }
+    // std::ofstream output{dest};
+    // std::string line;
+    // while (!std::getline(input, line).eof()) {
+    //     output << line << std::endl;
+    // }
+    // input.close();
+    // output.close();
+    // return 0;
+
+    // Exmpale 4 Binary File Copy Utility
+    namespace fs = std::filesystem;
+    fs::path source(fs::current_path());
+    source /= "Source.bin";
+
+    fs::path dest(fs::current_path());
+    dest /= "Copy.bin";
+
+    std::ifstream input{source, std::ios::binary | std::ios::in};
+    if (!input) {
+        std::cout << "Source file not found " << std::endl;
+        return -1;
+    }
+    std::ofstream output{dest, std::ios::binary | std::ios::out};
+
+    auto fileSize = file_size(source);
+    const unsigned int BUFFER_SIZE = 512;
+    char buffer[BUFFER_SIZE]{};
+    if (!input.read(buffer, fileSize)) {
+        throw std::runtime_error("Error occurred during read operation");
+    }
+    if (!output.write(buffer, fileSize)) {
+        throw std::runtime_error("Error occurred during write operation");
+    }
+
     return 0;
 }
