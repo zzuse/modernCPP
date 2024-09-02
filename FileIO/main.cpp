@@ -4,6 +4,8 @@
 #include <string>
 
 // https://en.cppreference.com/w/cpp/header/filesystem
+namespace fs = std::filesystem;
+
 struct Record {
     int id;
     char name[10];
@@ -109,29 +111,37 @@ int main()
     // return 0;
 
     // Exmpale 4 Binary File Copy Utility
-    namespace fs = std::filesystem;
-    fs::path source(fs::current_path());
-    source /= "Source.bin";
+    // fs::path source(fs::current_path());
+    // source /= "Source.bin";
 
-    fs::path dest(fs::current_path());
-    dest /= "Copy.bin";
+    // fs::path dest(fs::current_path());
+    // dest /= "Copy.bin";
 
-    std::ifstream input{source, std::ios::binary | std::ios::in};
-    if (!input) {
-        std::cout << "Source file not found " << std::endl;
-        return -1;
+    // std::ifstream input{source, std::ios::binary | std::ios::in};
+    // if (!input) {
+    //     std::cout << "Source file not found " << std::endl;
+    //     return -1;
+    // }
+    // std::ofstream output{dest, std::ios::binary | std::ios::out};
+
+    // auto fileSize = file_size(source);
+    // const unsigned int BUFFER_SIZE = 512;
+    // char buffer[BUFFER_SIZE]{};
+    // if (!input.read(buffer, fileSize)) {
+    //     throw std::runtime_error("Error occurred during read operation");
+    // }
+    // if (!output.write(buffer, fileSize)) {
+    //     throw std::runtime_error("Error occurred during write operation");
+    // }
+
+    // Example 5
+    fs::current_path(fs::temp_directory_path());
+    fs::create_directories("sandbox/a/b");
+    std::ofstream("sandbox/file1.txt");
+    fs::create_symlink("a", "sandbox/syma");
+
+    for (const fs::directory_entry &dir_entry : fs::recursive_directory_iterator("sandbox")) {
+        std::cout << dir_entry.path().string() << '\n';
     }
-    std::ofstream output{dest, std::ios::binary | std::ios::out};
-
-    auto fileSize = file_size(source);
-    const unsigned int BUFFER_SIZE = 512;
-    char buffer[BUFFER_SIZE]{};
-    if (!input.read(buffer, fileSize)) {
-        throw std::runtime_error("Error occurred during read operation");
-    }
-    if (!output.write(buffer, fileSize)) {
-        throw std::runtime_error("Error occurred during write operation");
-    }
-
     return 0;
 }

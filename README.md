@@ -27,5 +27,5 @@ chapter 92. std::initializer_list (C++11) -- commit e5c1a6ff05298297641099a8caec
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit 52db2bb84b2b4e6d975fe723b01f3aa9bbcd0472
 chapter 126. File IO - Part V (Binary IO) -- commit 9709264cd7829de317d60317a03f3b6dfdf54023
-chapter 127. Assignment I Copy Utility
+chapter 127. Assignment I Copy Utility -- commit 2649f342dcf6c42695005096d7d57a4a182d464e
 ```
