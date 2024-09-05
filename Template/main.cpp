@@ -27,11 +27,21 @@ T Max(T* arr, int size)
     return max;
 }
 
+template <typename T>
+T Max(T x, T y)
+{
+    std::cout << typeid(T).name() << std::endl;
+    return x > y ? x : y;
+}
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
     std::cout << Sum(a, 4) << std::endl;
     std::cout << Max(a, 4) << std::endl;
+
+    Max(static_cast<float>(3), 4.4f);
+    int (*p)(int, int) = Max;
 
     return 0;
 }
