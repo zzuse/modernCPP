@@ -1,2 +1,5 @@
 *degug/
 build/
+*.dSYM/
+main
+*.i64

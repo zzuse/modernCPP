@@ -34,6 +34,17 @@ T Max(T x, T y)
     return x > y ? x : y;
 }
 
+// Explicit Instantiation
+template char Max(char x, char y);
+
+// Explicit Specialization
+template <>
+const char* Max<const char*>(const char* x, const char* y)
+{
+    std::cout << "Max<const char*>()" << std::endl;
+    return strcmp(x, y) > 0 ? x : y;
+}
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -42,6 +53,7 @@ int main()
 
     Max(static_cast<float>(3), 4.4f);
     int (*p)(int, int) = Max;
+    p(2, 3);
 
     return 0;
 }
