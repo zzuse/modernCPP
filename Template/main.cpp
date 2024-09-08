@@ -1,3 +1,4 @@
+#include "Integer.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -62,6 +63,26 @@ T Sum_ref(T (&parr)[size])
     return sum;
 }
 
+class Employee {
+    std::string m_Name;
+    Integer m_Id;
+
+public:
+    // Employee(const std::string& name, const Integer& id)
+    //     : m_Name(name)
+    //     , m_Id(id)
+    // {
+    //     std::cout << "Employee(const std::string &name, const Integer &id)" << std::endl;
+    // }
+    template <typename T1, typename T2>
+    Employee(T1&& name, T2&& id)
+        : m_Name(name)
+        , m_Id(id)
+    {
+        std::cout << "Employee(const std::string &&name, const Integer &&id)" << std::endl;
+    }
+};
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -78,5 +99,7 @@ int main()
 
     int i = 3;
     Print<sizeof(i)>();
+
+    Employee emp{"Zhen", 100};
     return 0;
 }
