@@ -76,12 +76,18 @@ public:
     // }
     template <typename T1, typename T2>
     Employee(T1&& name, T2&& id)
-        : m_Name(name)
-        , m_Id(id)
+        : m_Name{std::forward<T1>(name)}
+        , m_Id{std::forward<T2>(id)}
     {
         std::cout << "Employee(const std::string &&name, const Integer &&id)" << std::endl;
     }
 };
+
+template <typename T1, typename T2>
+Employee* Create(T1&& a, T2&& b)
+{
+    return new Employee(std::forward<T1>(a), std::forward<T2>(b));
+}
 
 int main()
 {
@@ -100,6 +106,9 @@ int main()
     int i = 3;
     Print<sizeof(i)>();
 
-    Employee emp{"Zhen", 100};
+    Employee emp{"Zhen", Integer{100}};
+    Integer val{100};
+    Employee emp2{std::string{"Zhen"}, val};
+    auto emp3 = Create("Zhen", Integer{100});
     return 0;
 }
