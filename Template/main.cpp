@@ -83,12 +83,18 @@ Employee* Create(T1&& a, T2&& b)
     return new Employee(std::forward<T1>(a), std::forward<T2>(b));
 }
 
-void Prints() {}
+void Prints() { std::cout << std::endl; }
 
 template <typename T, typename... Params>
-void Prints(T a, Params args)
+void Prints(T&& a, Params&&... args)
 {
-    Prints(args...);
+    // std::cout << sizeof...(args) << std::endl;
+    // std::cout << sizeof...(Params) << std::endl;
+    std::cout << a;
+    if (sizeof...(args) != 0) {
+        std::cout << ",";
+    }
+    Prints(std::forward<Params>(args)...);
 }
 
 int main()
@@ -113,6 +119,6 @@ int main()
     Employee emp2{std::string{"Zhen"}, val};
     auto emp3 = Create("Zhen", Integer{100});
 
-    Prints({1, 2, 2.5, 3, 4});
+    Prints(1, 2, 2.5, 3, "4", Integer{20});
     return 0;
 }

@@ -27,11 +27,14 @@ public:
     Integer &operator=(const Integer &obj);
     // Move assignment
     Integer &operator=(Integer &&obj);
-    bool operator == (const Integer &a) const;
+    bool operator==(const Integer &a) const;
 
     int GetValue() const;
     void SetValue(int value);
     explicit operator int();
     ~Integer();
 };
+
+std::ostream &operator<<(std::ostream &out, const Integer &a);
+
 #endif // COPYCTOR_INTEGER_H
