@@ -83,7 +83,17 @@ Integer Integer::operator+(const Integer& a) const
 }
 
 bool Integer::operator==(const Integer& a) const { return *m_pInt == *a.m_pInt; }
+
 void Integer::operator()() { std::cout << *m_pInt << std::endl; }
+
+Integer::operator int() { return *m_pInt; }
+
+Integer operator+(int x, const Integer& y)
+{
+    Integer temp;
+    temp.SetValue(x + y.GetValue());
+    return temp;
+}
 
 std::ostream& operator<<(std::ostream& out, const Integer& a)
 {
@@ -91,4 +101,10 @@ std::ostream& operator<<(std::ostream& out, const Integer& a)
     return out;
 }
 
-Integer::operator int() { return *m_pInt; }
+std::istream& operator>>(std::istream& input, Integer& a)
+{
+    int x;
+    input >> x;
+    a.SetValue(x);
+    return input;
+}
