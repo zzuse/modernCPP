@@ -33,5 +33,5 @@ chapter 135. Template Explicit Specialization -- commit 9b8386a7275bfcc2e5fb79c3
 chapter 136. Non Type Template Arg -- commit 9cf93bc9c65c29c9897d401a52741ca481a63298
 chapter 138. Perfect Forwarding 1 -- commit 4c4714b9bb3a30fd57d7667b1f172fd50e7d831e
 chapter 139. Perfect Forwarding 2 -- commit e559b09e1053a2fb2fffff8ca6e778e8898477d1
-chapter 141. Variadic Templates (C++11)
+chapter 141. Variadic Templates (C++11) -- commit 1e448ca65f89cc7ea45089aae2279c0b210f6d5b
 ```

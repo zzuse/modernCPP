@@ -28,6 +28,16 @@ Integer::Integer(Integer&& obj)
     obj.m_pInt = nullptr;
 }
 
+int Integer::GetValue() const { return *m_pInt; }
+
+void Integer::SetValue(int value) { *m_pInt = value; }
+
+Integer::~Integer()
+{
+    std::cout << "~Integer()" << std::endl;
+    delete m_pInt;
+}
+
 Integer& Integer::operator=(const Integer& obj)
 {
     std::cout << "operator=(const Integer& ojb)" << std::endl;
@@ -51,7 +61,29 @@ Integer& Integer::operator=(Integer&& obj)
     return *this;
 }
 
+Integer& Integer::operator++()
+{
+    ++(*m_pInt);
+    return *this;
+    // TODO: insert return statement here
+}
+
+Integer Integer::operator++(int)
+{
+    Integer temp(*this);
+    ++(*m_pInt);
+    return temp;
+}
+
+Integer Integer::operator+(const Integer& a) const
+{
+    Integer temp;
+    *temp.m_pInt = *m_pInt + *a.m_pInt;
+    return temp;
+}
+
 bool Integer::operator==(const Integer& a) const { return *m_pInt == *a.m_pInt; }
+void Integer::operator()() { std::cout << *m_pInt << std::endl; }
 
 std::ostream& operator<<(std::ostream& out, const Integer& a)
 {
@@ -59,14 +91,4 @@ std::ostream& operator<<(std::ostream& out, const Integer& a)
     return out;
 }
 
-int Integer::GetValue() const { return *m_pInt; }
-
-void Integer::SetValue(int value) { *m_pInt = value; }
-
 Integer::operator int() { return *m_pInt; }
-
-Integer::~Integer()
-{
-    std::cout << "~Integer()" << std::endl;
-    delete m_pInt;
-}
