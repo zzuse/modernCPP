@@ -97,6 +97,13 @@ void Prints(T&& a, Params&&... args)
     Prints(std::forward<Params>(args)...);
 }
 
+// Factory Create Objects
+template <typename T, typename... Args>
+T* CreateFactory(Args&&... args)
+{
+    return new T{std::forward<Args>(args)...};
+}
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -120,5 +127,9 @@ int main()
     auto emp3 = Create("Zhen", Integer{100});
 
     Prints(1, 2, 2.5, 3, "4", Integer{20});
+
+    auto q = CreateFactory<Integer>(1);
+    auto r = CreateFactory<Integer>();
+    auto s = CreateFactory<Employee>("Zhen", Integer{100});
     return 0;
 }
