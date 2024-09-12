@@ -104,6 +104,18 @@ T* CreateFactory(Args&&... args)
     return new T{std::forward<Args>(args)...};
 }
 
+// Stack
+class Stack {
+    int m_Buffer[512];
+    int m_Top{-1};
+
+public:
+    void Push(int elem) { m_Buffer[++m_Top] = elem; }
+    void Pop() { --m_Top; }
+    int Top() const { return m_Buffer[m_Top]; }
+    bool IsEmpty() { return m_Top == -1; }
+};
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -130,6 +142,16 @@ int main()
 
     auto q = CreateFactory<Integer>(1);
     auto r = CreateFactory<Integer>();
-    auto s = CreateFactory<Employee>("Zhen", Integer{100});
+    auto t = CreateFactory<Employee>("Zhen", Integer{100});
+
+    Stack s;
+    s.Push(3);
+    s.Push(1);
+    s.Push(6);
+    s.Push(9);
+    while (!s.IsEmpty()) {
+        std::cout << s.Top() << " ";
+        s.Pop();
+    }
     return 0;
 }

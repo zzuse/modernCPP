@@ -35,4 +35,6 @@ chapter 138. Perfect Forwarding 1 -- commit 4c4714b9bb3a30fd57d7667b1f172fd50e7d
 chapter 139. Perfect Forwarding 2 -- commit e559b09e1053a2fb2fffff8ca6e778e8898477d1
 chapter 141. Variadic Templates (C++11) -- commit 1e448ca65f89cc7ea45089aae2279c0b210f6d5b
 chapter 142. Assignment (Integer Revise) --  commit f34d669ae37b53e292cab182375319b505f93412
+chapter 142. CreateObject Factory -- commit d5dd4696c688e3e9ac70f73c50dcdbf448bc326c
+chapter 143. Class Templates (Stack Implement)
 ```
