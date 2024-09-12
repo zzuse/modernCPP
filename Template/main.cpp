@@ -104,17 +104,34 @@ T* CreateFactory(Args&&... args)
     return new T{std::forward<Args>(args)...};
 }
 
-// Stack
+// Stack Class Template
+template <typename T, int size>
 class Stack {
-    int m_Buffer[512];
+    T m_Buffer[size];
     int m_Top{-1};
 
 public:
-    void Push(int elem) { m_Buffer[++m_Top] = elem; }
+    void Push(const T& elem) { m_Buffer[++m_Top] = elem; }
     void Pop() { --m_Top; }
-    int Top() const { return m_Buffer[m_Top]; }
+    const T& Top() const { return m_Buffer[m_Top]; }
     bool IsEmpty() { return m_Top == -1; }
+    static Stack Create();
+    Stack() = default;
+    Stack(const Stack& obj)
+    {
+        m_Top = obj.m_Top;
+        for (int i = 0; i <= m_Top; ++i) {
+            m_Buffer[i] = obj.m_Buffer[i];
+        }
+    }
 };
+
+// Outside Class Template Declaration
+template <typename T, int size>
+Stack<T, size> Stack<T, size>::Create()
+{
+    return Stack<T, size>();
+}
 
 int main()
 {
@@ -144,11 +161,11 @@ int main()
     auto r = CreateFactory<Integer>();
     auto t = CreateFactory<Employee>("Zhen", Integer{100});
 
-    Stack s;
-    s.Push(3);
-    s.Push(1);
-    s.Push(6);
-    s.Push(9);
+    Stack<float, 4> s = Stack<float, 4>::Create();
+    s.Push(3.1);
+    s.Push(1.1);
+    s.Push(6.1);
+    s.Push(9.1);
     while (!s.IsEmpty()) {
         std::cout << s.Top() << " ";
         s.Pop();
