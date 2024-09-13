@@ -177,6 +177,18 @@ void PrettyPrinter<std::vector<int>>::Print()
     }
     std::cout << "}" << std::endl;
 }
+// Explicit Partial Specialization
+template <>
+void PrettyPrinter<std::vector<std::vector<int>>>::Print()
+{
+    std::cout << "{";
+    for (auto x : *m_pData) {
+        for (auto y : x) {
+            std::cout << y;
+        }
+    }
+    std::cout << "}" << std::endl;
+}
 
 int main()
 {
@@ -230,5 +242,8 @@ int main()
     std::vector<int> data_4{1, 2, 3, 4, 5};
     PrettyPrinter<std::vector<int>> p4(&data_4);
     p4.Print();
+    std::vector<std::vector<int>> data_5{{1, 2, 3, 4, 5}, {2, 3, 4, 5, 6}};
+    PrettyPrinter<std::vector<std::vector<int>>> p5(&data_5);
+    p5.Print();
     return 0;
 }
