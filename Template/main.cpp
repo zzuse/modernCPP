@@ -133,6 +133,37 @@ Stack<T, size> Stack<T, size>::Create()
     return Stack<T, size>();
 }
 
+template <typename T>
+class PrettyPrinter {
+    T* m_pData;
+
+public:
+    PrettyPrinter(T* data)
+        : m_pData(data)
+    {
+    }
+
+    void Print() { std::cout << "{" << *m_pData << "}" << std::endl; }
+
+    T* GetData() { return m_pData; }
+};
+
+// Explicit Specialization for Class
+template <>
+class PrettyPrinter<char*> {
+    char* m_pData;
+
+public:
+    PrettyPrinter(char* data)
+        : m_pData(data)
+    {
+    }
+
+    void Print() { std::cout << "{" << m_pData << "}" << std::endl; }
+
+    char* GetData() { return m_pData; }
+};
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -170,5 +201,17 @@ int main()
         std::cout << s.Top() << " ";
         s.Pop();
     }
+
+    int data_1 = 5;
+    float data_2 = 8.2f;
+    PrettyPrinter<int> p1(&data_1);
+    p1.Print();
+    PrettyPrinter<float> p2(&data_2);
+    p2.Print();
+    char* data_3{"Hello World"};
+    PrettyPrinter<char*> p3(data_3);
+    p3.Print();
+    char* pData = p3.GetData();
+    std::cout << pData << std::endl;
     return 0;
 }
