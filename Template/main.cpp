@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 // return sum list
 template <typename T>
@@ -133,6 +134,8 @@ Stack<T, size> Stack<T, size>::Create()
     return Stack<T, size>();
 }
 
+/// @brief Pretty Printer
+/// @tparam T
 template <typename T>
 class PrettyPrinter {
     T* m_pData;
@@ -163,6 +166,17 @@ public:
 
     char* GetData() { return m_pData; }
 };
+
+// Explicit Partial Specialization
+template <>
+void PrettyPrinter<std::vector<int>>::Print()
+{
+    std::cout << "{";
+    for (auto x : *m_pData) {
+        std::cout << x;
+    }
+    std::cout << "}" << std::endl;
+}
 
 int main()
 {
@@ -213,5 +227,8 @@ int main()
     p3.Print();
     char* pData = p3.GetData();
     std::cout << pData << std::endl;
+    std::vector<int> data_4{1, 2, 3, 4, 5};
+    PrettyPrinter<std::vector<int>> p4(&data_4);
+    p4.Print();
     return 0;
 }
