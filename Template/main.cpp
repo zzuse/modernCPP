@@ -190,6 +190,24 @@ void PrettyPrinter<std::vector<std::vector<int>>>::Print()
     std::cout << "}" << std::endl;
 }
 
+template <typename T, int columns>
+class PrettyPrinter_Col {
+    T* m_pData;
+
+public:
+    PrettyPrinter_Col(T* data)
+        : m_pData(data)
+    {
+    }
+    void Print()
+    {
+        std::cout << "Columns:" << columns << std::endl;
+        std::cout << "{" << *m_pData << "}" << std::endl;
+    }
+
+    T* GetData() { return m_pData; }
+};
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -245,5 +263,8 @@ int main()
     std::vector<std::vector<int>> data_5{{1, 2, 3, 4, 5}, {2, 3, 4, 5, 6}};
     PrettyPrinter<std::vector<std::vector<int>>> p5(&data_5);
     p5.Print();
+    int data_6 = 800;
+    PrettyPrinter_Col<int, 40> p6{&data_6};
+    p6.Print();
     return 0;
 }

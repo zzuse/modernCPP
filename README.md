@@ -39,5 +39,6 @@ chapter 142. CreateObject Factory -- commit d5dd4696c688e3e9ac70f73c50dcdbf448bc
 chapter 143. Class Templates (Int Stack Implement) -- commit 1b033fdaa436436ec504cd161b0c94cb00d3ea29
 chapter 143. Class Templates (Template Stack Implement) -- commit 6a7694578dcaf80bd72ec224c29c4664f9c31c2a
 chapter 144. Class Templates (Explicit Specialization) -- commit 21460cfedb1771c94b8a8b8c02ba510c430dac12
-chapter 145. Class Templates (Explicit Partial Specialization) -- commit 
+chapter 145. Class Templates (Explicit Partial Specialization) -- commit 0e0dc1eebd3a36abc2da13ed156911e6a1875b64
+chapter 147. Class Template Partial Specialization
 ```
