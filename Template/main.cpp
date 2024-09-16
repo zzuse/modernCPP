@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <string>
 #include <vector>
 
@@ -256,6 +257,16 @@ public:
     ~SmartPointer() { delete[] m_ptr; }
 };
 
+// Type Alias
+const char* GetErrorMessage(int errorNo) { return "Empty"; }
+// typedef const char*(PFN)(int);
+using PFN = const char* (*)(int);
+void ShowError(PFN pfn){};
+// typedef std::vector<std::list<std::string>> Names;
+// Alias Templates over type definitions
+template <typename T>
+using Names = std::vector<std::list<T>>;
+
 int main()
 {
     float a[] = {1.1, 2.2, 3.3, 4.4};
@@ -321,5 +332,12 @@ int main()
     SmartPointer<int[]> s2{new int[5]};
     s2[0] = 5;
     std::cout << s2[0] << std::endl;
+
+    PFN pfn = GetErrorMessage;
+    ShowError(pfn);
+
+    Names<std::string> names;
+    Names<Names<std::string>> nnames;
+
     return 0;
 }
