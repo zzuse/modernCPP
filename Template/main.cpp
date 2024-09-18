@@ -272,6 +272,7 @@ using Names = std::vector<std::list<T>>;
 template <typename T>
 T Divide(T a, T b)
 {
+    static_assert(std::is_floating_point<T>::value, "Only floating point type supported.");
     if (std::is_floating_point<T>::value == false) {
         std::cout << "Use floating point types only\n";
         return 1;
@@ -361,10 +362,12 @@ int main()
 
     std::cout << std::boolalpha << "Is integer?" << std::is_integral<int>::value << std::endl;
 
-    std::cout << Divide(5, 2) << std::endl;
+    std::cout << Divide(5.1, 2.1) << std::endl;
 
     Check(5);
     int data_7{};
     Check(data_7);
+
+    static_assert(sizeof(void*) == 8, "Compile in 64-bit mode only");
     return 0;
 }
