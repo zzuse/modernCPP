@@ -43,5 +43,7 @@ chapter 145. Class Templates (Explicit Partial Specialization) -- commit 0e0dc1e
 chapter 147. Class Template Partial Specialization -- commit f80b9e96049913067dbdc65d05d8530183f0c1ad
 chapter 148. Typedef, Type Alias & Alias Template -- commit 47b329037a9d551fef88bd3f85be36b86aa3a7bb
 chapter 149. Type Traits (C++11) -- commit b9ed465e6b9dbb0354d53c2fd6d525c55545e830
-chapter 150. static_assert
+chapter 150. static_assert -- commit f6c11aab7c2962e5a06ab23cb5dd60b8ef5c9111
+Lambda/
+chapter 152. Callbacks Revisited
 ```
