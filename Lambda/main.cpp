@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-using Comparator = bool (*)(int, int);
-template <typename T, int size>
+// using Comparator = bool (*)(int, int);
+template <typename T, int size, typename Comparator>
 void Sort(T (&arr)[size], Comparator comp)
 {
     for (int i = 0; i < size - 1; ++i) {
@@ -18,15 +18,22 @@ void Sort(T (&arr)[size], Comparator comp)
 
 bool Comp(int x, int y) { return x > y; }
 bool Comp1(int x, int y) { return x < y; }
+struct Comp2 {
+    bool operator()(int x, int y) { return x > y; }
+};
 
 int main()
 {
+    Comp(3, 5);
+    Comp2 comp;
+    comp(3, 5); // syntactic sugar of comp.operator()(3,5);
+
     int arr[]{1, 6, 8, 4, 0};
     for (auto x : arr) {
         std::cout << x << " ";
     }
     std::cout << std::endl;
-    Sort(arr, Comp1);
+    Sort(arr, comp);
     for (auto x : arr) {
         std::cout << x << " ";
     }

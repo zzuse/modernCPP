@@ -50,5 +50,6 @@ chapter 150. static_assert -- commit f6c11aab7c2962e5a06ab23cb5dd60b8ef5c9111
 Lambda/
 chapter 152. Callbacks Revisited (Sort Basic) -- commit 0b84800250191de4ac4220ace07b7b782d5a724e
 chapter 152. Callbacks Revisited (Sort Function pointer) -- commit 0cfde9a2fe627967ebc150ed0534678a09d72fd9
-chapter 152. Callbacks Revisited (Sort move sementic)
+chapter 152. Callbacks Revisited (Sort move sementic) -- commit 4839d06976e073cfbb98d7e3c56a018e7f00276c
+chapter 153. Callbacks Function Objects
 ```
