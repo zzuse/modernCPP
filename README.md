@@ -1,13 +1,16 @@
 # This Repo includes modern CPP experiments of courses:
-*   Complete Modern C++ (C++11/14/17) -- udemy
-*   现代 C++ 编程实战 -- time.geekbang.org
+
+- Complete Modern C++ (C++11/14/17) -- udemy
+- 现代 C++ 编程实战 -- time.geekbang.org
 
 # 现代 C++ 编程实战
+
 ```sh
 chapter 04. 容器汇编 I：比较简单的若干容器 -- commit a99b1984aa3b29a0e6859e004e85c456a8002048
 ```
 
 # Complete Modern C++ (C++11/14/17) Chapter
+
 ```sh
 CopyCtor/
 chapter 55. Move Semantics - Implementation (C++11) -- commit 16c3f5cd8384bfb7e22e878eb921cdbc2894f71d
@@ -20,7 +23,7 @@ chapter 73. std::unique_ptr -- commit 3caf1554718cd40afc020ee03c71dce83d55668a
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e
 chapter 88. String Streams -- commit b35d8b09c409d736965bca808c53df70082566d6
 chapter 89. Assignment II tolower -- commit e83611777e00d20bd0eeb541e3e6b10e53ab0b75
-chapter 90. User-Defined Literals -- commit be2ebe057219a42d7220e76f6c86c10222676b81 
+chapter 90. User-Defined Literals -- commit be2ebe057219a42d7220e76f6c86c10222676b81
 chapter 92. std::initializer_list (C++11) -- commit e5c1a6ff05298297641099a8caec25c2e2391231
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit 52db2bb84b2b4e6d975fe723b01f3aa9bbcd0472
@@ -46,5 +49,6 @@ chapter 149. Type Traits (C++11) -- commit b9ed465e6b9dbb0354d53c2fd6d525c55545e
 chapter 150. static_assert -- commit f6c11aab7c2962e5a06ab23cb5dd60b8ef5c9111
 Lambda/
 chapter 152. Callbacks Revisited (Sort Basic) -- commit 0b84800250191de4ac4220ace07b7b782d5a724e
-chapter 152. Callbacks Revisited (Sort Function pointer) -- commit 
+chapter 152. Callbacks Revisited (Sort Function pointer) -- commit 0cfde9a2fe627967ebc150ed0534678a09d72fd9
+chapter 152. Callbacks Revisited (Sort move sementic)
 ```
