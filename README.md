@@ -45,5 +45,6 @@ chapter 148. Typedef, Type Alias & Alias Template -- commit 47b329037a9d551fef88
 chapter 149. Type Traits (C++11) -- commit b9ed465e6b9dbb0354d53c2fd6d525c55545e830
 chapter 150. static_assert -- commit f6c11aab7c2962e5a06ab23cb5dd60b8ef5c9111
 Lambda/
-chapter 152. Callbacks Revisited
+chapter 152. Callbacks Revisited (Sort Basic) -- commit 0b84800250191de4ac4220ace07b7b782d5a724e
+chapter 152. Callbacks Revisited (Sort Function pointer) -- commit 
 ```
