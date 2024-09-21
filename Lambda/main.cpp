@@ -38,5 +38,8 @@ int main()
         std::cout << x << " ";
     }
     std::cout << std::endl;
+    auto fn = []() { std::cout << "Welcome to Lambda expressions" << std::endl; };
+    fn();
+    std::cout << typeid(fn).name() << std::endl;
     return 0;
 }
