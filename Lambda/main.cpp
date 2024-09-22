@@ -41,5 +41,8 @@ int main()
     auto fn = []() { std::cout << "Welcome to Lambda expressions" << std::endl; };
     fn();
     std::cout << typeid(fn).name() << std::endl;
+    // generic lambda
+    auto sum = [](auto x, auto y) noexcept(false) { return x + y; };
+    std::cout << "Sum is: " << sum(5.5f, 2.2f) << std::endl;
     return 0;
 }
