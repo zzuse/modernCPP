@@ -22,6 +22,14 @@ struct Comp2 {
     bool operator()(int x, int y) { return x > y; }
 };
 
+template <typename T, int size, typename Callback>
+void ForEach(T (&arr)[size], Callback operation)
+{
+    for (int i = 0; i < size; i++) {
+        operation(arr[i]);
+    }
+}
+
 int main()
 {
     Comp(3, 5);
@@ -44,5 +52,21 @@ int main()
     // generic lambda
     auto sum = [](auto x, auto y) noexcept(false) { return x + y; };
     std::cout << "Sum is: " << sum(5.5f, 2.2f) << std::endl;
+
+    // a list add offset each, copy captured variable
+    ForEach(arr, [](auto x) { std::cout << x << " "; });
+    std::cout << std::endl;
+    int offset = 5;
+    ForEach(arr, [offset](auto &x) { x += offset; });
+    ForEach(arr, [](auto x) { std::cout << x << " "; });
+    std::cout << std::endl;
+    // a list add offset + 1, modify captured variable
+    ForEach(arr, [&offset](auto &x) {
+        x += offset;
+        offset++;
+    });
+    ForEach(arr, [](auto x) { std::cout << x << " "; });
+    std::cout << std::endl;
+
     return 0;
 }

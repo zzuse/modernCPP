@@ -53,5 +53,6 @@ chapter 152. Callbacks Revisited (Sort Function pointer) -- commit 0cfde9a2fe627
 chapter 152. Callbacks Revisited (Sort move sementic) -- commit 4839d06976e073cfbb98d7e3c56a018e7f00276c
 chapter 153. Callbacks Function Objects -- commit 6ffb6d1e06c2ce0103e627f528d53561bcb17726
 chapter 154. Lambda Expressions -- commit 94e51c08877270a2d99f3ce3335a4e8b9df21ba5
-chapter 155. Lambda Expressions - Internals
+chapter 155. Lambda Expressions - Internals -- commit 956b4134ab9bc949d2388adfbc39ab9c2cbee708
+chapter 156. Lambda Expressions - Capture List
 ```
