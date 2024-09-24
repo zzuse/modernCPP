@@ -68,5 +68,12 @@ int main()
     ForEach(arr, [](auto x) { std::cout << x << " "; });
     std::cout << std::endl;
 
+    // capture offset by value, and other by reference
+    int all{};
+    ForEach(arr, [&, offset](auto &x) { all += x; });
+    // capture all by reference, and other by value
+    ForEach(arr, [=, &all](auto &x) { all += x; });
+    std::cout << "all: " << all << std::endl;
+
     return 0;
 }
