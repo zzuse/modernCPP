@@ -30,6 +30,28 @@ void ForEach(T (&arr)[size], Callback operation)
     }
 }
 
+class Product {
+    std::string name;
+    float price;
+
+public:
+    Product(const std::string &n, float p)
+        : name(n)
+        , price(p)
+    {
+    }
+    void AssignFinalPrice()
+    {
+        float taxes[]{12, 5, 6};
+        float basePrice{price};
+        ForEach(taxes, [basePrice, this](float tax) {
+            float taxedPrice = basePrice * tax / 100;
+            price += taxedPrice;
+        });
+    }
+    float GetPrice() const { return price; }
+};
+
 int main()
 {
     Comp(3, 5);
@@ -74,6 +96,11 @@ int main()
     // capture all by reference, and other by value
     ForEach(arr, [=, &all](auto &x) { all += x; });
     std::cout << "all: " << all << std::endl;
+
+    // capture member valriable
+    Product p{"Apple Watch", 569};
+    p.AssignFinalPrice();
+    std::cout << p.GetPrice() << std::endl;
 
     return 0;
 }
