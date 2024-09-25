@@ -56,5 +56,6 @@ chapter 154. Lambda Expressions -- commit 94e51c08877270a2d99f3ce3335a4e8b9df21b
 chapter 155. Lambda Expressions - Internals -- commit 956b4134ab9bc949d2388adfbc39ab9c2cbee708
 chapter 156. Lambda Expressions - Capture List I -- commit daaf13db4a32a64ed7fea05a13d65927a3ecd39b
 chapter 157. Lambda Expressions - Capture List II -- commit d0cafa91887b68bf5d72f880d6758f3cd387172d
-chapter 158. Lambda Expressions - Capture List III -- commit
+chapter 158. Lambda Expressions - Capture List III -- commit 8ba2721a49b57f956a9694f6af2bfef8d1c4b9f2
+chapter 159. Generalized Lambda Capture (C++ 14)
 ```

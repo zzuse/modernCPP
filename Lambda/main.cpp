@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -102,5 +103,10 @@ int main()
     p.AssignFinalPrice();
     std::cout << p.GetPrice() << std::endl;
 
+    // generalized lambda
+    // capture only used inside of lambda
+    std::ofstream out{"file.txt"};
+    auto write = [out = std::move(out)](int x) mutable { out << x; };
+    write(200);
     return 0;
 }
