@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 // using Comparator = bool (*)(int, int);
 template <typename T, int size, typename Comparator>
@@ -61,15 +62,69 @@ auto Max1 = [](auto x, auto y) {
         return y;
     }
 };
-template <typename T>
 struct Max2 {
-    T operator()(T x, T y) const
+    template <typename T>
+    T operator()(T x, T y)
     {
         if (x > y) {
             return x;
         } else {
             return y;
         }
+    }
+};
+
+auto Greater1 = [](auto x, auto y) {
+    if (x > y) {
+        return true;
+    } else
+        return false;
+};
+struct Greater2 {
+    template <typename T>
+    bool operator()(T x, T y)
+    {
+        if (x > y) {
+            return true;
+        } else
+            return false;
+    }
+};
+
+auto MinMax1 = [](auto iter_begin, auto iter_end) {
+    auto min{*iter_begin};
+    auto max{*iter_begin};
+    while (iter_begin != iter_end) {
+        auto element = *iter_begin;
+        if (element > max) {
+            max = element;
+        }
+        if (element < min) {
+            min = element;
+        }
+        iter_begin++;
+    }
+    return std::make_pair(min, max);
+};
+
+template <typename T>
+struct MinMax2 {
+    template <typename I>
+    auto operator()(I iter_begin, I iter_end)
+    {
+        typename I::value_type min{*iter_begin};
+        typename I::value_type max{*iter_begin};
+        while (iter_begin != iter_end) {
+            auto element = *iter_begin;
+            if (element > max) {
+                max = element;
+            }
+            if (element < min) {
+                min = element;
+            }
+            iter_begin++;
+        }
+        return std::pair<T, T>(min, max);
     }
 };
 
@@ -129,7 +184,18 @@ int main()
     auto write = [out = std::move(out)](int x) mutable { out << x; };
     write(200);
 
-    Max2 max2{};
-    std::cout << Max1(1, 2) << max2(1, 2) << std::endl;
+    Max2 max2;
+    std::cout << Max1(1, 2) << " " << max2(1, 2) << std::endl;
+
+    Greater2 greater2;
+    std::cout << std::boolalpha << Greater1(2.1, 2.3) << " " << greater2(2.1, 2.3) << std::endl;
+
+    std::vector<int> v1{1, 2, 3, 4, 5};
+    auto minmax = MinMax1(v1.begin(), v1.end());
+    std::cout << minmax.first << " " << minmax.second << std::endl;
+    MinMax2<int> minmax2;
+    auto minmax1 = minmax2(v1.begin(), v1.end());
+    std::cout << minmax1.first << " " << minmax1.second << std::endl;
+
     return 0;
 }
