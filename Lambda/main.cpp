@@ -53,6 +53,26 @@ public:
     float GetPrice() const { return price; }
 };
 
+// lambda expression & equivalent function object
+auto Max1 = [](auto x, auto y) {
+    if (x > y) {
+        return x;
+    } else {
+        return y;
+    }
+};
+template <typename T>
+struct Max2 {
+    T operator()(T x, T y) const
+    {
+        if (x > y) {
+            return x;
+        } else {
+            return y;
+        }
+    }
+};
+
 int main()
 {
     Comp(3, 5);
@@ -108,5 +128,8 @@ int main()
     std::ofstream out{"file.txt"};
     auto write = [out = std::move(out)](int x) mutable { out << x; };
     write(200);
+
+    Max2 max2{};
+    std::cout << Max1(1, 2) << max2(1, 2) << std::endl;
     return 0;
 }
