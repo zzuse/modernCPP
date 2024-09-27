@@ -58,5 +58,5 @@ chapter 156. Lambda Expressions - Capture List I -- commit daaf13db4a32a64ed7fea
 chapter 157. Lambda Expressions - Capture List II -- commit d0cafa91887b68bf5d72f880d6758f3cd387172d
 chapter 158. Lambda Expressions - Capture List III -- commit 8ba2721a49b57f956a9694f6af2bfef8d1c4b9f2
 chapter 159. Generalized Lambda Capture (C++ 14) -- 604d74d3178b2400c17698a6dd5aae54064f5449
-chapter 160. Assignment(lambda and function object)
+chapter 160. Assignment(lambda and function object) -- commit f9eee34da20420a74123e35a7fd9fbecd323592b
 ```
