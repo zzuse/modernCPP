@@ -47,5 +47,7 @@ int main()
     } catch (const std::exception& ex) {
         std::cout << "Exception -> " << ex.what() << std::endl;
     }
+    auto f6 = std::bind(Square, 3);
+    std::cout << "f6 -> " << f6() << std::endl;
     return 0;
 }
