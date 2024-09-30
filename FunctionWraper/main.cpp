@@ -18,6 +18,8 @@ struct Max {
 // int Operation(int x, int y, Callback callback) not work with function objects and lambda functions
 int Operation(int x, int y, std::function<int(int, int)> callback) { return callback(x, y); }
 
+int Accumulate(int x, int y, int z) { return x + y + z; }
+
 int main()
 {
     std::function<int(int)> f1 = Square;
@@ -47,7 +49,26 @@ int main()
     } catch (const std::exception& ex) {
         std::cout << "Exception -> " << ex.what() << std::endl;
     }
+
+    // bind specific parameter
     auto f6 = std::bind(Square, 3);
     std::cout << "f6 -> " << f6() << std::endl;
+
+    // using std::bind can change parameter's position
+    std::function<int(int, int)> f7 = std::bind(Sub, std::placeholders::_2, std::placeholders::_1);
+    std::cout << "f7(3,2) -> " << f7(3, 2) << std::endl;
+
+    // simplified version of f7
+    using namespace std::placeholders;
+    auto f8 = std::bind(Sub, _2, _1);
+    std::cout << "f8(3,2) -> " << f8(3, 2) << std::endl;
+
+    // std::bind fixed parameter
+    auto f9 = std::bind(Sub, _1, 5);
+    std::cout << "f9(10) -> " << f9(10) << std::endl;
+
+    // 3 parameter to 2 parameter
+    auto f10 = std::bind(Accumulate, _1, _2, 0);
+    std::cout << "f10 -> " << Operation(8, 5, f10) << std::endl;
     return 0;
 }

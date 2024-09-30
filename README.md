@@ -61,5 +61,6 @@ chapter 159. Generalized Lambda Capture (C++ 14) -- 604d74d3178b2400c17698a6dd5a
 chapter 160. Assignment(lambda and function object) -- commit f9eee34da20420a74123e35a7fd9fbecd323592b
 chapter 161. std::function I -- commit 9d6966936217b4e62d6e30c9ffd3ee72377b1682
 chapter 162. std::function II -- commit 95edbb87ae4d7f578d53c70ba83e4cdd6ba6c358
-chapter 163. std::bind I -- commit
+chapter 163. std::bind I -- commit f2166cf33de6fb4ef9a5260af5fd7eadb7279ba5
+chapter 164. std::bind II
 ```
