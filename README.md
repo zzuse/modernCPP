@@ -64,5 +64,6 @@ chapter 162. std::function II -- commit 95edbb87ae4d7f578d53c70ba83e4cdd6ba6c358
 chapter 163. std::bind I -- commit f2166cf33de6fb4ef9a5260af5fd7eadb7279ba5
 chapter 164. std::bind II -- commit f42a2e413ce4ec1bf8c053fb2b54d25a7c00a8d4
 chapter 165. std::bind III -- commit 5dc010f3b6398c86dce5d9c86d7b23c81a5f4473
-chapter 167. std::array
+chapter 167. std::array -- commit 1058ac0b90f469d13a56fe4661a47018dff36605
+chapter 168. std::vector
 ```
