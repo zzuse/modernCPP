@@ -66,5 +66,6 @@ chapter 164. std::bind II -- commit f42a2e413ce4ec1bf8c053fb2b54d25a7c00a8d4
 chapter 165. std::bind III -- commit 5dc010f3b6398c86dce5d9c86d7b23c81a5f4473
 chapter 167. std::array -- commit 1058ac0b90f469d13a56fe4661a47018dff36605
 chapter 168. std::vector -- commit 03e27cf17b75de834cbf69405448cc84eaa52868
-chapter 169. std::deque
+chapter 169. std::deque -- commit ad7b78952b782f7f6960cc03295aca110fe11638
+chapter 170. std::list
 ```

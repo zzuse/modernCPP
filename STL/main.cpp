@@ -1,6 +1,8 @@
 #include <array>
 #include <deque>
+#include <forward_list>
 #include <iostream>
+#include <list>
 #include <vector>
 
 void Array()
@@ -75,10 +77,32 @@ void Deque()
     std::cout << std::endl;
 }
 
+void List()
+{
+    std::cout << "List()" << std::endl;
+
+    std::list<int> coll;
+    for (int i = 0; i < 5; ++i) {
+        coll.push_back(i * 10);
+    }
+    auto itr = coll.begin();
+    while (itr != coll.end()) {
+        std::cout << *itr++ << " ";
+    }
+    itr = coll.begin();
+    coll.insert(itr, 800);
+    coll.erase(itr);
+    itr = coll.begin();
+    while (itr != coll.end()) {
+        std::cout << *itr++ << " ";
+    }
+}
+
 int main()
 {
     Array();
     Vector();
     Deque();
+    List();
     return 0;
 }
