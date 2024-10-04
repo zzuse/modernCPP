@@ -89,6 +89,8 @@ void List()
     while (itr != coll.end()) {
         std::cout << *itr++ << " ";
     }
+    std::cout << std::endl;
+
     itr = coll.begin();
     coll.insert(itr, 800);
     coll.erase(itr);
@@ -96,6 +98,28 @@ void List()
     while (itr != coll.end()) {
         std::cout << *itr++ << " ";
     }
+    std::cout << std::endl;
+}
+
+void ForwardList()
+{
+    std::cout << "ForwardList()" << std::endl;
+
+    std::forward_list<int> coll;
+    for (int i = 0; i < 10; i++) {
+        coll.push_front(i);
+    }
+    for (auto x : coll) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
+    coll.insert_after(coll.begin(), 10);
+    coll.erase_after(coll.begin());
+    for (auto x : coll) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
 }
 
 int main()
