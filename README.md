@@ -70,5 +70,6 @@ chapter 169. std::deque -- commit ad7b78952b782f7f6960cc03295aca110fe11638
 chapter 170. std::list -- commit b446a331aef949781181e9172a33f7cdbd508965
 chapter 170. std::forwardlist -- commit 855ffe11bb88d03f52d7a45b3b4ee9d5db7f5ac1
 chapter 172. std::set & std::multiset -- commit 7695ec29db3123de1f5f449549299de5fe716abe
-chapter 173. std::map & std::multimap -- commit
+chapter 173. std::map & std::multimap -- commit 80f9731f4cbe856f50e8a368fe1862081b25fbf1
+chapter 176. Unordered Containers
 ```

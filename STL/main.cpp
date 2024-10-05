@@ -5,6 +5,8 @@
 #include <list>
 #include <map>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 void Array()
@@ -199,6 +201,79 @@ void Map()
     std::cout << std::endl;
 }
 
+void UnSet()
+{
+    std::cout << "Unordered_Set()" << std::endl;
+
+    std::unordered_set<std::string> coll;
+    coll.insert("Hulk");
+    coll.insert("Batman");
+    coll.insert("Green Lantern");
+    coll.insert("The Flash");
+    coll.insert("Wonder Woman");
+    coll.insert("Iron man");
+    coll.insert("Wolverine");
+    coll.insert("Dr. Strange");
+    coll.insert("Hawkman");
+    for (const auto x : coll) {
+        std::cout << "Bucket #:" << coll.bucket(x) << " contains :" << x << std::endl;
+    }
+    std::cout << "Bucket count:" << coll.bucket_count() << std::endl;
+    std::cout << "Number of elements:" << coll.size() << std::endl;
+    std::cout << "Load factor:" << coll.load_factor() << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Unordered_MultiSet()" << std::endl;
+
+    std::unordered_multiset<std::string> coll2;
+    coll2.insert("Hulk");
+    coll2.insert("Batman");
+    coll2.insert("Green Lantern");
+    coll2.insert("The Flash");
+    coll2.insert("Wonder Woman");
+    coll2.insert("Iron man");
+    coll2.insert("Iron man");
+    coll2.insert("Iron man");
+    coll2.insert("Wolverine");
+    coll2.insert("Dr. Strange");
+    coll2.insert("Hawkman");
+    for (const auto x : coll2) {
+        std::cout << "Bucket #:" << coll2.bucket(x) << " contains :" << x << std::endl;
+    }
+    std::cout << "Bucket count:" << coll2.bucket_count() << std::endl;
+    std::cout << "Number of elements:" << coll2.size() << std::endl;
+    std::cout << "Load factor:" << coll2.load_factor() << std::endl;
+    std::cout << std::endl;
+}
+
+void UnMap()
+{
+    std::cout << "Unordered_Map()" << std::endl;
+
+    std::unordered_map<std::string, std::string> coll;
+    coll["Batman"] = "Bruce Wayne";
+    coll["Superman"] = "Clark Kent";
+    coll["Hulk"] = "Bruce Banner";
+
+    for (const auto &x : coll) {
+        std::cout << "Bucket #" << coll.bucket(x.first) << "->" << x.first << ":" << x.second << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Unordered_MultiMap()" << std::endl;
+
+    std::unordered_multimap<std::string, std::string> coll2;
+    coll2.insert(std::make_pair("Batman", "Bruce Wayne"));
+    coll2.insert(std::make_pair("Batman", "Bruce Wayne"));
+    coll2.insert(std::make_pair("Superman", "Clark Kent"));
+    coll2.insert(std::make_pair("Hulk", "Bruce Banner"));
+
+    for (const auto &x : coll2) {
+        std::cout << "Bucket #" << coll2.bucket(x.first) << "->" << x.first << ":" << x.second << std::endl;
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     Array();
@@ -208,5 +283,7 @@ int main()
     ForwardList();
     Set();
     Map();
+    UnSet();
+    UnMap();
     return 0;
 }
