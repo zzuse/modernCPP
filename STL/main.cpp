@@ -3,6 +3,7 @@
 #include <forward_list>
 #include <iostream>
 #include <list>
+#include <set>
 #include <vector>
 
 void Array()
@@ -115,9 +116,44 @@ void ForwardList()
     std::cout << std::endl;
 
     coll.insert_after(coll.begin(), 10);
-    coll.erase_after(coll.begin());
     for (auto x : coll) {
         std::cout << x << " ";
+    }
+    std::cout << std::endl;
+    coll.erase_after(++coll.begin());
+    for (auto x : coll) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+}
+
+void Set()
+{
+    std::cout << "Set()" << std::endl;
+
+    std::multiset<int, std::greater<int>> s{8, 2, 0, 9, 5};
+    s.insert(1);
+    s.insert(3);
+    s.insert(3);
+    s.insert(3);
+
+    auto itr = s.begin();
+    while (itr != s.end()) {
+        std::cout << *itr++ << " ";
+    }
+    std::cout << std::endl;
+
+    s.erase(0);
+    s.erase(s.begin());
+    itr = s.find(9);
+    if (itr != s.end()) {
+        std::cout << "Element found" << std::endl;
+    } else {
+        std::cout << "Not Found" << std::endl;
+    }
+    auto found = s.equal_range(3);
+    while (found.first != found.second) {
+        std::cout << *found.first++ << " ";
     }
     std::cout << std::endl;
 }
@@ -128,5 +164,7 @@ int main()
     Vector();
     Deque();
     List();
+    ForwardList();
+    Set();
     return 0;
 }

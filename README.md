@@ -68,5 +68,6 @@ chapter 167. std::array -- commit 1058ac0b90f469d13a56fe4661a47018dff36605
 chapter 168. std::vector -- commit 03e27cf17b75de834cbf69405448cc84eaa52868
 chapter 169. std::deque -- commit ad7b78952b782f7f6960cc03295aca110fe11638
 chapter 170. std::list -- commit b446a331aef949781181e9172a33f7cdbd508965
-chapter 170. std::forwardlist
+chapter 170. std::forwardlist -- commit 855ffe11bb88d03f52d7a45b3b4ee9d5db7f5ac1
+chapter 172. std::set & std::multiset
 ```
