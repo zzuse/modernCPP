@@ -3,6 +3,7 @@
 #include <forward_list>
 #include <iostream>
 #include <list>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -158,6 +159,46 @@ void Set()
     std::cout << std::endl;
 }
 
+void Map()
+{
+    std::cout << "Map()" << std::endl;
+    std::map<int, std::string> m{{1, "Superman"}, {2, "Batman"}, {3, "Green Lantern"}};
+    m.insert(std::pair<int, std::string>(8, "Aquaman"));
+    m.insert(std::make_pair(6, "Wonder Woman"));
+    m[0] = "Flash";
+    m[0] = "Kid Flash";
+    auto itr = m.begin();
+    m.erase(0);
+
+    std::cout << m[10] << std::endl;
+    for (const auto &x : m) {
+        std::cout << x.first << ":" << x.second << std::endl;
+    }
+    itr = m.find(1);
+    if (itr != m.end()) {
+        std::cout << "Found: " << itr->second << std::endl;
+    } else {
+        std::cout << "Not Found" << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "MultiMap()" << std::endl;
+
+    std::multimap<int, std::string> m2{{1, "Superman"}, {2, "Batman"}, {3, "Green Lantern"}};
+    m2.insert(std::pair<int, std::string>(8, "Aquaman"));
+    m2.insert(std::make_pair(6, "Wonder Woman"));
+    m2.insert(std::make_pair(6, "PowerGirl"));
+    auto itr2 = m2.begin();
+    m2.erase(0);
+    auto found = m2.equal_range(6);
+    while (found.first != found.second) {
+        std::cout << found.first->first << ":" << found.first->second << std::endl;
+        found.first++;
+    }
+
+    std::cout << std::endl;
+}
+
 int main()
 {
     Array();
@@ -166,5 +207,6 @@ int main()
     List();
     ForwardList();
     Set();
+    Map();
     return 0;
 }
