@@ -274,6 +274,56 @@ void UnMap()
     std::cout << std::endl;
 }
 
+class Employee {
+    std::string m_Name;
+    int m_Id;
+
+public:
+    Employee(const std::string &n, int id)
+        : m_Name(n)
+        , m_Id(id)
+    {
+    }
+    const std::string &GetName() const { return m_Name; }
+    int GetId() const { return m_Id; }
+};
+
+struct EmployeeHash {
+    size_t operator()(const Employee &emp) const
+    {
+        auto s1 = std::hash<std::string>{}(emp.GetName());
+        auto s2 = std::hash<int>{}(emp.GetId());
+        std::cout << (s1 ^ s2) << std::endl;
+        // for combine hash should use more better way in the document in boost
+        // https://www.boost.org/doc/libs/1_55_0/doc/html/hash/combine.html
+        // https://www.boost.org/doc/libs/1_86_0/libs/container_hash/doc/html/hash.html#ref_hash_combine
+        return s1 ^ s2;
+    }
+};
+
+struct EmpEquality {
+    bool operator()(const Employee &e1, const Employee &e2) const
+    {
+        return e1.GetId() == e2.GetId() && e1.GetName() == e2.GetName();
+    }
+};
+
+void Hashes()
+{
+    std::cout << "User Defined Hashes()" << std::endl;
+    std::hash<std::string> h;
+    std::cout << "Hash: " << h("hello") << std::endl;
+    std::unordered_set<Employee, EmployeeHash, EmpEquality> coll;
+    coll.insert(Employee{"Umar", 123});
+    coll.insert(Employee{"Bob", 678});
+    coll.insert(Employee{"Joey", 612});
+
+    for (const auto &x : coll) {
+        std::cout << coll.bucket(x) << " " << x.GetId() << ":" << x.GetName() << '\n';
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     Array();
@@ -285,5 +335,6 @@ int main()
     Map();
     UnSet();
     UnMap();
+    Hashes();
     return 0;
 }
