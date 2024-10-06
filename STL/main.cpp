@@ -277,15 +277,18 @@ void UnMap()
 class Employee {
     std::string m_Name;
     int m_Id;
+    std::string m_ProgLang;
 
 public:
-    Employee(const std::string &n, int id)
+    Employee(const std::string &n, int id, const std::string &pl)
         : m_Name(n)
         , m_Id(id)
+        , m_ProgLang(pl)
     {
     }
     const std::string &GetName() const { return m_Name; }
     int GetId() const { return m_Id; }
+    const std::string &GetProgrammingLanguage() const { return m_ProgLang; }
 };
 
 struct EmployeeHash {
@@ -308,18 +311,43 @@ struct EmpEquality {
     }
 };
 
+struct EmpCompare {
+    bool operator()(const Employee &e1, const Employee &e2) const { return e1.GetId() < e2.GetId(); }
+};
+
 void Hashes()
 {
     std::cout << "User Defined Hashes()" << std::endl;
     std::hash<std::string> h;
     std::cout << "Hash: " << h("hello") << std::endl;
     std::unordered_set<Employee, EmployeeHash, EmpEquality> coll;
-    coll.insert(Employee{"Umar", 123});
-    coll.insert(Employee{"Bob", 678});
-    coll.insert(Employee{"Joey", 612});
+    coll.insert(Employee{"Umar", 123, "C++"});
+    coll.insert(Employee{"Bob", 678, "Java"});
+    coll.insert(Employee{"Joey", 612, "C++"});
 
     for (const auto &x : coll) {
         std::cout << coll.bucket(x) << " " << x.GetId() << ":" << x.GetName() << '\n';
+    }
+    std::cout << std::endl;
+}
+
+void UserDefinedSort()
+{
+    std::cout << "User Defined Vector Sort()" << std::endl;
+    std::vector<Employee> v{Employee{"Umar", 123, "C++"}, Employee{"Bob", 678, "Java"}, Employee{"Joey", 612, "C++"}};
+    std::sort(v.begin(), v.end(), [](const auto &e1, const auto &e2) { return e1.GetName() < e2.GetName(); });
+    for (const auto &e : v) {
+        std::cout << "Id:" << e.GetId() << " | Name:" << e.GetName() << " | Language:" << e.GetProgrammingLanguage()
+                  << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "User Defined Set Sort()" << std::endl;
+    std::set<Employee, EmpCompare> s{Employee{"Umar", 123, "C++"}, Employee{"Bob", 678, "Java"},
+                                     Employee{"Joey", 612, "C++"}};
+    for (const auto &e : s) {
+        std::cout << "Id:" << e.GetId() << " | Name:" << e.GetName() << " | Language:" << e.GetProgrammingLanguage()
+                  << std::endl;
     }
     std::cout << std::endl;
 }
@@ -336,5 +364,6 @@ int main()
     UnSet();
     UnMap();
     Hashes();
+    UserDefinedSort();
     return 0;
 }

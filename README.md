@@ -72,5 +72,6 @@ chapter 170. std::forwardlist -- commit 855ffe11bb88d03f52d7a45b3b4ee9d5db7f5ac1
 chapter 172. std::set & std::multiset -- commit 7695ec29db3123de1f5f449549299de5fe716abe
 chapter 173. std::map & std::multimap -- commit 80f9731f4cbe856f50e8a368fe1862081b25fbf1
 chapter 176. Unordered Containers -- commit 1fe35afa9ced1c638afa9629cf3265172831907f
-chapter 177. std::hash(c++11)
+chapter 177. std::hash(c++11) -- commit 3ae1cd85d59f269bfe86195e2e91d71c6cb8b614
+chapter 180. Algorithm - Part I
 ```
