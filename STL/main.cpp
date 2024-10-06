@@ -291,6 +291,14 @@ public:
     const std::string &GetProgrammingLanguage() const { return m_ProgLang; }
 };
 
+struct EmpIds {
+    std::vector<int> m_Ids;
+    void operator()(const Employee &emp)
+    {
+        if (emp.GetProgrammingLanguage() == "C++") m_Ids.push_back(emp.GetId());
+    }
+};
+
 struct EmployeeHash {
     size_t operator()(const Employee &emp) const
     {
@@ -339,6 +347,19 @@ void UserDefinedSort()
     for (const auto &e : v) {
         std::cout << "Id:" << e.GetId() << " | Name:" << e.GetName() << " | Language:" << e.GetProgrammingLanguage()
                   << std::endl;
+    }
+    std::cout << "User Defined Vector Count()" << std::endl;
+    int cppCount = std::count_if(v.begin(), v.end(), [](const auto &e) { return e.GetProgrammingLanguage() == "C++"; });
+    std::cout << "Cpp Count:" << cppCount << std::endl;
+    std::cout << "User Defined Vector Find()" << std::endl;
+    auto iter = std::find_if(v.begin(), v.end(), [](const auto &e) { return e.GetProgrammingLanguage() == "Java"; });
+    if (iter != v.end()) {
+        std::cout << "Found:" << iter->GetName() << "is a Java Programmer" << std::endl;
+    }
+    std::for_each(v.begin(), v.end(), [](const auto &e) { std::cout << e.GetName() << std::endl; });
+    auto foundIds = std::for_each(v.begin(), v.end(), EmpIds());
+    for (int id : foundIds.m_Ids) {
+        std::cout << "Id:" << id << std::endl;
     }
     std::cout << std::endl;
 
