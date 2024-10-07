@@ -74,4 +74,6 @@ chapter 173. std::map & std::multimap -- commit 80f9731f4cbe856f50e8a368fe186208
 chapter 176. Unordered Containers -- commit 1fe35afa9ced1c638afa9629cf3265172831907f
 chapter 177. std::hash(c++11) -- commit 3ae1cd85d59f269bfe86195e2e91d71c6cb8b614
 chapter 180. Algorithm - Part I -- commit 3b9594cc401e3cb87ed7aa175723706e94694f50
+chapter 181. Algorithm - Part II -- commit a92cf90afebce25e4f9f9994158bcbfa4535e117
+chapter 186. Container Changes in C++11
 ```

@@ -1,6 +1,9 @@
+#include "Integer.h"
 #include <array>
 #include <deque>
+#include <filesystem>
 #include <forward_list>
+#include <fstream>
 #include <iostream>
 #include <list>
 #include <map>
@@ -339,7 +342,7 @@ void Hashes()
     std::cout << std::endl;
 }
 
-void UserDefinedSort()
+void UserDefined()
 {
     std::cout << "User Defined Vector Sort()" << std::endl;
     std::vector<Employee> v{Employee{"Umar", 123, "C++"}, Employee{"Bob", 678, "Java"}, Employee{"Joey", 612, "C++"}};
@@ -356,6 +359,7 @@ void UserDefinedSort()
     if (iter != v.end()) {
         std::cout << "Found:" << iter->GetName() << "is a Java Programmer" << std::endl;
     }
+    std::cout << "User Defined Vector For Each()" << std::endl;
     std::for_each(v.begin(), v.end(), [](const auto &e) { std::cout << e.GetName() << std::endl; });
     auto foundIds = std::for_each(v.begin(), v.end(), EmpIds());
     for (int id : foundIds.m_Ids) {
@@ -373,6 +377,91 @@ void UserDefinedSort()
     std::cout << std::endl;
 }
 
+void ContainerImprove()
+{
+    // construct inside container directly
+    std::cout << "Emplace Back is more convenient" << std::endl;
+    std::vector<std::pair<int, std::string>> data;
+    data.emplace_back(100, "C++");
+    std::cout << std::endl;
+
+    // move operation marked noexcept specifier, then vector will automaticly reallocate using move
+    std::vector<Integer> vInt;
+    vInt.emplace_back(1);
+    vInt.emplace_back(2);
+    vInt.emplace_back(3);
+
+    // shrink
+    for (size_t i = 0; i < 100; ++i) {
+        vInt.emplace_back(i);
+    }
+    std::cout << "Size:" << vInt.size() << '\n';
+    std::cout << "Capacity:" << vInt.capacity() << '\n';
+    vInt.erase(vInt.begin(), vInt.end() - 10);
+    std::cout << "After erase & shrink_to_fit\n";
+    vInt.shrink_to_fit();
+    std::cout << "Size:" << vInt.size() << '\n';
+    std::cout << "Capacity:" << vInt.capacity() << '\n';
+
+    // buffer management for file using vector
+    std::ifstream input{"main.cpp"};
+    if (!input) {
+        std::cout << "Could not open file\n";
+        return;
+    }
+    auto size = std::filesystem::file_size("main.cpp");
+    std::vector<char> buffer;
+    buffer.resize(size);
+    input.read(buffer.data(), size);
+    std::cout << buffer.data() << '\n';
+}
+
+template <typename Container>
+void Print(const Container &cont, const char *msg = "")
+{
+    std::cout << msg << ":";
+    for (auto a : cont) {
+        std::cout << a << ' ';
+    }
+    std::cout << std::endl;
+    ;
+}
+
+void ContainerImproveII()
+{
+    // std::erase c++20
+    std::vector<int> vvInt{1, 2, 3, 4, 5};
+    std::list<int> lstInt{1, 2, 3, 4, 2};
+    std::deque<int> deqInt{1, 2, 3, 4, 3};
+
+    std::erase(vvInt, 2);
+    std::erase(lstInt, 2);
+    std::erase(deqInt, 2);
+
+    Print(vvInt, "vector erase");
+    Print(lstInt, "list erase");
+    Print(deqInt, "deque erase");
+
+    std::set<int> data{1, 2, 6, 3};
+    data.emplace_hint(data.begin(), 0);
+    Print(data, "set contains");
+    auto found = data.contains(6);
+    if (found) std::cout << "Found\n";
+
+    // find and change in set
+    std::set<std::string> names{"Omar", "Ayaan", "Raihann"};
+    auto it = names.find("Omar");
+    auto name = *it;
+    name[0] = 'U';
+    names.erase(it);
+    names.insert(name);
+    Print(names, "change set name[0] to U");
+    auto node = names.extract(it);
+    node.value()[0] = 'E';
+    names.insert(std::move(node));
+    Print(names, "change set name[0] to E");
+}
+
 int main()
 {
     Array();
@@ -385,6 +474,8 @@ int main()
     UnSet();
     UnMap();
     Hashes();
-    UserDefinedSort();
+    UserDefined();
+    ContainerImprove();
+    ContainerImproveII();
     return 0;
 }
