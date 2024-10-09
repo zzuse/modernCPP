@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <thread>
 
 std::list<int> g_Data;
 const int SIZE = 500000;
@@ -15,7 +16,11 @@ void Download()
 int main()
 {
     std::cout << "User start download" << std::endl;
-    Download();
+    std::thread thDownloader(Download);
+    thDownloader.detach();
     std::cout << "User start another operation" << std::endl;
+    if (thDownloader.joinable()) {
+        thDownloader.join();
+    }
     return 0;
 }

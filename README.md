@@ -76,5 +76,6 @@ chapter 177. std::hash(c++11) -- commit 3ae1cd85d59f269bfe86195e2e91d71c6cb8b614
 chapter 180. Algorithm - Part I -- commit 3b9594cc401e3cb87ed7aa175723706e94694f50
 chapter 181. Algorithm - Part II -- commit a92cf90afebce25e4f9f9994158bcbfa4535e117
 chapter 186. Container Changes in C++11 -- commit 8970d0278dc2631c6f6ac984a66aaf430cb06c04
-chapter 189. Concurrency Basics
+chapter 189. Concurrency Basics -- commit 675e89dfcd2e6311db9afe796746478f28711d62
+chapter 190. Thread Creation
 ```
