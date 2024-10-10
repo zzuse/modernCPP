@@ -2,19 +2,35 @@
 #include <future>
 #include <iostream>
 #include <list>
+#include <mutex>
 #include <string>
 #include <thread>
 
 std::list<int> g_Data;
 const int SIZE = 500000;
+std::mutex g_Mutex;
 
 void Download(const std::string& file)
 {
     std::cout << "Downloading..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
+        g_Mutex.lock();
         g_Data.push_back(i);
+        // if (i == 500) return; // dead lock will happen
+        g_Mutex.unlock();
     }
-    std::cout << "Downloading finished." << std::endl;
+    std::cout << "Download1 finished." << std::endl;
+}
+
+void Download2(const std::string& file)
+{
+    std::cout << "Downloading..." << std::endl;
+    for (int i = 0; i < SIZE; ++i) {
+        g_Mutex.lock();
+        g_Data.push_back(i);
+        g_Mutex.unlock();
+    }
+    std::cout << "Download2 finished." << std::endl;
 }
 
 int Add(int x, int y) { return x + y; }
@@ -38,11 +54,14 @@ int main()
     std::string file("cppcast.mp4");
     std::cout << "User start download" << std::endl;
     std::thread thDownloader(Download, std::cref(file));
+    std::thread thDownloader2(Download2, std::cref(file));
     // thDownloader.detach();
     std::cout << "User start another operation" << std::endl;
     if (thDownloader.joinable()) {
         thDownloader.join();
     }
+    thDownloader2.join();
+    std::cout << g_Data.size() << std::endl;
 
     std::packaged_task<int(int, int)> taskAdd{Add};
     std::future<int> ft = taskAdd.get_future();
