@@ -14,10 +14,11 @@ void Download(const std::string& file)
 {
     std::cout << "Downloading..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
-        g_Mutex.lock();
+        std::lock_guard<std::mutex> mtx(g_Mutex);
+        // g_Mutex.lock();
         g_Data.push_back(i);
-        // if (i == 500) return; // dead lock will happen
-        g_Mutex.unlock();
+        if (i == 500) return;
+        // g_Mutex.unlock();
     }
     std::cout << "Download1 finished." << std::endl;
 }
@@ -26,9 +27,10 @@ void Download2(const std::string& file)
 {
     std::cout << "Downloading..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
-        g_Mutex.lock();
+        std::lock_guard<std::mutex> mtx(g_Mutex);
+        // g_Mutex.lock();
         g_Data.push_back(i);
-        g_Mutex.unlock();
+        // g_Mutex.unlock();
     }
     std::cout << "Download2 finished." << std::endl;
 }

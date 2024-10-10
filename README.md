@@ -80,5 +80,6 @@ chapter 189. Concurrency Basics -- commit 675e89dfcd2e6311db9afe796746478f28711d
 chapter 190. Thread Creation -- commit 5b85f68887ac37de4fa2b1dad2a496b46ead47c1
 chapter 191. Passing Arguments To Threads -- commit 74d4d1bc63d336fbfa1908cdbfc38ab64a2cb549
 chapter 192. Returning Value from Threads -- commit 54dbf051b8002d6175597e8f53d01db30a4edc66
-chapter 193. Thread Synchronization(std::mutex)
+chapter 193. Thread Synchronization(std::mutex) -- commit 85571570c6a9f3706cbb4d8c176f200f5949689d
+chapter 194. std::lock_guard
 ```
