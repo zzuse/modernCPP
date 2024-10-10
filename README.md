@@ -77,5 +77,6 @@ chapter 180. Algorithm - Part I -- commit 3b9594cc401e3cb87ed7aa175723706e94694f
 chapter 181. Algorithm - Part II -- commit a92cf90afebce25e4f9f9994158bcbfa4535e117
 chapter 186. Container Changes in C++11 -- commit 8970d0278dc2631c6f6ac984a66aaf430cb06c04
 chapter 189. Concurrency Basics -- commit 675e89dfcd2e6311db9afe796746478f28711d62
-chapter 190. Thread Creation
+chapter 190. Thread Creation -- commit 5b85f68887ac37de4fa2b1dad2a496b46ead47c1
+chapter 191. Passing Arguments To Threads
 ```
