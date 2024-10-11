@@ -12,7 +12,7 @@ std::mutex g_Mutex;
 
 void Download(const std::string& file)
 {
-    std::cout << "Downloading..." << std::endl;
+    std::cout << "Thread: " << std::this_thread::get_id() << " Downloading1 ..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
         std::lock_guard<std::mutex> mtx(g_Mutex);
         // g_Mutex.lock();
@@ -25,7 +25,7 @@ void Download(const std::string& file)
 
 void Download2(const std::string& file)
 {
-    std::cout << "Downloading..." << std::endl;
+    std::cout << "Thread: " << std::this_thread::get_id() << " Downloading2 ..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
         std::lock_guard<std::mutex> mtx(g_Mutex);
         // g_Mutex.lock();
@@ -59,6 +59,18 @@ int main()
     std::thread thDownloader2(Download2, std::cref(file));
     // thDownloader.detach();
     std::cout << "User start another operation" << std::endl;
+
+    // Mac OS X: must be set from within the thread (can't specify thread ID)
+    pthread_setname_np("Main");
+
+    auto threadid = thDownloader.get_id();
+    std::cout << "Downloader1 threadid: " << threadid << std::endl;
+    char thread_name[8];
+    pthread_t handle = thDownloader.native_handle();
+    pthread_getname_np(handle, thread_name, 8);
+    std::cout << "Downloader1 thread name:" << thread_name << std::endl;
+
+    std::cout << "Cores:" << std::thread::hardware_concurrency() << std::endl;
     if (thDownloader.joinable()) {
         thDownloader.join();
     }
