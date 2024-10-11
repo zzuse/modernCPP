@@ -10,7 +10,20 @@ std::list<int> g_Data;
 const int SIZE = 500000;
 std::mutex g_Mutex;
 
-void Download(const std::string& file)
+int Operation(int count)
+{
+    using namespace std::chrono_literals;
+    int sum{};
+    for (int i = 0; i < 10; ++i) {
+        sum += i;
+        std::cout << '.';
+        std::this_thread::sleep_for(1s);
+        std::cout.flush();
+    }
+    return sum;
+}
+
+void Download1(const std::string& file)
 {
     std::cout << "Thread: " << std::this_thread::get_id() << " Downloading1 ..." << std::endl;
     for (int i = 0; i < SIZE; ++i) {
@@ -55,7 +68,7 @@ int main()
 {
     std::string file("cppcast.mp4");
     std::cout << "User start download" << std::endl;
-    std::thread thDownloader(Download, std::cref(file));
+    std::thread thDownloader(Download1, std::cref(file));
     std::thread thDownloader2(Download2, std::cref(file));
     // thDownloader.detach();
     std::cout << "User start another operation" << std::endl;
@@ -98,5 +111,10 @@ int main()
 
     std::cout << "End of main()" << std::endl;
     threadCompute.join();
+
+    std::future<int> operation_result = std::async(Operation, 10);
+    std::cout << "main() threading" << std::endl;
+    std::cout << operation_result.get() << std::endl;
+    std::cout << "main() finished" << std::endl;
     return 0;
 }
