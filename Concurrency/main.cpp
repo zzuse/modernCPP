@@ -28,20 +28,25 @@ int Operation(int count)
 
 int Operation_promise(std::promise<int>& data)
 {
-    std::cout << "Thread: " << std::this_thread::get_id() << " promise Operation ..." << std::endl;
+    std::cout << "[Task]: " << std::this_thread::get_id() << " promise Operation ..." << std::endl;
     using namespace std::chrono_literals;
-    auto f = data.get_future();
-    std::cout << "Task waiting for count " << std::endl;
-    auto count = f.get();
-    std::cout << "Task aquired for count  " << std::endl;
-    int sum{};
-    for (int i = 0; i < 10; ++i) {
-        sum += i;
-        std::cout << '.';
-        std::this_thread::sleep_for(300ms);
-        std::cout.flush();
+    try {
+        auto f = data.get_future();
+        std::cout << "[Task] waiting for count " << std::endl;
+        auto count = f.get();
+        std::cout << "[Task] aquired for count  " << std::endl;
+        int sum{};
+        for (int i = 0; i < 10; ++i) {
+            sum += i;
+            std::cout << '.';
+            std::this_thread::sleep_for(300ms);
+            std::cout.flush();
+        }
+        return sum;
+    } catch (std::exception& ex) {
+        std::cout << "[Task] Exception: " << ex.what() << std::endl;
     }
-    return sum;
+    return -1;
 }
 
 void Download1(const std::string& file)
@@ -190,6 +195,27 @@ int main()
         std::cout << operation_result.get() << std::endl;
     }
     std::cout << "promise Operation finished" << std::endl;
+
+    try {
+        operation_result = std::async(std::launch::async, Operation_promise, std::ref(promise_data));
+        std::cout << "promise exception threading" << std::endl;
+        std::this_thread::sleep_for(1s);
+        throw std::runtime_error("Data not available");
+        promise_data.set_value(10);
+        if (operation_result.valid()) {
+            std::cout << operation_result.get() << std::endl;
+        }
+        std::cout << "promise Operation finished" << std::endl;
+    } catch (std::system_error& ex) {
+        std::cout << "[Main] System Error" << ex.what() << std::endl;
+    } catch (std::exception& ex) {
+        std::cout << "[Main] Exception to [Task] " << ex.what() << std::endl;
+        try {
+            promise_data.set_exception(std::make_exception_ptr(ex));
+        } catch (std::exception& ex) {
+            std::cout << "[Task] to [Main] Exception " << ex.what() << std::endl;
+        }
+    }
 
     return 0;
 }
