@@ -12,6 +12,8 @@ std::mutex g_Mutex;
 
 int Operation(int count)
 {
+    std::cout << "Thread: " << std::this_thread::get_id() << " Operation ..." << std::endl;
+
     using namespace std::chrono_literals;
     int sum{};
     for (int i = 0; i < 10; ++i) {
@@ -54,6 +56,7 @@ int Square(int x) { return x * x; }
 
 int Compute(const std::vector<int>& data)
 {
+    std::cout << "Thread: " << std::this_thread::get_id() << " Compute ..." << std::endl;
     using namespace std::chrono_literals;
     int sum{};
     for (auto e : data) {
@@ -66,12 +69,12 @@ int Compute(const std::vector<int>& data)
 
 int main()
 {
+    std::cout << "Thread: " << std::this_thread::get_id() << " Main ..." << std::endl;
     std::string file("cppcast.mp4");
     std::cout << "User start download" << std::endl;
     std::thread thDownloader(Download1, std::cref(file));
     std::thread thDownloader2(Download2, std::cref(file));
     // thDownloader.detach();
-    std::cout << "User start another operation" << std::endl;
 
     // Mac OS X: must be set from within the thread (can't specify thread ID)
     pthread_setname_np("Main");
@@ -89,6 +92,7 @@ int main()
     }
     thDownloader2.join();
     std::cout << g_Data.size() << std::endl;
+    std::cout << "User start another operation" << std::endl;
 
     std::packaged_task<int(int, int)> taskAdd{Add};
     std::future<int> ft = taskAdd.get_future();
@@ -115,6 +119,7 @@ int main()
     // future<return_type> async(Callable, args)
     // future<return_type> async(launch policy, Callable, args)
     using namespace std::chrono_literals;
+    // sometime it will not in another thread
     std::future<int> operation_result = std::async(Operation, 10);
     std::cout << "Operation" << std::endl;
     std::this_thread::sleep_for(1s);
@@ -138,6 +143,21 @@ int main()
     std::cout << "async Operation threading" << std::endl;
     std::this_thread::sleep_for(1s);
     if (operation_result.valid()) {
+        auto timepoint = std::chrono::system_clock::now();
+        timepoint += 1s;
+        auto status = operation_result.wait_until(timepoint);
+        // auto status = operation_result.wait_for(4s);
+        switch (status) {
+            case std::future_status::deferred:
+                std::cout << "Task is synchronous" << std::endl;
+                break;
+            case std::future_status::ready:
+                std::cout << "Result is ready" << std::endl;
+                break;
+            case std::future_status::timeout:
+                std::cout << "Task is still running" << std::endl;
+                break;
+        }
         std::cout << operation_result.get() << std::endl;
     }
     std::cout << "async Operation finished" << std::endl;

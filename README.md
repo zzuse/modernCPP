@@ -84,5 +84,6 @@ chapter 193. Thread Synchronization(std::mutex) -- commit 85571570c6a9f3706cbb4d
 chapter 194. std::lock_guard -- commit e123cbd47df66809d92f31d6cb6eaa0f22831566
 chapter 195. std::this_thread -- commit 3327ea858f20cf15f5f13585e6d96130301c1e06
 chapter 196. Task Based Concurrency -- commit c1e377f89b5b3b3529b16d431e84181724bc9368
-chapter 198. Launch Policies
+chapter 198. Launch Policies -- commit baae32a463f4dff1008fd5b1e8388d48e116cb8a
+chapter 199. std::future Wait Functions
 ```
