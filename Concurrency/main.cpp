@@ -5,6 +5,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
+#include <vector>
 
 std::list<int> g_Data;
 const int SIZE = 500000;
@@ -15,6 +16,24 @@ int Operation(int count)
     std::cout << "Thread: " << std::this_thread::get_id() << " Operation ..." << std::endl;
 
     using namespace std::chrono_literals;
+    int sum{};
+    for (int i = 0; i < 10; ++i) {
+        sum += i;
+        std::cout << '.';
+        std::this_thread::sleep_for(300ms);
+        std::cout.flush();
+    }
+    return sum;
+}
+
+int Operation_promise(std::promise<int>& data)
+{
+    std::cout << "Thread: " << std::this_thread::get_id() << " promise Operation ..." << std::endl;
+    using namespace std::chrono_literals;
+    auto f = data.get_future();
+    std::cout << "Task waiting for count " << std::endl;
+    auto count = f.get();
+    std::cout << "Task aquired for count  " << std::endl;
     int sum{};
     for (int i = 0; i < 10; ++i) {
         sum += i;
@@ -161,5 +180,16 @@ int main()
         std::cout << operation_result.get() << std::endl;
     }
     std::cout << "async Operation finished" << std::endl;
+
+    std::promise<int> promise_data;
+    operation_result = std::async(std::launch::async, Operation_promise, std::ref(promise_data));
+    std::cout << "promise Operation threading" << std::endl;
+    std::this_thread::sleep_for(1s);
+    promise_data.set_value(10);
+    if (operation_result.valid()) {
+        std::cout << operation_result.get() << std::endl;
+    }
+    std::cout << "promise Operation finished" << std::endl;
+
     return 0;
 }
