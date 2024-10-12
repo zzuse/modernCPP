@@ -17,7 +17,7 @@ int Operation(int count)
     for (int i = 0; i < 10; ++i) {
         sum += i;
         std::cout << '.';
-        std::this_thread::sleep_for(1s);
+        std::this_thread::sleep_for(300ms);
         std::cout.flush();
     }
     return sum;
@@ -106,15 +106,40 @@ int main()
     std::vector<int> data{1, 2, 3, 4, 5};
     // taskCompute(data);
     std::thread threadCompute{std::move(taskCompute), data};
-    std::cout << "Thread has started...\n";
+    std::cout << "Compute has started...\n";
     std::cout << fCompute.get() << std::endl;
 
-    std::cout << "End of main()" << std::endl;
+    std::cout << "End of Compute()" << std::endl;
     threadCompute.join();
 
+    // future<return_type> async(Callable, args)
+    // future<return_type> async(launch policy, Callable, args)
+    using namespace std::chrono_literals;
     std::future<int> operation_result = std::async(Operation, 10);
-    std::cout << "main() threading" << std::endl;
-    std::cout << operation_result.get() << std::endl;
-    std::cout << "main() finished" << std::endl;
+    std::cout << "Operation" << std::endl;
+    std::this_thread::sleep_for(1s);
+    if (operation_result.valid()) {
+        std::cout << operation_result.get() << std::endl;
+    }
+    std::cout << "Operation finished" << std::endl;
+
+    // the task is executed synchronously
+    operation_result = std::async(std::launch::deferred, Operation, 10);
+    std::cout << "deferred Operation threading" << std::endl;
+    std::this_thread::sleep_for(1s);
+    if (operation_result.valid()) {
+        operation_result.wait();
+        std::cout << operation_result.get() << std::endl;
+    }
+    std::cout << "deferred Operation finished" << std::endl;
+
+    // the task is executed asynchronously
+    operation_result = std::async(std::launch::async, Operation, 10);
+    std::cout << "async Operation threading" << std::endl;
+    std::this_thread::sleep_for(1s);
+    if (operation_result.valid()) {
+        std::cout << operation_result.get() << std::endl;
+    }
+    std::cout << "async Operation finished" << std::endl;
     return 0;
 }
