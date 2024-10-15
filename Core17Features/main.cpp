@@ -9,6 +9,7 @@ namespace fs = std::filesystem;
 #endif
 #endif
 
+#include <fstream>
 #include <iostream>
 
 [[deprecated("Use the new version instead")]] int* CreateIntArray(size_t size) { return new int[size]; }
@@ -29,6 +30,38 @@ class [[nodiscard]] Number {
 
 Number GetNumber(int x) { return Number{}; }
 
+void Write(const std::string& data)
+{
+    if (std::ofstream out{"./file.txt"}; out && !data.empty()) {
+        std::cout << "Writing data into the file\n";
+        out << data;
+    } else {
+        std::cout << "Not data to write\n";
+        out << "####";
+    }
+}
+
+class FileInfo {
+public:
+    enum Type { Executable, Text };
+    Type GetFileType() const { return {}; }
+    size_t GetFileSize() const { return 0; }
+};
+
+FileInfo GetInfo(const std::string& file) { return {}; }
+
+void Operate(const std::string& file)
+{
+    switch (auto info = GetInfo(file); info.GetFileType()) {
+        case FileInfo::Executable:
+            break;
+        case FileInfo::Text:
+            break;
+        default:
+            break;
+    }
+}
+
 int main()
 {
     CreateIntArray(3);
@@ -41,5 +74,12 @@ int main()
     std::cout << __cpp_capture_star_this << std::endl;
 
     // if (initialization; condition) {}
+    if (int* p = (int*)malloc(sizeof(int)); p != nullptr) {
+        *p = 50;
+        free(p);
+    } else {
+        // p will be nullptr
+    }
+    Write("a");
     return 0;
 }
