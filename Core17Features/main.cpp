@@ -22,9 +22,10 @@ template <typename T>
 namespace [[deprecated("DO NOT USE")]] A {
 }
 
-class [[deprecated("This class is replaced by NewTest class")]] Test {};
+class [[deprecated("This class is replaced by NewTest class")]] Test{};
 
-class [[nodiscard]] Number {};
+class [[nodiscard]] Number {
+};
 
 Number GetNumber(int x) { return Number{}; }
 
@@ -38,5 +39,7 @@ int main()
     fs::path p{"/mnt/data"};
     std::cout << __cpp_inline_variables << std::endl;
     std::cout << __cpp_capture_star_this << std::endl;
+
+    // if (initialization; condition) {}
     return 0;
 }
