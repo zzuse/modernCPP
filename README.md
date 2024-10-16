@@ -90,5 +90,6 @@ chapter 200. Using std::promise -- commit d4bdcea65bfae1043bd5862ce0e8c45b12a2f0
 chapter 201. Propagating Exceptions Across Threads -- commit 9d43758c613b31d40feb632a0b3398669e746507
 chapter 205. Attributes -- commit 03a6fb34abea6e7940c81ed9d68dd264d2767400
 chapter 206. Feature Test Macros -- commit d7102ffece4b215ab03d266375fc7f7258c67e85
-chapter 207. If and Switch with Initialization
+chapter 207. If and Switch with Initialization -- commit 389fc27de3301faf7e115f6433cf2896b00cf197
+chapter 208. inline Variables
 ```
