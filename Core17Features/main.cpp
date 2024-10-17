@@ -69,6 +69,9 @@ namespace A::B::C {
     void Foo() {}
 }
 
+void Boo() noexcept {}
+void Bar() {}
+
 int main()
 {
     CreateIntArray(3);
@@ -92,5 +95,9 @@ int main()
     using A::B::C::Foo;
     using namespace A::B::C;
     Foo();
+    void (*func)() noexcept;
+    func = Boo;
+    // func = Bar; // error for noexcept signature
+    func();
     return 0;
 }
