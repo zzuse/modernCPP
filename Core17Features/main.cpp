@@ -23,10 +23,9 @@ template <typename T>
 namespace [[deprecated("DO NOT USE")]] A {
 }
 
-class [[deprecated("This class is replaced by NewTest class")]] Test{};
+class [[deprecated("This class is replaced by NewTest class")]] Test {};
 
-class [[nodiscard]] Number {
-};
+class [[nodiscard]] Number {};
 
 Number GetNumber(int x) { return Number{}; }
 
@@ -62,6 +61,14 @@ void Operate(const std::string& file)
     }
 }
 
+namespace A { namespace B { namespace C {
+
+}}}
+
+namespace A::B::C {
+    void Foo() {}
+}
+
 int main()
 {
     CreateIntArray(3);
@@ -81,5 +88,9 @@ int main()
         // p will be nullptr
     }
     Write("a");
+    A::B::C::Foo();
+    using A::B::C::Foo;
+    using namespace A::B::C;
+    Foo();
     return 0;
 }

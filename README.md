@@ -91,5 +91,5 @@ chapter 201. Propagating Exceptions Across Threads -- commit 9d43758c613b31d40fe
 chapter 205. Attributes -- commit 03a6fb34abea6e7940c81ed9d68dd264d2767400
 chapter 206. Feature Test Macros -- commit d7102ffece4b215ab03d266375fc7f7258c67e85
 chapter 207. If and Switch with Initialization -- commit 389fc27de3301faf7e115f6433cf2896b00cf197
-chapter 208. inline Variables
+chapter 208. inline Variables -- commit 99dc40e5055eec13572a536eb74a66972092fe7c
 ```
