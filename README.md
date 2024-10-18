@@ -94,5 +94,6 @@ chapter 207. If and Switch with Initialization -- commit 389fc27de3301faf7e115f6
 chapter 208. inline Variables -- commit 99dc40e5055eec13572a536eb74a66972092fe7c
 chapter 209. Nested Namespaces -- commit cf99dc7c7a5eb9a14f6878e00498c6307c8348e4
 chapter 210. noexcept -- commit 7644c9f6468229dd5175e44b57d1491fee3aa691
-chapter 211. constexpr Lambda
+chapter 211. constexpr Lambda -- commit 9e969dc8b3f9450bf7798f80209f4615c6623163
+chapter 212. Structured Bindings
 ```
