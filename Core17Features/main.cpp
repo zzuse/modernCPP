@@ -131,6 +131,31 @@ struct S1 {
     char ch1[256];
 };
 
+class EvaluationOrder {
+public:
+    EvaluationOrder& First(int)
+    { // on windows, use __FUNCSIG__ instead
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        return *this;
+    }
+    EvaluationOrder& Second(int)
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        return *this;
+    }
+};
+
+int FirstSubExpression(int)
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    return 0;
+}
+int SecondSubExpression(int)
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    return 0;
+}
+
 int main()
 {
     CreateIntArray(3);
@@ -191,5 +216,8 @@ int main()
     // structure binding does not decay
     S1 s;
     auto [s1, s2] = s;
+
+    EvaluationOrder eo;
+    eo.First(FirstSubExpression(0)).Second(SecondSubExpression(0));
     return 0;
 }
