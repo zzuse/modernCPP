@@ -11,6 +11,7 @@ namespace fs = std::filesystem;
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 [[deprecated("Use the new version instead")]] int* CreateIntArray(size_t size) { return new int[size]; }
 
@@ -72,6 +73,46 @@ namespace A::B::C {
 void Boo() noexcept {}
 void Bar() {}
 
+template <typename T, int size, typename Callback>
+void ForEach(T (&arr)[size], Callback operation)
+{
+    for (int i = 0; i < size; i++) {
+        operation(arr[i]);
+    }
+}
+
+class Product {
+    std::string name;
+    float price;
+
+public:
+    Product(const std::string& n, float p)
+        : name(n)
+        , price(p)
+    {
+    }
+    void AssignFinalPrice()
+    {
+        float taxes[]{12, 5, 6};
+        float basePrice{price};
+        ForEach(taxes, [basePrice, this](float tax) {
+            float taxedPrice = basePrice * tax / 100;
+            price += taxedPrice;
+        });
+    }
+    float GetPrice() const { return price; }
+    auto GetDescription()
+    {
+        return [*this](const std::string& header) {
+            std::ostringstream ost;
+            ost << header << std::endl;
+            ost << "Name: " << name << std::endl;
+            ost << "Price: " << price << std::endl;
+            return ost.str();
+        };
+    }
+};
+
 int main()
 {
     CreateIntArray(3);
@@ -99,5 +140,16 @@ int main()
     func = Boo;
     // func = Bar; // error for noexcept signature
     func();
+
+    Product* po = new Product{"Watch ", 500};
+    po->AssignFinalPrice();
+    auto desc = po->GetDescription();
+    delete po;
+    std::cout << desc("#####") << std::endl;
+
+    // auto constexpr lambda
+    auto f = [](int x, int y) { return x + y; };
+    constexpr auto sum = f(3, 5);
+    printf("%d", sum);
     return 0;
 }
