@@ -96,5 +96,6 @@ chapter 209. Nested Namespaces -- commit cf99dc7c7a5eb9a14f6878e00498c6307c8348e
 chapter 210. noexcept -- commit 7644c9f6468229dd5175e44b57d1491fee3aa691
 chapter 211. constexpr Lambda -- commit 9e969dc8b3f9450bf7798f80209f4615c6623163
 chapter 212. Structured Bindings -- commit 973a168f7ebd09b93954e7eb05f90578c8c87904
-chapter 213. Expression Evaluation Order
+chapter 213. Expression Evaluation Order -- commit 3b1762d95f7c748c28290a59a7edd50d9d8ab770
+chapter 215. Mandatory copy elision
 ```

@@ -9,6 +9,8 @@ namespace fs = std::filesystem;
 #endif
 #endif
 
+#define DELETE_COPY_MOVE
+
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -25,12 +27,31 @@ template <typename T>
 namespace [[deprecated("DO NOT USE")]] A {
 }
 
-class [[deprecated("This class is replaced by NewTest class")]] Test{};
+class [[deprecated("This class is replaced by NewTest class")]] Test {};
 
 class [[nodiscard]] Number {
+public:
+    Number(int value) { std::cout << "Parameterized ctor\n"; }
+#ifdef DELETE_COPY_MOVE
+    Number(const Number&) = delete;
+    Number(Number&&) = delete;
+#else
+    Number(const Number&) { std::cout << "Copy ctor\n"; }
+    Number(Number&&) { std::cout << "Move ctor\n"; }
+#endif
 };
 
-Number GetNumber(int x) { return Number{}; }
+Number GetNumber(int x) { return Number{0}; }
+
+void Noo(Number n) {}
+
+Number Create() { return Number{0}; }
+
+template <typename T, typename... Args>
+T Create(Args&&... args)
+{
+    return T{args...};
+}
 
 void Write(const std::string& data)
 {
@@ -219,5 +240,11 @@ int main()
 
     EvaluationOrder eo;
     eo.First(FirstSubExpression(0)).Second(SecondSubExpression(0));
+
+    // mandatory copy elision even copy and move is deleted
+    Number n1 = Number{3};
+    Noo(Number(3));
+    auto n2 = Create();
+    auto n3 = Create<Number>(0);
     return 0;
 }
