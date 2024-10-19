@@ -50,6 +50,49 @@ auto Sum2(Args... args)
  * ((((1+2)+3)+4)+5)
  */
 
+template <typename... Args>
+auto Sum3(Args... args)
+{
+    return (0 + ... + args); // Binary Left Fold
+    // return (args + ... + 0); // Binary Right Fold
+}
+/*
+ * Binary Left Fold
+ * (((((0+1)+2)+3)+4)+5)
+ * Binary Right Fold
+ * (1+(2+(3+(4+(5+0))))
+ */
+
+/* operators can be used with fold expressions
+ + - * / %^& | = < > << >> += -= *= /= %= ^= &= |= <<= >>= == != <= >= && || , .* ->*
+*/
+
+/* empty pack of the value:
+ * &&    - true
+ * ||    - false
+ * ,     - void
+ * other - ill formed
+ */
+
+// any of the list is even number
+template <typename... Args>
+bool AnyOf(Args... args)
+{
+    return (... || (args % 2 == 0));
+}
+// all of the list is even number
+template <typename... Args>
+bool AllOf(Args... args)
+{
+    return (... && (args % 2 == 0));
+}
+// use Predict to check expression return true or false
+template <typename... Args, typename Predicate>
+bool AnyOf2(Predicate p, Args... args)
+{
+    return (... || p(args));
+}
+
 int main()
 {
     std::pair<int, int> p1{2, 5};
@@ -74,5 +117,15 @@ int main()
 
     result = Sum2(1, 2, 3, 4, 5);
     std::cout << result << std::endl;
+
+    result = Sum3(1, 2, 3, 4, 5);
+    std::cout << result << std::endl;
+
+    std::cout << std::boolalpha;
+    std::cout << "Any Even? " << AnyOf(10, 3, 5) << std::endl;
+    std::cout << "All Even? " << AllOf(10, 3, 5) << std::endl;
+
+    std::cout << "Any Even? " << AnyOf2([](int x) { return x % 2 == 0; }, 10, 3, 5) << std::endl;
+
     return 0;
 }
