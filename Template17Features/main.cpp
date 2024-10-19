@@ -10,6 +10,31 @@ public:
 Data(const char*)->Data<std::string>;
 Data(int)->Data<long>;
 
+// implement recursive
+auto Sum() { return 0; }
+template <typename T, typename... Args>
+auto Sum(T a, Args... args)
+{
+    return a + Sum(args...);
+}
+/*
+ * Sum(1,2,3,4,5)
+ * return 1 + Sum(2,3,4,5)
+ * return 2 + Sum(3,4,5)
+ * return 3 + Sum(4,5)
+ * return 4 + Sum(5)
+ * return 5 + Sum();
+ * return 5 + 0;
+ *
+ *  1+(2+(3+(4+(5+0))))
+ *  1+(2+(3+(4+5)))
+ *  1+(2+(3+9))
+ *  1+(2+12)
+ *  1+14
+ *  15
+ *
+ */
+
 int main()
 {
     std::pair<int, int> p1{2, 5};
@@ -28,5 +53,8 @@ int main()
 
     // if I want to deduct to string not char?
     Data d5{"Hello"};
+
+    auto result = Sum(1, 2, 3, 4, 5);
+    std::cout << result << std::endl;
     return 0;
 }
