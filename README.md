@@ -97,5 +97,6 @@ chapter 210. noexcept -- commit 7644c9f6468229dd5175e44b57d1491fee3aa691
 chapter 211. constexpr Lambda -- commit 9e969dc8b3f9450bf7798f80209f4615c6623163
 chapter 212. Structured Bindings -- commit 973a168f7ebd09b93954e7eb05f90578c8c87904
 chapter 213. Expression Evaluation Order -- commit 3b1762d95f7c748c28290a59a7edd50d9d8ab770
-chapter 215. Mandatory copy elision
+chapter 215. Mandatory copy elision -- commit d62eca34dd275556947dfabb5caceb6384bcd279
+chapter 216. Class Template Argument Deduction(CTAD)
 ```
