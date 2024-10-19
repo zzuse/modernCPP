@@ -99,5 +99,6 @@ chapter 212. Structured Bindings -- commit 973a168f7ebd09b93954e7eb05f90578c8c87
 chapter 213. Expression Evaluation Order -- commit 3b1762d95f7c748c28290a59a7edd50d9d8ab770
 chapter 215. Mandatory copy elision -- commit d62eca34dd275556947dfabb5caceb6384bcd279
 chapter 216. Class Template Argument Deduction(CTAD) -- commit 39f8317ec82492a3739d53039c281e08a7b85d09
-chapter 217. Folding Basics
+chapter 217. Folding Basics -- commit e93c7dac106007858fea44ee0c9404b11aff309d
+chapter 218. Fold Expressions Unary Folds
 ```

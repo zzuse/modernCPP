@@ -10,7 +10,7 @@ public:
 Data(const char*)->Data<std::string>;
 Data(int)->Data<long>;
 
-// implement recursive
+// implement uppack using overloaded variadic templates and recursion
 auto Sum() { return 0; }
 template <typename T, typename... Args>
 auto Sum(T a, Args... args)
@@ -35,6 +35,21 @@ auto Sum(T a, Args... args)
  *
  */
 
+template <typename... Args>
+auto Sum2(Args... args)
+{
+    // return (args + ...); // Unary right fold (pack op ...)
+    return (... + args); // Unary left fold (... op pack)
+}
+/*
+ * Unary Right Fold
+ * sum2(1,2,3,4,5)
+ * (1+(2+(3+(4+5))))
+ *
+ * Unary Left Fold
+ * ((((1+2)+3)+4)+5)
+ */
+
 int main()
 {
     std::pair<int, int> p1{2, 5};
@@ -55,6 +70,9 @@ int main()
     Data d5{"Hello"};
 
     auto result = Sum(1, 2, 3, 4, 5);
+    std::cout << result << std::endl;
+
+    result = Sum2(1, 2, 3, 4, 5);
     std::cout << result << std::endl;
     return 0;
 }
