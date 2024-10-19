@@ -101,5 +101,6 @@ chapter 215. Mandatory copy elision -- commit d62eca34dd275556947dfabb5caceb6384
 chapter 216. Class Template Argument Deduction(CTAD) -- commit 39f8317ec82492a3739d53039c281e08a7b85d09
 chapter 217. Folding Basics -- commit e93c7dac106007858fea44ee0c9404b11aff309d
 chapter 218. Fold Expressions Unary Folds -- commit ed17a3aa4bf82306b6bb3d9f47ab395a701f3c95
-chapter 219. Fold Expressions Binary Folds
+chapter 219. Fold Expressions Binary Folds -- commit bae9b8f488f1a8db9715bc4779a12fab4f980f7b
+chapter 221. Type Traits Suffixes
 ```

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <mutex>
+#include <type_traits>
 #include <vector>
 
 template <typename T>
@@ -7,8 +8,8 @@ class Data {
 public:
     Data(const T& t) {}
 };
-Data(const char*)->Data<std::string>;
-Data(int)->Data<long>;
+Data(const char*) -> Data<std::string>;
+Data(int) -> Data<long>;
 
 // implement uppack using overloaded variadic templates and recursion
 auto Sum() { return 0; }
@@ -93,6 +94,36 @@ bool AnyOf2(Predicate p, Args... args)
     return (... || p(args));
 }
 
+// type traits
+template <typename T>
+T Divide(T a, T b)
+{
+    if (std::is_floating_point_v<T> == false) {
+        std::cout << "Use floating point types only\n";
+        return 0;
+    }
+    return a / b;
+}
+template <typename T>
+void Check(T&&)
+{
+    std::cout << std::boolalpha;
+    std::cout << "Is reference?" << std::is_reference_v<T> << std::endl;
+    std::cout << "After removing:" << std::is_reference<typename std::remove_reference<T>::type>::value << std::endl;
+    std::cout << "After removing:" << std::is_reference_v<typename std::remove_reference_t<T>> << std::endl;
+}
+
+class Number {
+    int m_Number;
+
+public:
+    Number() = default;
+    Number(int x)
+        : m_Number{x}
+    {
+    }
+};
+
 int main()
 {
     std::pair<int, int> p1{2, 5};
@@ -124,8 +155,15 @@ int main()
     std::cout << std::boolalpha;
     std::cout << "Any Even? " << AnyOf(10, 3, 5) << std::endl;
     std::cout << "All Even? " << AllOf(10, 3, 5) << std::endl;
-
     std::cout << "Any Even? " << AnyOf2([](int x) { return x % 2 == 0; }, 10, 3, 5) << std::endl;
 
+    static_assert(std::is_default_constructible<Number>::value,
+                  "Only objects with default constructor can be deserialized.");
+    static_assert(std::is_default_constructible_v<Number>,
+                  "Only objects with default "
+                  "constructor can be deserialized.");
+
+    Divide(5, 6);
+    Check(result);
     return 0;
 }
