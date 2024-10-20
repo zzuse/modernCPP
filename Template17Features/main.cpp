@@ -124,6 +124,20 @@ public:
     }
 };
 
+template <typename T>
+void Print(const T& value)
+{
+    if constexpr (std::is_pointer_v<T>) {
+        std::cout << *value << std::endl;
+    } else if constexpr (std::is_array_v<T>) {
+        for (auto v : value) {
+            std::cout << v << ' ';
+        }
+    } else {
+        std::cout << value << std::endl;
+    }
+}
+
 int main()
 {
     std::pair<int, int> p1{2, 5};
@@ -165,5 +179,11 @@ int main()
 
     Divide(5, 6);
     Check(result);
+
+    int value{5};
+    Print(value);
+    Print(&value);
+    int arr[] = {1, 2, 3, 4, 5};
+    Print(arr);
     return 0;
 }
