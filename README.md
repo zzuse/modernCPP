@@ -103,5 +103,6 @@ chapter 217. Folding Basics -- commit e93c7dac106007858fea44ee0c9404b11aff309d
 chapter 218. Fold Expressions Unary Folds -- commit ed17a3aa4bf82306b6bb3d9f47ab395a701f3c95
 chapter 219. Fold Expressions Binary Folds -- commit bae9b8f488f1a8db9715bc4779a12fab4f980f7b
 chapter 221. Type Traits Suffixes -- commit 74170f76b2a5c00329f3456793a128f1eb0b9561
-chapter 222. if constexpr - I 
+chapter 222. if constexpr - I -- commit 4ba6b809630675dae137fff9a2ed020772a30735
+chapter 223. if constexpr - II
 ```
