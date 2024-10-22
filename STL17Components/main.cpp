@@ -1,4 +1,5 @@
 #include <iostream>
+#include <variant>
 
 const char* GetErrorString(int errorNo)
 {
@@ -43,6 +44,50 @@ public:
         std::cout << middle.value_or("") << " ";
         std::cout << last << std::endl;
     }
+};
+
+struct Number {
+    int m_Num{};
+    Number(int num)
+        : m_Num{num}
+    { // on windows __FUNCSIG__
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+    }
+    Number() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    ~Number() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    Number(const Number& other)
+    {
+        m_Num = other.m_Num;
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+    }
+    Number(Number&& other) noexcept
+    {
+        m_Num = other.m_Num;
+        other.m_Num = 0;
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+    }
+    Number& operator=(const Number& other)
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) return *this;
+        m_Num = other.m_Num;
+        return *this;
+    }
+    Number& operator=(Number&& other) noexcept
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) return *this;
+        m_Num = other.m_Num;
+        other.m_Num = 0;
+        return *this;
+    }
+    friend std::ostream& operator<<(std::ostream& out, const Number& n) { return out << n.m_Num; }
+};
+
+struct Visitor {
+    void operator()(const std::string& s) const { std::cout << "string:" << s << std::endl; }
+    void operator()(int x) const { std::cout << "int:" << x << std::endl; }
+    void operator()(const Number& n) const { std::cout << "Number:" << n << std::endl; }
 };
 
 int main()
@@ -91,5 +136,30 @@ int main()
     ContactName n2{"Ayaan", std::nullopt, "Lone"};
     n1.Print();
     n2.Print();
+
+    try {
+        std::variant<std::string, int, Number> v{5};
+        v = Number{1};
+        std::get<Number>(v) = 100;
+        std::visit(Visitor{}, v);
+        v = "C++";
+        std::visit(Visitor{}, v);
+        v.emplace<Number>(200);
+        std::visit(Visitor{}, v);
+        std::cout << "Access Int Variant" << std::endl;
+        v = 5;
+        auto val = std::get<int>(v);
+        val = std::get<1>(v);
+        auto activeIndex = v.index();
+        std::cout << activeIndex << std::endl;
+        auto p = std::get_if<std::string>(&v);
+        if (p == nullptr) {
+            std::cout << "Not active" << std::endl;
+        } else {
+            std::cout << *p << std::endl;
+        }
+    } catch (std::exception& ex) {
+        std::cout << "Exception: " << ex.what() << std::endl;
+    }
     return 0;
 }

@@ -105,5 +105,6 @@ chapter 219. Fold Expressions Binary Folds -- commit bae9b8f488f1a8db9715bc4779a
 chapter 221. Type Traits Suffixes -- commit 74170f76b2a5c00329f3456793a128f1eb0b9561
 chapter 222. if constexpr - I -- commit 4ba6b809630675dae137fff9a2ed020772a30735
 chapter 223. if constexpr - II -- commit 90717d6403a27333cf6a0d9c46f43f8d61343e8d
-chapter 224. std::optional
+chapter 224. std::optional -- commit 740c4b470c39b3b936028cdd10270a8024af1d81
+chapter 227. std::variant I
 ```
