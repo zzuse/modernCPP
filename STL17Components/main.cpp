@@ -90,6 +90,12 @@ struct Visitor {
     void operator()(const Number& n) const { std::cout << "Number:" << n << std::endl; }
 };
 
+struct Modifier {
+    void operator()(std::string& s) const { s += " modified string"; }
+    void operator()(int& x) const { x += 1000; }
+    void operator()(Number& n) const { n = 999; }
+};
+
 int main()
 {
     // std::optional<int> value;
@@ -137,14 +143,18 @@ int main()
     n1.Print();
     n2.Print();
 
+    // std::variant
     try {
         std::variant<std::string, int, Number> v{5};
-        v = Number{1};
-        std::get<Number>(v) = 100;
+        std::visit(Modifier{}, v);
         std::visit(Visitor{}, v);
         v = "C++";
+        std::visit(Modifier{}, v);
         std::visit(Visitor{}, v);
+        v = Number{1};
+        std::get<Number>(v) = 100;
         v.emplace<Number>(200);
+        std::visit(Modifier{}, v);
         std::visit(Visitor{}, v);
         std::cout << "Access Int Variant" << std::endl;
         v = 5;
@@ -158,6 +168,23 @@ int main()
         } else {
             std::cout << *p << std::endl;
         }
+
+        v = "using lambda";
+        auto visitor = [](auto& x) {
+            using T = std::decay_t<decltype(x)>;
+            if constexpr (std::is_same_v<T, int>) {
+                std::cout << "int: " << x << std::endl;
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                std::cout << "string: " << x << std::endl;
+            } else if constexpr (std::is_same_v<T, Number>) {
+                std::cout << "Nubmer: " << x << std::endl;
+            }
+        };
+        std::visit(visitor, v);
+        v = 555;
+        std::visit(visitor, v);
+        v = Number(3);
+        std::visit(visitor, v);
     } catch (std::exception& ex) {
         std::cout << "Exception: " << ex.what() << std::endl;
     }
