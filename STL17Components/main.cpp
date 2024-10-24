@@ -1,3 +1,4 @@
+#include <any>
 #include <iostream>
 #include <variant>
 
@@ -188,5 +189,33 @@ int main()
     } catch (std::exception& ex) {
         std::cout << "Exception: " << ex.what() << std::endl;
     }
+
+    // std::any
+    using namespace std::string_literals;
+    std::any v1 = 5;
+    v1 = "Hello"s;
+    try {
+        std::cout << std::any_cast<std::string>(v1) << std::endl;
+    } catch (std::exception& ex) {
+        std::cout << "Exception: " << ex.what() << std::endl;
+    }
+    v1.reset();
+    if (v1.has_value()) {
+        if (v1.type() == typeid(int)) {
+            std::cout << std::any_cast<int>(v1) << std::endl;
+        }
+    }
+    // std::any number{Number{5}};
+    auto number1 = std::make_any<Number>(5);
+    number1.reset();
+    number1 = 5;
+    // reference any_cast
+    auto& number2 = std::any_cast<int&>(number1);
+    number2 = 100;
+    std::cout << std::any_cast<int>(number1) << std::endl;
+    // pointer any_cast
+    auto pointer = std::any_cast<int>(&number1);
+    *pointer = 200;
+    std::cout << *std::any_cast<int*>(pointer) << std::endl;
     return 0;
 }

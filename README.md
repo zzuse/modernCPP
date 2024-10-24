@@ -107,5 +107,6 @@ chapter 222. if constexpr - I -- commit 4ba6b809630675dae137fff9a2ed020772a30735
 chapter 223. if constexpr - II -- commit 90717d6403a27333cf6a0d9c46f43f8d61343e8d
 chapter 224. std::optional -- commit 740c4b470c39b3b936028cdd10270a8024af1d81
 chapter 227. std::variant I -- commit 4feb6d18749086913a2fb66eff5c33c6feb1a12a
-chapter 229. std::variant III
+chapter 229. std::variant III -- commit c73c88e2c5d2886ceeb82d7e50dae961c1d24736
+chapter 230. std::any
 ```
