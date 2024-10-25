@@ -1,7 +1,11 @@
 #include <any>
+#include <filesystem>
 #include <iostream>
+#include <optional>
 #include <string_view>
 #include <variant>
+
+namespace fs = std::filesystem;
 
 const char* GetErrorString(int errorNo)
 {
@@ -147,6 +151,42 @@ void WithClass()
     using namespace std::string_literals;
     Person p{CreatePerson("Bruce Wayne")};
     p.Print();
+}
+
+void UsingPath()
+{
+    fs::path selectedPath{R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build/abc.docx)"};
+    std::cout << selectedPath << std::endl;
+    std::cout << selectedPath.string() << std::endl;
+
+    if (selectedPath.has_root_name()) {
+        std::cout << "root name\t = " << selectedPath.root_name().string() << std::endl;
+    }
+    if (selectedPath.has_root_path()) {
+        std::cout << "root path\t = " << selectedPath.root_path().string() << std::endl;
+    }
+    if (selectedPath.has_root_directory()) {
+        std::cout << "root directory\t = " << selectedPath.root_directory().string() << std::endl;
+    }
+    if (selectedPath.has_parent_path()) {
+        std::cout << "parent path\t = " << selectedPath.parent_path().string() << std::endl;
+    }
+    if (selectedPath.has_relative_path()) {
+        std::cout << "relative path\t = " << selectedPath.relative_path().string() << std::endl;
+    }
+    if (selectedPath.has_filename()) {
+        std::cout << "filename\t = " << selectedPath.filename().string() << std::endl;
+    }
+    if (selectedPath.has_stem()) {
+        std::cout << "stem\t = " << selectedPath.stem().string() << std::endl;
+    }
+    if (selectedPath.has_extension()) {
+        std::cout << "extension\t = " << selectedPath.extension().string() << std::endl;
+    }
+    selectedPath.remove_filename();
+    std::cout << selectedPath << std::endl;
+    selectedPath /= "newfile";
+    std::cout << selectedPath << std::endl;
 }
 
 int main()
@@ -304,5 +344,8 @@ int main()
     std::cout << name << std::endl;
 
     WithClass();
+
+    // filesystem
+    UsingPath();
     return 0;
 }
