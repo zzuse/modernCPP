@@ -110,6 +110,6 @@ chapter 227. std::variant I -- commit 4feb6d18749086913a2fb66eff5c33c6feb1a12a
 chapter 229. std::variant III -- commit c73c88e2c5d2886ceeb82d7e50dae961c1d24736
 chapter 230. std::any -- commit 58404da2325e01b32b7c1a0777a9d0ffbc11b820
 chapter 231. std::string_view -- commit 68abd52df9e626f06651e03d69b36f79ea88b923
-chapter 233. filesystem - path
-
+chapter 233. filesystem - path -- commit 6be83be471aa367684cffad859dcefcace56eefb
+chapter 234. filesystem - directory_entry
 ```

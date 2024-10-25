@@ -4,6 +4,7 @@
 #include <optional>
 #include <string_view>
 #include <variant>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -189,6 +190,40 @@ void UsingPath()
     std::cout << selectedPath << std::endl;
 }
 
+void TravelsingDirectory(std::string_view file)
+{
+    fs::path currentPath(file);
+    std::vector<fs::directory_entry> dir_entries{};
+    fs::directory_iterator begin{currentPath};
+    fs::directory_iterator end{};
+    while (begin != end) {
+        auto de = *begin++;
+        std::cout << de.path().filename() << std::endl;
+    }
+    for (const auto& dir_entry : fs::directory_iterator(currentPath)) {
+        std::cout << dir_entry.path() << std::endl;
+        dir_entries.push_back(dir_entry);
+    }
+    std::partition(dir_entries.begin(), dir_entries.end(), [](const fs::directory_entry& de) {
+        // return de.is_block_file();
+        // return de.is_fifo();
+        // return de.is_symlink();
+        return de.is_directory();
+    });
+    for (const auto& dir_entry : dir_entries) {
+        switch (const auto& p = dir_entry.path(); fs::status(p).type() /* or: dir_entry.status().type() */) {
+            case fs::file_type::directory:
+                std::cout << "[DIR]\t" << p.string() << std::endl;
+                break;
+            case fs::file_type::regular:
+                std::cout << '\t' << p.string() << '\t' << dir_entry.file_size() << std::endl;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 int main()
 {
     // std::optional<int> value;
@@ -347,5 +382,6 @@ int main()
 
     // filesystem
     UsingPath();
+    TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/)");
     return 0;
 }
