@@ -224,6 +224,39 @@ void TravelsingDirectory(std::string_view file)
     }
 }
 
+void DirectoryOperations(std::string_view file)
+{
+    fs::path currentPath{file};
+    if (!fs::exists(currentPath)) {
+        std::cout << "Path does not exist = >" << currentPath.string() << std::endl;
+        return;
+    }
+    currentPath /= "NewDir";
+    if (!fs::create_directory(currentPath)) {
+        std::cout << "Could not create a directory\n";
+    } else {
+        std::cout << "Directory created successfully\n";
+    }
+    if (!fs::remove(currentPath)) {
+        std::cout << "Could not delete the directory\n";
+    } else {
+        std::cout << "Directory removed successfully\n";
+    }
+    try {
+        std::cout << fs::current_path() << std::endl;
+        std::cout << "Changing path\n";
+        std::error_code ec{};
+        fs::current_path(currentPath, ec);
+        if (ec) {
+            std::cout << "Error: " << ec.message() << std::endl;
+            return;
+        }
+        std::cout << fs::current_path() << std::endl;
+    } catch (std::exception& ex) {
+        std::cout << "Exception: " << ex.what() << std::endl;
+    }
+}
+
 int main()
 {
     // std::optional<int> value;
@@ -382,6 +415,7 @@ int main()
 
     // filesystem
     UsingPath();
-    TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/)");
+    DirectoryOperations(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
+    TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
     return 0;
 }
