@@ -112,5 +112,6 @@ chapter 230. std::any -- commit 58404da2325e01b32b7c1a0777a9d0ffbc11b820
 chapter 231. std::string_view -- commit 68abd52df9e626f06651e03d69b36f79ea88b923
 chapter 233. filesystem - path -- commit 6be83be471aa367684cffad859dcefcace56eefb
 chapter 234. filesystem - directory_entry -- commit 6d3d1427ed44a30aa00b75a732ca44453cd313c7
-chapter 235. filesystem - Directory Functions
+chapter 235. filesystem - Directory Functions -- commit b9716d2979f100f6482584a6b42b09bbaa9fce54
+chapter 236. filesystem - Permissions
 ```

@@ -257,6 +257,38 @@ void DirectoryOperations(std::string_view file)
     }
 }
 
+void demo_perms(fs::perms p)
+{
+    std::cout << ((p & fs::perms::owner_read) != fs::perms::none ? "r" : "-")
+              << ((p & fs::perms::owner_write) != fs::perms::none ? "w" : "-")
+              << ((p & fs::perms::owner_exec) != fs::perms::none ? "x" : "-")
+              << ((p & fs::perms::group_read) != fs::perms::none ? "r" : "-")
+              << ((p & fs::perms::group_write) != fs::perms::none ? "w" : "-")
+              << ((p & fs::perms::group_exec) != fs::perms::none ? "x" : "-")
+              << ((p & fs::perms::others_read) != fs::perms::none ? "r" : "-")
+              << ((p & fs::perms::others_write) != fs::perms::none ? "w" : "-")
+              << ((p & fs::perms::others_exec) != fs::perms::none ? "x" : "-") << '\n';
+}
+
+void Permissions(std::string_view file)
+{
+    fs::path file_to_modify(file);
+    if (!fs::exists(file_to_modify)) {
+        std::cout << "Path does not exist = >" << file_to_modify.string() << std::endl;
+        return;
+    }
+    auto perm = fs::status(file_to_modify).permissions();
+    demo_perms(perm);
+    std::cout << "Changeing permissions\n";
+    fs::permissions(file_to_modify, fs::perms::owner_write, fs::perm_options::remove);
+    perm = fs::status(file_to_modify).permissions();
+    demo_perms(perm);
+    std::cout << "Changeing permissions\n";
+    fs::permissions(file_to_modify, fs::perms::owner_write, fs::perm_options::add);
+    perm = fs::status(file_to_modify).permissions();
+    demo_perms(perm);
+}
+
 int main()
 {
     // std::optional<int> value;
@@ -417,5 +449,6 @@ int main()
     UsingPath();
     DirectoryOperations(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
     TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
+    Permissions(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build/CMakeFiles)");
     return 0;
 }
