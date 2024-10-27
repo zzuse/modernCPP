@@ -113,5 +113,6 @@ chapter 231. std::string_view -- commit 68abd52df9e626f06651e03d69b36f79ea88b923
 chapter 233. filesystem - path -- commit 6be83be471aa367684cffad859dcefcace56eefb
 chapter 234. filesystem - directory_entry -- commit 6d3d1427ed44a30aa00b75a732ca44453cd313c7
 chapter 235. filesystem - Directory Functions -- commit b9716d2979f100f6482584a6b42b09bbaa9fce54
-chapter 236. filesystem - Permissions
+chapter 236. filesystem - Permissions -- commit 9f9f5dbf91b850e77a9350d8810e4a4ed50bddc5
+chapter 237. Parallel Algorithms https://github.com/alugowski/poolSTL
 ```

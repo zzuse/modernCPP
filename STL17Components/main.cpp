@@ -1,7 +1,11 @@
+// cmake --build .  -v
 #include <any>
+#include <chrono>
 #include <filesystem>
 #include <iostream>
 #include <optional>
+#include <poolstl/poolstl.hpp>
+#include <random>
 #include <string_view>
 #include <variant>
 #include <vector>
@@ -289,6 +293,36 @@ void Permissions(std::string_view file)
     demo_perms(perm);
 }
 
+class Timer {
+    std::chrono::steady_clock::time_point m_start;
+
+public:
+    Timer()
+        : m_start{std::chrono::steady_clock::now()}
+    {
+    }
+    void ShowResult(std::string_view message = "")
+    {
+        auto end = std::chrono::steady_clock::now();
+        auto difference = end - m_start;
+        std::cout << message << ':' << std::chrono::duration_cast<std::chrono::milliseconds>(difference).count()
+                  << '\n';
+    }
+};
+
+constexpr unsigned VEC_SIZE{10000000};
+std::vector<long> CreateVector()
+{
+    std::vector<long> vec;
+    vec.reserve(VEC_SIZE);
+    std::default_random_engine engine{std::random_device{}()};
+    std::uniform_int_distribution<long> dist(0, VEC_SIZE);
+    for (unsigned i = 0; i < VEC_SIZE; ++i) {
+        vec.push_back(dist(engine));
+    }
+    return vec;
+}
+
 int main()
 {
     // std::optional<int> value;
@@ -450,5 +484,24 @@ int main()
     DirectoryOperations(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
     TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
     Permissions(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build/CMakeFiles)");
+
+    // Parallel
+    auto dataset = CreateVector();
+    Timer t1;
+    std::sort(dataset.begin(), dataset.end());
+    t1.ShowResult("Sorting time in milliseconds ");
+    // should be quick but not, should try parallel stl using tbb later
+    dataset = CreateVector();
+    Timer t2;
+    std::sort(poolstl::par, dataset.begin(), dataset.end());
+    t2.ShowResult("Sorting time in milliseconds ");
+
+    Timer t3;
+    std::accumulate(dataset.begin(), dataset.end(), 0);
+    t3.ShowResult("Acuumulate time in milliseconds");
+    // reduce should be quick than accumulate but not, should try parallel stl using tbb later
+    Timer t4;
+    std::reduce(dataset.begin(), dataset.end(), 0);
+    t4.ShowResult("Acuumulate time in milliseconds");
     return 0;
 }
