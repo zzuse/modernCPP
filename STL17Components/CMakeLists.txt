@@ -17,3 +17,4 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(poolSTL)
 
 target_link_libraries(STL17Components poolSTL::poolSTL)
+#cmake --build .  -v

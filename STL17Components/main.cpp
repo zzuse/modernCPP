@@ -1,10 +1,23 @@
-// cmake --build .  -v
+// sudo port install gcc13
+// /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp
+// there are three alternatives for parallel stls:
+// first is using poolstl/poolstl.hpp, std::sort(poolstl::par, dataset.begin(), dataset.end());
+// second is using tbb::parallel_sort(dataset.begin(), dataset.end());
+// third is std::sort(std::execution::par, dataset.begin(), dataset.end()); but need gcc-13 support
+// other method not working: try clang17, not support execution policy.
+// using tbb as stl backend, not easy to work. I think gcc is best support parallel stl.
+// #include <poolstl/poolstl.hpp>
+// #include "tbb/parallel_sort.h"
+// #include "tbb/tbb.h"
 #include <any>
 #include <chrono>
+#include <cstring>
 #include <filesystem>
 #include <iostream>
 #include <optional>
-#include <poolstl/poolstl.hpp>
+
+#include <algorithm>
+#include <execution>
 #include <random>
 #include <string_view>
 #include <variant>
@@ -489,19 +502,21 @@ int main()
     auto dataset = CreateVector();
     Timer t1;
     std::sort(dataset.begin(), dataset.end());
-    t1.ShowResult("Sorting time in milliseconds ");
+    t1.ShowResult("Sequence Sorting time in milliseconds ");
     // should be quick but not, should try parallel stl using tbb later
     dataset = CreateVector();
     Timer t2;
-    std::sort(poolstl::par, dataset.begin(), dataset.end());
-    t2.ShowResult("Sorting time in milliseconds ");
+    // std::sort(poolstl::par, dataset.begin(), dataset.end()); // alternative 1
+    // tbb::parallel_sort(dataset.begin(), dataset.end()); // alternative 2
+    std::sort(std::execution::par, dataset.begin(), dataset.end());
+    t2.ShowResult("Parallel Sorting time in milliseconds ");
 
     Timer t3;
     std::accumulate(dataset.begin(), dataset.end(), 0);
-    t3.ShowResult("Acuumulate time in milliseconds");
+    t3.ShowResult("sequence Acuumulate time in milliseconds");
     // reduce should be quick than accumulate but not, should try parallel stl using tbb later
     Timer t4;
     std::reduce(dataset.begin(), dataset.end(), 0);
-    t4.ShowResult("Acuumulate time in milliseconds");
+    t4.ShowResult("parallel reduce time in milliseconds");
     return 0;
 }
