@@ -17,4 +17,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(poolSTL)
 
 target_link_libraries(STL17Components poolSTL::poolSTL)
-#cmake --build .  -v
+
+# alternative 1
+# https://github.com/alugowski/poolSTL
+# mkdir build && cd build && cmake ..
+# cmake --build .  -v
+
+# alternative 2
+# git clone onetbb, make and install tbb
+# cmake -DCMAKE_INSTALL_PREFIX=/tmp/my_installed_onetbb -DTBB_TEST=OFF ..
+# clang++ main.cpp -std=c++20 -o myprogram -I/opt/intel/tbb/include -L/opt/intel/tbb/lib -ltbb
+# export LD_LIBRARY_PATH=/opt/intel/tbb/lib:$LD_LIBRARY_PATH

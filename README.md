@@ -114,5 +114,5 @@ chapter 233. filesystem - path -- commit 6be83be471aa367684cffad859dcefcace56eef
 chapter 234. filesystem - directory_entry -- commit 6d3d1427ed44a30aa00b75a732ca44453cd313c7
 chapter 235. filesystem - Directory Functions -- commit b9716d2979f100f6482584a6b42b09bbaa9fce54
 chapter 236. filesystem - Permissions -- commit 9f9f5dbf91b850e77a9350d8810e4a4ed50bddc5
-chapter 237. Parallel Algorithms https://github.com/alugowski/poolSTL
+chapter 237. Parallel Algorithms -- commit 4c940a730fb3f259fc83d07f687f4a01c62c7214
 ```

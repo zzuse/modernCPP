@@ -1,23 +1,24 @@
-// sudo port install gcc13
-// /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp
-// there are three alternatives for parallel stls:
-// first is using poolstl/poolstl.hpp, std::sort(poolstl::par, dataset.begin(), dataset.end());
-// second is using tbb::parallel_sort(dataset.begin(), dataset.end());
-// third is std::sort(std::execution::par, dataset.begin(), dataset.end()); but need gcc-13 support
-// other method not working: try clang17, not support execution policy.
-// using tbb as stl backend, not easy to work. I think gcc is best support parallel stl.
+// INSTALL: sudo port install gcc13
+// COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp
+// There are three alternatives for parallel stls execution policy:
+// 1. Using poolstl/poolstl.hpp, std::sort(poolstl::par, dataset.begin(), dataset.end());
+// 2. Using tbb::parallel_sort(dataset.begin(), dataset.end());
+// 3. Using std::sort(std::execution::par, dataset.begin(), dataset.end()); but need gcc-13 support
+// Other method not working: tried clang++-mp-17, not support execution policy.
+// Another method not working: used tbb as stl backend, compile error, not easy to work with c++20. I don't have
+// ablility to dig any more.
+//
 // #include <poolstl/poolstl.hpp>
 // #include "tbb/parallel_sort.h"
 // #include "tbb/tbb.h"
+#include <algorithm>
 #include <any>
 #include <chrono>
 #include <cstring>
+#include <execution>
 #include <filesystem>
 #include <iostream>
 #include <optional>
-
-#include <algorithm>
-#include <execution>
 #include <random>
 #include <string_view>
 #include <variant>
@@ -503,8 +504,7 @@ int main()
     Timer t1;
     std::sort(dataset.begin(), dataset.end());
     t1.ShowResult("Sequence Sorting time in milliseconds ");
-    // should be quick but not, should try parallel stl using tbb later
-    dataset = CreateVector();
+    // parallel stl
     Timer t2;
     // std::sort(poolstl::par, dataset.begin(), dataset.end()); // alternative 1
     // tbb::parallel_sort(dataset.begin(), dataset.end()); // alternative 2
@@ -514,7 +514,7 @@ int main()
     Timer t3;
     std::accumulate(dataset.begin(), dataset.end(), 0);
     t3.ShowResult("sequence Acuumulate time in milliseconds");
-    // reduce should be quick than accumulate but not, should try parallel stl using tbb later
+    // reduce is parallel stl
     Timer t4;
     std::reduce(dataset.begin(), dataset.end(), 0);
     t4.ShowResult("parallel reduce time in milliseconds");
