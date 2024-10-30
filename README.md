@@ -59,11 +59,13 @@ chapter 157. Lambda Expressions - Capture List II -- commit d0cafa91887b68bf5d72
 chapter 158. Lambda Expressions - Capture List III -- commit 8ba2721a49b57f956a9694f6af2bfef8d1c4b9f2
 chapter 159. Generalized Lambda Capture (C++ 14) -- 604d74d3178b2400c17698a6dd5aae54064f5449
 chapter 160. Assignment(lambda and function object) -- commit f9eee34da20420a74123e35a7fd9fbecd323592b
+FunctionWraper/
 chapter 161. std::function I -- commit 9d6966936217b4e62d6e30c9ffd3ee72377b1682
 chapter 162. std::function II -- commit 95edbb87ae4d7f578d53c70ba83e4cdd6ba6c358
 chapter 163. std::bind I -- commit f2166cf33de6fb4ef9a5260af5fd7eadb7279ba5
 chapter 164. std::bind II -- commit f42a2e413ce4ec1bf8c053fb2b54d25a7c00a8d4
 chapter 165. std::bind III -- commit 5dc010f3b6398c86dce5d9c86d7b23c81a5f4473
+STL/
 chapter 167. std::array -- commit 1058ac0b90f469d13a56fe4661a47018dff36605
 chapter 168. std::vector -- commit 03e27cf17b75de834cbf69405448cc84eaa52868
 chapter 169. std::deque -- commit ad7b78952b782f7f6960cc03295aca110fe11638
@@ -76,6 +78,7 @@ chapter 177. std::hash(c++11) -- commit 3ae1cd85d59f269bfe86195e2e91d71c6cb8b614
 chapter 180. Algorithm - Part I -- commit 3b9594cc401e3cb87ed7aa175723706e94694f50
 chapter 181. Algorithm - Part II -- commit a92cf90afebce25e4f9f9994158bcbfa4535e117
 chapter 186. Container Changes in C++11 -- commit 8970d0278dc2631c6f6ac984a66aaf430cb06c04
+Concurrency/
 chapter 189. Concurrency Basics -- commit 675e89dfcd2e6311db9afe796746478f28711d62
 chapter 190. Thread Creation -- commit 5b85f68887ac37de4fa2b1dad2a496b46ead47c1
 chapter 191. Passing Arguments To Threads -- commit 74d4d1bc63d336fbfa1908cdbfc38ab64a2cb549
@@ -88,6 +91,7 @@ chapter 198. Launch Policies -- commit baae32a463f4dff1008fd5b1e8388d48e116cb8a
 chapter 199. std::future Wait Functions -- commit 7757092659cd7343063c997ede14e5dcaf959e73
 chapter 200. Using std::promise -- commit d4bdcea65bfae1043bd5862ce0e8c45b12a2f098
 chapter 201. Propagating Exceptions Across Threads -- commit 9d43758c613b31d40feb632a0b3398669e746507
+Core17Features/
 chapter 205. Attributes -- commit 03a6fb34abea6e7940c81ed9d68dd264d2767400
 chapter 206. Feature Test Macros -- commit d7102ffece4b215ab03d266375fc7f7258c67e85
 chapter 207. If and Switch with Initialization -- commit 389fc27de3301faf7e115f6433cf2896b00cf197
@@ -98,6 +102,7 @@ chapter 211. constexpr Lambda -- commit 9e969dc8b3f9450bf7798f80209f4615c6623163
 chapter 212. Structured Bindings -- commit 973a168f7ebd09b93954e7eb05f90578c8c87904
 chapter 213. Expression Evaluation Order -- commit 3b1762d95f7c748c28290a59a7edd50d9d8ab770
 chapter 215. Mandatory copy elision -- commit d62eca34dd275556947dfabb5caceb6384bcd279
+Template17Features/
 chapter 216. Class Template Argument Deduction(CTAD) -- commit 39f8317ec82492a3739d53039c281e08a7b85d09
 chapter 217. Folding Basics -- commit e93c7dac106007858fea44ee0c9404b11aff309d
 chapter 218. Fold Expressions Unary Folds -- commit ed17a3aa4bf82306b6bb3d9f47ab395a701f3c95
@@ -105,6 +110,7 @@ chapter 219. Fold Expressions Binary Folds -- commit bae9b8f488f1a8db9715bc4779a
 chapter 221. Type Traits Suffixes -- commit 74170f76b2a5c00329f3456793a128f1eb0b9561
 chapter 222. if constexpr - I -- commit 4ba6b809630675dae137fff9a2ed020772a30735
 chapter 223. if constexpr - II -- commit 90717d6403a27333cf6a0d9c46f43f8d61343e8d
+STL17Components/
 chapter 224. std::optional -- commit 740c4b470c39b3b936028cdd10270a8024af1d81
 chapter 227. std::variant I -- commit 4feb6d18749086913a2fb66eff5c33c6feb1a12a
 chapter 229. std::variant III -- commit c73c88e2c5d2886ceeb82d7e50dae961c1d24736

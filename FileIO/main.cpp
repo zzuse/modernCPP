@@ -74,72 +74,78 @@ void usingFstream()
 int main()
 {
     // Example 1, text file IO and seek
-    // Write();
-    // Read();
-    // usingFstream();
+    Write();
+    Read();
+    usingFstream();
 
     // Example 2, binary file IO and structure RW
-    // Record r;
-    // r.id = 1024;
-    // strncpy(r.name, "Zhen", 10);
-    // WriteRecord(&r);
+    Record r;
+    r.id = 1024;
+    strncpy(r.name, "Zhen", 10);
+    WriteRecord(&r);
 
-    // Record r2 = GetRecord();
-    // std::cout << r2.id << ": " << r2.name << std::endl;
-    // return 0;
+    Record r2 = GetRecord();
+    std::cout << r2.id << ": " << r2.name << std::endl;
 
     // Example 3 Text File Copy Utility
-    // using namespace std::filesystem;
-    // path source(current_path());
-    // source /= "Source.cpp";
+    fs::path source(fs::current_path());
+    source /= "../main.cpp";
 
-    // path dest(current_path());
-    // dest /= "Copy.cpp";
+    fs::path dest(fs::current_path());
+    dest /= "Copy.cpp";
 
-    // std::ifstream input{source};
-    // if (!input) {
-    //     std::cout << "Source file not found " << std::endl;
-    //     return -1;
-    // }
-    // std::ofstream output{dest};
-    // std::string line;
-    // while (!std::getline(input, line).eof()) {
-    //     output << line << std::endl;
-    // }
-    // input.close();
-    // output.close();
-    // return 0;
+    std::ifstream input{source};
+    if (!input) {
+        std::cout << "Source file not found " << std::endl;
+        return -1;
+    }
+    std::ofstream output{dest};
+    std::string line;
+    while (!std::getline(input, line).eof()) {
+        output << line << std::endl;
+    }
+    input.close();
+    output.close();
 
     // Exmpale 4 Binary File Copy Utility
-    // fs::path source(fs::current_path());
-    // source /= "Source.bin";
+    fs::path src_binary(fs::current_path());
+    src_binary /= "records";
 
-    // fs::path dest(fs::current_path());
-    // dest /= "Copy.bin";
+    fs::path dest_binary(fs::current_path());
+    dest_binary /= "Copy.bin";
 
-    // std::ifstream input{source, std::ios::binary | std::ios::in};
-    // if (!input) {
-    //     std::cout << "Source file not found " << std::endl;
-    //     return -1;
-    // }
-    // std::ofstream output{dest, std::ios::binary | std::ios::out};
+    std::ifstream input_b{src_binary, std::ios::binary | std::ios::in};
+    if (!input_b) {
+        std::cout << "Source file not found " << std::endl;
+        return -1;
+    }
+    std::ofstream output_b{dest_binary, std::ios::binary | std::ios::out};
 
-    // auto fileSize = file_size(source);
-    // const unsigned int BUFFER_SIZE = 512;
-    // char buffer[BUFFER_SIZE]{};
-    // if (!input.read(buffer, fileSize)) {
-    //     throw std::runtime_error("Error occurred during read operation");
-    // }
-    // if (!output.write(buffer, fileSize)) {
-    //     throw std::runtime_error("Error occurred during write operation");
-    // }
+    auto fileSize = file_size(src_binary);
+    const unsigned int BUFFER_SIZE = 512;
+    char buffer[BUFFER_SIZE]{};
+    if (!input_b.read(buffer, fileSize)) {
+        throw std::runtime_error("Error occurred during read operation");
+    }
+    if (!output_b.write(buffer, fileSize)) {
+        throw std::runtime_error("Error occurred during write operation");
+    }
 
     // Example 5
     fs::current_path(fs::temp_directory_path());
+    if (!fs::create_directories("sandbox/a/b")) {
+        std::cout << "Could not create sub directory in: " << fs::current_path() << std::endl;
+        if (!fs::remove("sandbox/a/b")) {
+            std::cout << "Could not delete the directory\n";
+        } else {
+            std::cout << "Directory removed successfully\n";
+        }
+    }
     fs::create_directories("sandbox/a/b");
+    std::cout << "Directoddry created successfully\n";
     std::ofstream("sandbox/file1.txt");
+    fs::remove("sandbox/syma");
     fs::create_symlink("a", "sandbox/syma");
-
     for (const fs::directory_entry &dir_entry : fs::recursive_directory_iterator("sandbox")) {
         std::cout << dir_entry.path().string() << '\n';
     }
