@@ -61,13 +61,14 @@ Integer& Integer::operator=(Integer&& obj) noexcept
     return *this;
 }
 
+// pre increment
 Integer& Integer::operator++()
 {
     ++(*m_pInt);
     return *this;
-    // TODO: insert return statement here
 }
 
+// post increment
 Integer Integer::operator++(int)
 {
     Integer temp(*this);
@@ -105,6 +106,8 @@ std::istream& operator>>(std::istream& input, Integer& a)
 {
     int x;
     input >> x;
+    // We need access private member in the class, if declare 'friend' we don't need SetValue()
+    // Alternative way, declare inside class: friend std::istream& operator >> (std::istream &input, Integer&a);
     a.SetValue(x);
     return input;
 }

@@ -2,13 +2,6 @@
 // Created by 张臻 on 2024-06-24.
 // Revised by 张臻 on 2024-10-06.
 //
-/* Rule of 5
-Destructor
-Copy Constructor
-Copy assignment operator
-Move Constructor
-Move assignment operator
-*/
 
 #ifndef COPYCTOR_INTEGER_H
 #define COPYCTOR_INTEGER_H
@@ -45,7 +38,9 @@ public:
     explicit operator int();
 };
 
+// if the overload is a primitive value, it should overload globally eg: 5+a
 Integer operator+(int x, const Integer &y);
+// << operator already overload in the ostream class, we can't change stream class to add our type, so using global func
 std::ostream &operator<<(std::ostream &out, const Integer &a);
 std::istream &operator>>(std::istream &input, Integer &a);
 
