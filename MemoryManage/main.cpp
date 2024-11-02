@@ -19,6 +19,22 @@ public:
     const Project *GetProject() const { return m_Project; }
 };
 
+class Project_share {
+    std::string m_Name;
+
+public:
+    void SetName(const std::string &name) { m_Name = name; }
+    void ShowProjectDetails() const { std::cout << "Project: " << m_Name << std::endl; }
+};
+
+class Employee_share {
+    std::shared_ptr<Project_share> m_Project{};
+
+public:
+    void SetProject(const std::shared_ptr<Project_share> &project) { m_Project = project; }
+    const std::shared_ptr<Project_share> &GetProject() const { return m_Project; }
+};
+
 void ShowInfo(const Employee *e)
 {
     std::cout << "Employee is working in ";
@@ -83,4 +99,16 @@ int main()
     delete e1;
     delete e2;
     delete e3;
+    // std::shared_ptr
+    std::shared_ptr<Project_share> prj_share{new Project_share{}};
+    prj_share->SetName("Video Decoder");
+    std::shared_ptr<Employee_share> e1_share{new Employee_share{}};
+    e1_share->SetProject(prj_share);
+    std::shared_ptr<Employee_share> e2_share{new Employee_share{}};
+    e2_share->SetProject(prj_share);
+    std::shared_ptr<Employee_share> e3_share{new Employee_share{}};
+    e3_share->SetProject(prj_share);
+    e3_share.reset();
+    std::cout << "Project shared count: " << prj_share.use_count() << std::endl;
+    prj_share->ShowProjectDetails();
 }
