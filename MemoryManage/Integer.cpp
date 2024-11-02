@@ -51,7 +51,9 @@ Integer& Integer::operator=(Integer&& obj)
     return *this;
 }
 
-bool Integer::operator==(const Integer& a) const { return *m_pInt == *a.m_pInt; }
+bool Integer::operator==(const Integer &a) const {
+    return *m_pInt == *a.m_pInt;
+}
 
 int Integer::GetValue() const { return *m_pInt; }
 

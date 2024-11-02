@@ -18,10 +18,11 @@ chapter 56. Rule of 5 & 0 -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
 chapter 64. Operator Overloading - Part V (Smart Pointer Basics) -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
 chapter 67. Type Conversions - Part I (Basics) -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
 chapter 70. Type Conversions - Part IV (User Defined to User Defined) -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
-# Memory Management
+MemoryManage/
 chapter 72. Raw Pointers -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
 chapter 73. std::unique_ptr -- commit fcb983c5e6c4001baf00b7caa8acae81fc95508c
-# missing 74 - 82
+chapter 74. Sharing Pointers
+# missingd - 82
 # C++ Goodies
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e
 chapter 88. String Streams -- commit b35d8b09c409d736965bca808c53df70082566d6

@@ -130,42 +130,6 @@ public:
 
 Distance operator"" _mi(long double val) { return Distance{val * 1.6}; }
 
-void Display(Integer *p)
-{
-    if (!p) {
-        return;
-    }
-    std::cout << p->GetValue() << std::endl;
-}
-
-Integer *GetPointer(int value)
-{
-    Integer *p = new Integer{value};
-    return p;
-}
-
-void Store(std::unique_ptr<Integer> &p) { std::cout << "Storing data into a file:" << p->GetValue() << std::endl; }
-
-void Operate(int value)
-{
-    // factory create
-    std::unique_ptr<Integer> p{GetPointer(value)};
-    // in case it is null
-    if (p == nullptr) {
-        // delete hold memory, replace with new memory
-        p.reset(new Integer{value});
-    }
-    p->SetValue(100);
-    // return underling pointer
-    Display(p.get());
-    p.reset(new Integer{});
-    *p = __LINE__;
-    Display(p.get());
-    // if you don't want using std::move, you can passing by reference
-    Store(p);
-    *p = 200;
-}
-
 void usingStdString();
 size_t Find(const std::string &source, const std::string &search_string, Case searchCase, size_t offset = 0);
 
@@ -216,8 +180,6 @@ int main()
         std::cout << "Id matches with Product: " << id.GetValue() << std::endl;
     }
 
-    // std::unique_ptr
-    Operate(5);
     //    // Example 8
     //    usingStdString();
 
