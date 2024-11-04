@@ -77,6 +77,23 @@ void Operate(int value)
     *p = 200;
 }
 
+class Printer {
+    std::weak_ptr<int> m_pValue{};
+
+public:
+    void SetValue(std::shared_ptr<int> p) { m_pValue = p; }
+    void Print() const
+    {
+        if (m_pValue.expired()) {
+            std::cout << "No value" << std::endl;
+            return;
+        }
+        auto sp = m_pValue.lock();
+        std::cout << "Value: " << *sp << std::endl;
+        std::cout << sp.use_count() << std::endl;
+    }
+};
+
 int main()
 {
 
@@ -111,4 +128,16 @@ int main()
     e3_share.reset();
     std::cout << "Project shared count: " << prj_share.use_count() << std::endl;
     prj_share->ShowProjectDetails();
+
+    // std::weak_ptr
+    int num{};
+    std::cin >> num;
+    std::shared_ptr<int> sp{new int{num}};
+    Printer p;
+    p.SetValue(sp);
+    p.Print();
+    if (*sp > 19) {
+        sp.reset(new int{200});
+    }
+    p.Print();
 }
