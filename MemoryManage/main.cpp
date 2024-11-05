@@ -94,6 +94,22 @@ public:
     }
 };
 
+class Employee_circle;
+class Project_circle {
+public:
+    std::shared_ptr<Employee_circle> m_Employee;
+    Project_circle() { std::cout << "Project Constructor" << std::endl; }
+    ~Project_circle() { std::cout << "~Project Destructor" << std::endl; }
+};
+class Employee_circle {
+public:
+    // to remove circular reference need change to weak_ptr
+    // std::shared_ptr<Project_circle> m_Project;
+    std::weak_ptr<Project_circle> m_Project;
+    Employee_circle() { std::cout << "Employee Constructor" << std::endl; }
+    ~Employee_circle() { std::cout << "~Employee Destructor" << std::endl; }
+};
+
 int main()
 {
 
@@ -130,8 +146,7 @@ int main()
     prj_share->ShowProjectDetails();
 
     // std::weak_ptr
-    int num{};
-    std::cin >> num;
+    int num{200};
     std::shared_ptr<int> sp{new int{num}};
     Printer p;
     p.SetValue(sp);
@@ -140,4 +155,10 @@ int main()
         sp.reset(new int{200});
     }
     p.Print();
+
+    // circular reference
+    std::shared_ptr<Employee_circle> emp_c{new Employee_circle{}};
+    std::shared_ptr<Project_circle> prj_c{new Project_circle{}};
+    emp_c->m_Project = prj_c;
+    prj_c->m_Employee = emp_c;
 }
