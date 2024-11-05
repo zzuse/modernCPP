@@ -110,6 +110,20 @@ public:
     ~Employee_circle() { std::cout << "~Employee Destructor" << std::endl; }
 };
 
+struct Free {
+    void operator()(int *p)
+    {
+        std::cout << *p << " ~Freeing object memory" << std::endl;
+        free(p);
+    }
+};
+
+void FreeCallback(int *p)
+{
+    std::cout << *p << " ~Freeing callback memory" << std::endl;
+    free(p);
+}
+
 int main()
 {
 
@@ -161,4 +175,22 @@ int main()
     std::shared_ptr<Project_circle> prj_c{new Project_circle{}};
     emp_c->m_Project = prj_c;
     prj_c->m_Employee = emp_c;
+
+    // unique_ptr custom deleter function object
+    std::unique_ptr<int, Free> p_mal1{(int *)malloc(sizeof(int)), Free{}};
+    *p_mal1 = 100;
+    std::cout << *p_mal1 << std::endl;
+    // unique_ptr custom deleter function callback
+    std::unique_ptr<int, void (*)(int *)> p_mal2{(int *)malloc(sizeof(int)), FreeCallback};
+    *p_mal2 = 200;
+    std::cout << *p_mal2 << std::endl;
+
+    // shared_ptr custom deleter function object
+    std::shared_ptr<int> p_mal3{(int *)malloc(sizeof(int)), Free{}};
+    *p_mal3 = 300;
+    std::cout << *p_mal3 << std::endl;
+    // shared_ptr custom deleter function callback
+    std::shared_ptr<int> p_mal4{(int *)malloc(sizeof(int)), FreeCallback};
+    *p_mal4 = 400;
+    std::cout << *p_mal4 << std::endl;
 }
