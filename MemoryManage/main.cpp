@@ -124,6 +124,18 @@ void FreeCallback(int *p)
     free(p);
 }
 
+class Point {
+    int m_X{};
+    int m_Y{};
+
+public:
+    Point(int x, int y)
+        : m_X{x}
+        , m_Y{y}
+    {
+    }
+};
+
 int main()
 {
 
@@ -205,4 +217,19 @@ int main()
         std::cout << p_arr[i] << ",";
     }
     std::cout << std::endl;
+    {
+        // make_shared
+        std::shared_ptr<int> p_make{new int{100}};
+        std::shared_ptr<int> p_make2 = std::make_shared<int>(100);
+        // std::shared_ptr<int[]> p_make3 = std::make_shared<int[]>(5);
+        // p_make3[0] = 100;
+        std::shared_ptr<Point> p_make4 = std::make_shared<Point>(1, 2);
+    }
+    {
+        // make_unique
+        // std::unique_ptr<int> p{new int{5}}; // not recommended
+        std::unique_ptr<int> p_unique = std::make_unique<int>(5);
+        std::unique_ptr<int[]> p_unique2 = std::make_unique<int[]>(5);
+        std::unique_ptr<Point> p_unique3 = std::make_unique<Point>(1, 2);
+    }
 }
