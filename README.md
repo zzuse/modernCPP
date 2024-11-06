@@ -25,7 +25,7 @@ chapter 74. Sharing Pointers -- commit d0918c38e18b42235723c06ad0c8ba9f66377c4a
 chapter 76. std::shared_ptr -- commit 97b68c394aff49962d79c2c50241634f66eb10de
 chapter 78. std::weak_ptr internals -- commit 95295575864b876e8ad1b1edcf200524548a0946
 chapter 79. Circular Reference -- commit 6579cfdab599f873b6ee3c04bbd5fd103a621d90
-chapter 80. Deleter
+chapter 80. Deleter -- commit 53cd72d605f8b1ba1938ac2e1d10c65396d0d454
 # missingd - 82
 # C++ Goodies
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e

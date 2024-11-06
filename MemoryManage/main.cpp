@@ -193,4 +193,16 @@ int main()
     std::shared_ptr<int> p_mal4{(int *)malloc(sizeof(int)), FreeCallback};
     *p_mal4 = 400;
     std::cout << *p_mal4 << std::endl;
+
+    // Dynamic arrays
+    std::shared_ptr<int[]> p_arr{new int[5]{1, 2, 3, 4, 5}};
+    for (size_t i = 0; i < 5; i++) {
+        std::cout << p_arr[i] << ",";
+    }
+    std::cout << std::endl;
+    p_arr[0] = 100;
+    for (size_t i = 0; i < 5; i++) {
+        std::cout << p_arr[i] << ",";
+    }
+    std::cout << std::endl;
 }
