@@ -221,8 +221,8 @@ int main()
         // make_shared
         std::shared_ptr<int> p_make{new int{100}};
         std::shared_ptr<int> p_make2 = std::make_shared<int>(100);
-        // std::shared_ptr<int[]> p_make3 = std::make_shared<int[]>(5);
-        // p_make3[0] = 100;
+        std::shared_ptr<int[]> p_make3 = std::make_shared<int[]>(5);
+        p_make3[0] = 100;
         std::shared_ptr<Point> p_make4 = std::make_shared<Point>(1, 2);
     }
     {
