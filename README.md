@@ -29,7 +29,7 @@ chapter 80. Deleter -- commit 53cd72d605f8b1ba1938ac2e1d10c65396d0d454
 chapter 81. Dynamic Arrarys -- commit a271f46a2afa230fdad7f4b9dc25616908f9d586
 chapter 82. Make Functions -- commit ffc984fbececf7c53beea3db678bf02fa689a6a0
 Goodies/
-chapter 84. Enums -- commit
+chapter 84. Enums -- commit 2cbe039d7269a89208351190d777468dfc0ed831
 chapter 86. String: literals -- commit 4eeccf99b4c04ab975742d0e1f11ccaf36d4dd7e
 chapter 88. String Streams -- commit b35d8b09c409d736965bca808c53df70082566d6
 chapter 89. Assignment II tolower -- commit e83611777e00d20bd0eeb541e3e6b10e53ab0b75

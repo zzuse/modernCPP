@@ -1,12 +1,8 @@
 #include "Integer.h"
-#include <cassert>
-#include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
-
-enum class Case { SENSITIVE, INSENSITIVE };
 
 class IntPtr {
     Integer *m_p;
@@ -53,30 +49,6 @@ public:
     Number &operator=(const Number &) = default;
 };
 
-class Bag {
-    int arr[10];
-    int m_Size{};
-
-public:
-    Bag(std::initializer_list<int> values)
-    {
-        assert(values.size() < 10);
-        auto it = values.begin();
-        while (it != values.end()) {
-            Add(*it);
-            ++it;
-        }
-    }
-    void Add(int value)
-    {
-        assert(m_Size < 10);
-        arr[m_Size++] = value;
-    }
-    void Remove() { --m_Size; }
-    int operator[](int index) { return arr[index]; }
-    int GetSize() const { return m_Size; }
-};
-
 Number CreateNumber(int num)
 {
     Number n{num};
@@ -115,30 +87,6 @@ public:
     const Integer &GetInteger() const { return m_Id; }
     operator Integer() { return m_Id; }
 };
-
-class Distance {
-    long double m_Kilometers;
-
-public:
-    Distance(long double km)
-        : m_Kilometers{km}
-    {
-    }
-    long double GetKm() const { return m_Kilometers; }
-    void SetKm(long double val) { m_Kilometers = val; }
-};
-
-Distance operator"" _mi(long double val) { return Distance{val * 1.6}; }
-
-void usingStdString();
-size_t Find(const std::string &source, const std::string &search_string, Case searchCase, size_t offset = 0);
-
-void Print(std::initializer_list<int> values)
-{
-    for (auto x : values) {
-        std::cout << x << " ";
-    }
-}
 
 int main()
 {
@@ -180,70 +128,5 @@ int main()
         std::cout << "Id matches with Product: " << id.GetValue() << std::endl;
     }
 
-    //    // Example 8
-    //    usingStdString();
-
-    //    // Example 9
-    //    std::stringstream ss;
-    //    std::string data= "12 89 21";
-    //    ss.str(data);
-    //    int a;
-    //    while(ss >> a) {
-    //        std::cout << a << std::endl;
-    //    }
-    //    std::cout << Find("abcd", "CD",  Case::INSENSITIVE) << std::endl;
-
-    //    // Example 10
-    //    Distance dist{32.0_mi};
-    //    std::cout << dist.GetKm() << std::endl;
-
-    //    // Example 11
-    Bag bag{3, 1, 8};
-    for (int i = 0; i < bag.GetSize(); ++i) {
-        std::cout << bag[i] << " ";
-    }
-    Print({8, 2, 6, 7});
     return 0;
-}
-
-void usingStdString()
-{
-    std::string s = "Hello ";
-    //    std::getline(std::cin, s);
-    s.length();
-    std::cout << s.length() << std::endl;
-
-    s.insert(6, "World");
-    std::cout << s << std::endl;
-
-    if (s == "Hello World") {
-        std::cout << s << std::endl;
-    }
-
-    s.erase(0, 6);
-    std::cout << s << std::endl;
-
-    using namespace std::string_literals;
-    auto n2 = "Zen"s;
-}
-
-std::string ToLower(const std::string &str)
-{
-    std::string returnValue;
-    for (const auto &c : str) {
-        returnValue += std::tolower(c);
-    }
-    return returnValue;
-}
-
-size_t Find(const std::string &source, const std::string &search_string, Case searchCase = Case::INSENSITIVE,
-            size_t offset)
-{
-    if (searchCase == Case::SENSITIVE) {
-        return source.find(search_string, offset);
-    } else {
-        std::string source_lower = ToLower(source);
-        std::string search_string_upper = ToLower(search_string);
-        return source_lower.find(search_string_upper, offset);
-    }
 }
