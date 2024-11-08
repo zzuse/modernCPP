@@ -125,6 +125,61 @@ void Print(std::initializer_list<int> values)
     }
 }
 
+struct A {
+    A() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    ~A() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    A(const A &) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    A(A &&) noexcept { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    A &operator=(const A &other)
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) {
+            return *this;
+        }
+        return *this;
+    }
+    A &operator=(A &&other) noexcept
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) {
+            return *this;
+        }
+        return *this;
+    }
+};
+
+struct B {
+    B() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    ~B() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    B(const B &) { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    B(B &&) noexcept { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    B &operator=(const B &other)
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) {
+            return *this;
+        }
+        return *this;
+    }
+    B &operator=(B &&other) noexcept
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        if (this == &other) {
+            return *this;
+        }
+        return *this;
+    }
+    virtual void Foo() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+};
+
+union UDT {
+    A a;
+    B b;
+    std::string s;
+    UDT() {}
+    ~UDT() {}
+};
+
 int main()
 {
     Color c = RED;
@@ -162,5 +217,13 @@ int main()
     std::cout << std::endl;
     Print({8, 2, 6, 7});
     std::cout << std::endl;
+
+    // union
+    using namespace std::string_literals;
+    UDT udt;
+    new (&udt.s) std::string("World"s);
+    std::cout << udt.s << std::endl;
+    new (&udt.a) A();
+    udt.a.~A();
     return 0;
 }
