@@ -37,6 +37,7 @@ chapter 90. User-Defined Literals -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8
 chapter 92. std::initializer_list (C++11) -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8e2ac
 chapter 96. Union -- commit 78106abc1d2f4e9604b31ddad2891258ca9c91d8
 OOP/
+chapter 98. Inheritance basic -- commit
 # missing 97 - 113
 Exception/
 # missing 114-119
