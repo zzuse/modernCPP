@@ -35,7 +35,7 @@ chapter 88. String Streams -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8e2ac
 chapter 89. Assignment II tolower -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8e2ac
 chapter 90. User-Defined Literals -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8e2ac
 chapter 92. std::initializer_list (C++11) -- commit 75f35ffa8672eb75ffc20a45738d9e2225c8e2ac
-chapter 96. Union
+chapter 96. Union -- commit 78106abc1d2f4e9604b31ddad2891258ca9c91d8
 OOP/
 # missing 97 - 113
 Exception/
