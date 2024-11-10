@@ -1,4 +1,5 @@
 #include "Account.h"
+#include "Checking.h"
 #include "Savings.h"
 #include <iostream>
 #include <string>
@@ -37,5 +38,10 @@ int main()
     std::cout << "Balance after interest: " << sav.GetBalance() << std::endl;
     sav.Withdraw(380);
     std::cout << "Balance after withdraw: " << sav.GetBalance() << std::endl;
+
+    Checking ch("Bob", 1000);
+    std::cout << "Balance beforewithdraw: " << ch.GetBalance() << std::endl;
+    ch.Withdraw(980);
+    std::cout << "Balance after withdraw: " << ch.GetBalance() << std::endl;
     return 0;
 }
