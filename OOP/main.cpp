@@ -1,6 +1,7 @@
 #include "Account.h"
 #include "Checking.h"
 #include "Savings.h"
+#include "Transaction.h"
 #include <iostream>
 #include <string>
 class Animal {
@@ -43,5 +44,8 @@ int main()
     std::cout << "Balance beforewithdraw: " << ch.GetBalance() << std::endl;
     ch.Withdraw(980);
     std::cout << "Balance after withdraw: " << ch.GetBalance() << std::endl;
+
+    Transaction(&ch);
+    Transaction(&sav);
     return 0;
 }

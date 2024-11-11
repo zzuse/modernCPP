@@ -3,4 +3,4 @@ project(OOP)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(OOP main.cpp Account.cpp Savings.cpp Checking.cpp)
+add_executable(OOP main.cpp Account.cpp Savings.cpp Checking.cpp Transaction.cpp)

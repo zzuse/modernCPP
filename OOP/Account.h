@@ -17,7 +17,7 @@ public:
     float GetBalance() const;
     int GetAccountNumber() const;
 
-    void AccumulateInterest();
+    virtual void AccumulateInterest();
     void Withdraw(float amount);
     void Deposit(float amount);
     float GetInterestRate() const;
