@@ -43,7 +43,8 @@ chapter 104. Inheriting Constructors -- commit 5c342dff6b70fad57b9c3513b6e119c65
 chapter 105. Virtual Keyword -- commit 3efeb739ab5fee3559b300e5789141725c07eff1
 chapter 107. Virtual Destructor -- commit 5785e0f7f44874d7e412065566f85eb0b426ec4c
 chapter 108. override and final -- commit 035ee54006555ecf182c717c11fd4c918a57a057
-chapter 109. Object Slicing upcast and downcast
+chapter 109. Object Slicing upcast and downcast -- commit 15e5e9fdfe0e2d032d0f6ed77a87452eec76bcbf
+chapter 111. Dynamic_cast
 # missing 97 - 113
 Exception/
 # missing 114-119

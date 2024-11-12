@@ -41,6 +41,7 @@ int main()
     std::cout << "Balance after withdraw: " << sav.GetBalance() << std::endl;
 
     Checking ch("Bob", 1000);
+    std::cout << "Minimum balance: " << ch.GetMinimumBalance() << std::endl;
     std::cout << "Balance beforewithdraw: " << ch.GetBalance() << std::endl;
     ch.Withdraw(980);
     std::cout << "Balance after withdraw: " << ch.GetBalance() << std::endl;
@@ -52,10 +53,30 @@ int main()
     Account *pAcc = new Savings("Alice", 2000, 0.05);
     delete pAcc;
 
-    Checking ch2("Bob", 1000);
+    Checking ch2("Bob2", 1000, 50);
     // upcast
     Account *pAcc2 = &ch2;
     // downcast
     Checking *pCh = static_cast<Checking *>(pAcc2);
+    std::cout << "Minimum balance: " << pCh->GetMinimumBalance() << std::endl;
+
+    // typeid or dynamic_cast
+    std::cout << "Type of pAcc2: " << typeid(pAcc2).name() << std::endl;
+    std::cout << "Type of pCh: " << typeid(pCh).name() << std::endl;
+    Transaction(pCh);
+    Savings sav2("Alice", 2000, 0.05);
+    pAcc2 = &sav2;
+    const std::type_info &ti = typeid(pAcc2);
+    std::cout << "Type of pAcc2: " << ti.name() << std::endl;
+    const std::type_info &ti2 = typeid(*pAcc2);
+    Transaction(pAcc2);
+    if (ti2 == typeid(Savings)) {
+        std::cout << "Type of *pAcc2: " << ti2.name() << std::endl;
+        std::cout << "pAcc2 points to saving objects" << std::endl;
+    } else {
+        std::cout << "pAcc2 does not points to saving objects" << std::endl;
+    }
+    Transaction(ch2);
+    Transaction(sav2);
     return 0;
 }

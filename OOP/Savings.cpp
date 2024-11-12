@@ -12,7 +12,7 @@ Savings::~Savings() { std::cout << "~Savings()" << GetName() << std::endl; }
 
 float Savings::GetInterestRate() const
 {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::cout << __PRETTY_FUNCTION__ << " " << m_Rate << std::endl;
     return m_Rate;
 }
 
