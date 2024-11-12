@@ -18,7 +18,7 @@ public:
     int GetAccountNumber() const;
 
     virtual void AccumulateInterest();
-    void Withdraw(float amount);
+    virtual void Withdraw(float amount);
     void Deposit(float amount);
-    float GetInterestRate() const;
+    virtual float GetInterestRate() const;
 };

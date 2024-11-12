@@ -41,7 +41,8 @@ chapter 98. Inheritance basic -- commit 875fb778cfdce39bd884bee383d467c8054dbe25
 chapter 101. Account and Savings -- commit 9884d381ec0d3a4893424a0c91f2adbc0332a3be
 chapter 104. Inheriting Constructors -- commit 5c342dff6b70fad57b9c3513b6e119c655fb2782
 chapter 105. Virtual Keyword -- commit 3efeb739ab5fee3559b300e5789141725c07eff1
-chapter 107. Virtual Destructor
+chapter 107. Virtual Destructor -- commit 5785e0f7f44874d7e412065566f85eb0b426ec4c
+chapter 108. override and final
 # missing 97 - 113
 Exception/
 # missing 114-119

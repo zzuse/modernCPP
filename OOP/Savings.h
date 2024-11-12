@@ -9,6 +9,6 @@ public:
     Savings(const std::string &name, float balance, float rate);
     ~Savings();
 
-    float GetInterestRate() const;
-    void AccumulateInterest();
+    float GetInterestRate() const override final;
+    void AccumulateInterest() override final;
 };

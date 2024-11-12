@@ -10,6 +10,14 @@ Savings::Savings(const std::string &name, float balance, float rate)
 
 Savings::~Savings() { std::cout << "~Savings()" << GetName() << std::endl; }
 
-float Savings::GetInterestRate() const { return m_Rate; }
+float Savings::GetInterestRate() const
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    return m_Rate;
+}
 
-void Savings::AccumulateInterest() { m_Balance += m_Balance * m_Rate; }
+void Savings::AccumulateInterest()
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    m_Balance += m_Balance * m_Rate;
+}

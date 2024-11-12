@@ -9,5 +9,5 @@ public:
     using Account::Account;
     ~Checking();
 
-    void Withdraw(float amount);
+    void Withdraw(float amount) override final;
 };

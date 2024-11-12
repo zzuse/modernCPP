@@ -19,6 +19,7 @@ int Account::GetAccountNumber() const { return m_AccountNumber; }
 void Account::AccumulateInterest() {}
 void Account::Withdraw(float amount)
 {
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
     if (amount > 0 && amount <= m_Balance) {
         m_Balance -= amount;
     } else {
@@ -27,8 +28,13 @@ void Account::Withdraw(float amount)
 }
 void Account::Deposit(float amount)
 {
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
     if (amount > 0) {
         m_Balance += amount;
     }
 }
-float Account::GetInterestRate() const { return 0.0f; }
+float Account::GetInterestRate() const
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    return 0.0f;
+}
