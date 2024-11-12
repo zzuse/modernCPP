@@ -7,9 +7,10 @@ Account::Account(const std::string &name, float balance)
     , m_Balance(balance)
     , m_AccountNumber(s_ANGenerator++)
 {
+    std::cout << "Account(const std::string, float)" << GetName() << std::endl;
 }
 
-Account::~Account() {}
+Account::~Account() { std::cout << "~Account()" << GetName() << std::endl; }
 
 const std::string &Account::GetName() const { return m_Name; }
 float Account::GetBalance() const { return m_Balance; }

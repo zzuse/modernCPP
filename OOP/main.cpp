@@ -47,5 +47,8 @@ int main()
 
     Transaction(&ch);
     Transaction(&sav);
+
+    Account *pAcc = new Savings("Alice", 2000, 0.05);
+    delete pAcc;
     return 0;
 }

@@ -1,7 +1,7 @@
 #include "Checking.h"
 #include <iostream>
 
-Checking::~Checking() {}
+Checking::~Checking() { std::cout << "~Checking()" << GetName() << std::endl; }
 
 void Checking::Withdraw(float amount)
 {

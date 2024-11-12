@@ -12,7 +12,7 @@ protected:
 
 public:
     Account(const std::string &name, float balance);
-    ~Account();
+    virtual ~Account();
     const std::string &GetName() const;
     float GetBalance() const;
     int GetAccountNumber() const;
