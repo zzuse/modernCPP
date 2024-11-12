@@ -48,7 +48,14 @@ int main()
     Transaction(&ch);
     Transaction(&sav);
 
+    // virtual destructor
     Account *pAcc = new Savings("Alice", 2000, 0.05);
     delete pAcc;
+
+    Checking ch2("Bob", 1000);
+    // upcast
+    Account *pAcc2 = &ch2;
+    // downcast
+    Checking *pCh = static_cast<Checking *>(pAcc2);
     return 0;
 }
