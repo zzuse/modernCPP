@@ -17,6 +17,28 @@ public:
     void Speak() { std::cout << "Dog barking" << std::endl; }
 };
 
+class Document {
+public:
+    virtual void Serialize(float version) = 0;
+};
+
+class Text : public Document {
+public:
+    void Serialize(float version) override final { std::cout << "Serializing Text" << std::endl; }
+};
+
+class RichText : public Text {
+public:
+    // cannot override because final
+};
+
+class XML : public Document {
+public:
+    void Serialize(float version) override { std::cout << "Serializing XML" << std::endl; }
+};
+
+void Write(Document *p) { p->Serialize(1.0f); }
+
 int main()
 {
     Dog d;
@@ -78,5 +100,8 @@ int main()
     }
     Transaction(ch2);
     Transaction(sav2);
+
+    XML xml;
+    Write(&xml);
     return 0;
 }
