@@ -45,8 +45,8 @@ chapter 107. Virtual Destructor -- commit 5785e0f7f44874d7e412065566f85eb0b426ec
 chapter 108. override and final -- commit 035ee54006555ecf182c717c11fd4c918a57a057
 chapter 109. Object Slicing upcast and downcast -- commit 15e5e9fdfe0e2d032d0f6ed77a87452eec76bcbf
 chapter 111. Dynamic_cast -- commit 1fccc8e7af216528fb5f0e4c154e4542b31c1ffb
-chapter 112. Abstract class -- commit
-# missing 97 - 113
+chapter 112. Abstract class -- commit 6669e5e22ecf9b058ea0ea746ee67a479d4148eb
+chapter 113. Multiple Inheritance -- commmit
 Exception/
 # missing 114-119
 FileIO/
