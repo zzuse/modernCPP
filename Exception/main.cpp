@@ -71,6 +71,45 @@ int ProcessRecords(int count)
     return 0;
 }
 
+class A {
+public:
+    A() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    ~A() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+};
+class B {
+public:
+    B() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+    ~B() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+};
+class Test2 {
+    A *pA{}; // std::unique_ptr<A> pa{}
+    B b{};
+    int *pInt{};  // std::unique_ptr<int> pInt{}
+    char *pStr{}; // std::string
+    int *pArr{};  // std::vector<int> pArr{}
+
+public:
+    Test2()
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        pA = new A;     // memory leak use smart pointer instead
+        pInt = new int; // to fix using smart pointer
+        throw std::runtime_error("Failed to initialize");
+        pStr = new char[1000]; // to fix using string instead
+        pArr = new int[50000]; // to fix using vector instead
+    }
+    ~Test2()
+    {
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        // desctructor is non throwable, avoid it
+        // throw std::runtime_error("Failed to destructor");
+        delete pA;
+        delete pInt;
+        delete[] pStr;
+        delete[] pArr;
+    }
+};
+
 int main()
 {
     try {
@@ -100,6 +139,11 @@ int main()
         std::cout << "What makes you here " << ex.what() << std::endl;
     } catch (...) {
         std::cout << "Exception" << std::endl;
+    }
+    try {
+        Test2 t;
+    } catch (std::runtime_error &ex) {
+        std::cout << ex.what() << std::endl;
     }
     return 0;
 }
