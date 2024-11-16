@@ -110,6 +110,14 @@ public:
     }
 };
 
+void Test3(int x) noexcept(true) { std::cout << __PRETTY_FUNCTION__ << " " << x << std::endl; }
+
+int Sum(int x, int y) noexcept(noexcept(Test3(x)))
+{
+    Test3(x);
+    return x + y;
+}
+
 int main()
 {
     try {
@@ -144,6 +152,15 @@ int main()
         Test2 t;
     } catch (std::runtime_error &ex) {
         std::cout << ex.what() << std::endl;
+    }
+    try {
+        Sum(3, 5);
+        std::cout << std::boolalpha << noexcept(Sum(3, 5)) << std::endl;
+        // destructor and move is noexcept default
+        A a;
+        std::cout << std::boolalpha << noexcept(a.~A()) << std::endl;
+    } catch (int x) {
+        std::cout << x << std::endl;
     }
     return 0;
 }
