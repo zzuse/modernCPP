@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <memory>
+#include <random>
 #include <vector>
 
 class Test {
@@ -20,6 +21,7 @@ int NewProcessRecords(long long count)
     return 0;
 }
 
+// Nested Exception
 int ContainerProcessRecords(long long count)
 {
     std::vector<long long> pArray;
@@ -27,6 +29,27 @@ int ContainerProcessRecords(long long count)
     std::cout << "Success init vector " << count << std::endl;
     for (long long i = 0; i < count; ++i) {
         pArray.push_back(i);
+    }
+    std::default_random_engine eng;
+    std::bernoulli_distribution dist;
+    int errors{};
+    for (long long i = 0; i < count; ++i) {
+        try {
+            std::cout << "Processing record # : " << i << " ";
+            if (!dist(eng)) {
+                ++errors;
+                throw std::runtime_error("Could not process the records");
+            }
+            std::cout << std::endl;
+        } catch (std::runtime_error &ex) {
+            std::cout << "[ERROR ] " << ex.what() << "]" << std::endl;
+            if (errors > 4) {
+                // modify exception
+                std::runtime_error err("Too many errors. Abandoning operation");
+                ex = err;
+                throw;
+            }
+        }
     }
     return 0;
 }
@@ -67,13 +90,14 @@ int main()
             std::cout << ex.what() << std::endl;
         }
         try {
-            ContainerProcessRecords(std::numeric_limits<long long>::max());
+            ContainerProcessRecords(10);
         } catch (std::bad_alloc &ex) {
+            std::cout << ex.what() << std::endl;
+        } catch (std::runtime_error &ex) {
             std::cout << ex.what() << std::endl;
         }
     } catch (std::exception &ex) {
-        std::cout << "What makes you here" << std::endl;
-        std::cout << ex.what() << std::endl;
+        std::cout << "What makes you here " << ex.what() << std::endl;
     } catch (...) {
         std::cout << "Exception" << std::endl;
     }

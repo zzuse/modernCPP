@@ -49,7 +49,8 @@ chapter 112. Abstract class -- commit 6669e5e22ecf9b058ea0ea746ee67a479d4148eb
 chapter 113. Multiple Inheritance -- commit bb635753fab5c304d483434e262598cc6ffa6774
 Exception/
 chapter 114. Exception Handling basic -- commit 6f678eaa1b81617a26c3f9d042607c797b899b8a
-chapter 116. Exception Stack Unwinding
+chapter 116. Exception Stack Unwinding -- commit 103699b54b7f4a885bfc989d1dd8745b94656adb
+chapter 117. Exception Nested
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit b06879645ebaa641ce5c7b501344c20725e12756
 chapter 126. File IO - Part V (Binary IO) -- commit b06879645ebaa641ce5c7b501344c20725e12756
