@@ -46,9 +46,9 @@ chapter 108. override and final -- commit 035ee54006555ecf182c717c11fd4c918a57a0
 chapter 109. Object Slicing upcast and downcast -- commit 15e5e9fdfe0e2d032d0f6ed77a87452eec76bcbf
 chapter 111. Dynamic_cast -- commit 1fccc8e7af216528fb5f0e4c154e4542b31c1ffb
 chapter 112. Abstract class -- commit 6669e5e22ecf9b058ea0ea746ee67a479d4148eb
-chapter 113. Multiple Inheritance -- commmit
+chapter 113. Multiple Inheritance -- commit bb635753fab5c304d483434e262598cc6ffa6774
 Exception/
-# missing 114-119
+chapter 114. Exception Handling basic
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit b06879645ebaa641ce5c7b501344c20725e12756
 chapter 126. File IO - Part V (Binary IO) -- commit b06879645ebaa641ce5c7b501344c20725e12756
