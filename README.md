@@ -47,7 +47,7 @@ chapter 114. Exception Handling basic -- commit 6f678eaa1b81617a26c3f9d042607c79
 chapter 116. Exception Stack Unwinding -- commit 103699b54b7f4a885bfc989d1dd8745b94656adb
 chapter 117. Exception Nested -- commit 859a8c01cfad764dab22a2e647f0249a190bb711
 chapter 118. Exception Constructor and Destructor -- commit c3feaf77197c9336c05912cbb863b71c605d219e
-chapter 119. Exception noexcept
+chapter 119. Exception noexcept -- commit 7903ebc65b9dd574033987cf684a58fee1635dfa
 FileIO/
 chapter 125. File IO - Part IV Character IO -- commit b06879645ebaa641ce5c7b501344c20725e12756
 chapter 126. File IO - Part V (Binary IO) -- commit b06879645ebaa641ce5c7b501344c20725e12756
