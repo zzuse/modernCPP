@@ -1,3 +1,4 @@
+#include "common.h"
 #include <iostream>
 #include <thread>
 
@@ -59,10 +60,53 @@ void run3()
     }
 }
 
+void foo4()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::cout << "Hello from foo4" << std::endl;
+}
+
+void bar4()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::cout << "Hello from bar4" << std::endl;
+}
+
+void other_operations()
+{
+    std::cout << "This is other operation \n";
+    throw std::runtime_error("this is a runtime error");
+}
+
+void run4()
+{
+    std::thread foo_thread(foo4);
+    std::thread bar_thread(bar4);
+
+    std::cout << "before bar detach" << std::endl;
+    bar_thread.detach();
+    std::cout << "after bar detach" << std::endl;
+    std::cout << "before foo join" << std::endl;
+    foo_thread.join();
+    std::cout << "after foo join" << std::endl;
+}
+
+void run5()
+{
+    std::thread foo_thread(foo);
+    thread_guard tg(foo_thread);
+    try {
+        other_operations();
+    } catch (...) {
+    }
+}
+
 int main()
 {
     run1();
     run2();
     // run3(); // std::terminated called
+    run4();
+    run5();
     return 0;
 }
