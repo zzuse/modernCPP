@@ -46,9 +46,23 @@ void run2()
     printf("Hello from main \n");
 }
 
+void run3()
+{
+    std::thread thread1(funcB);
+
+    // non parameter default is not joinable
+    std::thread thread2;
+    if (thread2.joinable()) {
+        std::cout << "joinable" << std::endl;
+    } else {
+        std::cout << "non joinable" << std::endl;
+    }
+}
+
 int main()
 {
     run1();
     run2();
+    // run3(); // std::terminated called
     return 0;
 }

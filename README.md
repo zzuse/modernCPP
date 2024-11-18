@@ -150,7 +150,8 @@ chapter 237. Parallel Algorithms -- commit 4c940a730fb3f259fc83d07f687f4a01c62c7
 
 ```sh
 ThreadManage/
-chapter 4. Launch a thread
+chapter 4. Launch a thread -- commit 665ee40cc19244da26c2670707c87d8e7c8433cb
+chapter 6. Joinability of threads
 ```
 
 # 现代 C++ 编程实战
