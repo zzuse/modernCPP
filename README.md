@@ -153,7 +153,8 @@ ThreadManage/
 chapter 4. Launch a thread -- commit 665ee40cc19244da26c2670707c87d8e7c8433cb
 chapter 6. Joinability of threads -- commit c63a00e2fa4181fa7d191c23885b12bec64e2837
 chapter 8. join in exception -- commit 6ce76ce258bd5654ff43b882337fd50df0c53259
-chapter 9. sail a ship model
+chapter 9. sail a ship model -- commit 6e0843e6a8638ca493ac57b25b1d38f55e424419
+chapter 10. how to pass a parameter between two threads
 ```
 
 # 现代 C++ 编程实战

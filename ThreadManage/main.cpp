@@ -17,6 +17,15 @@ public:
  * [capture-list] {body}
  */
 
+// thread constructor
+/*
+ *   1. default: thread() noexcept
+ *   2. init:  template <class Fn, class...Args>
+ *             explicit thread(Fn&& fn, Args&&... args);
+ *   3. copy[deleted]: thread(const thread&) = delete;
+ *   4. move: thread(thread&& x) noexcept;
+ */
+
 void run1()
 {
     std::thread thread1(foo);
@@ -99,6 +108,27 @@ void run5()
         other_operations();
     } catch (...) {
     }
+}
+
+void func_1(int x, int y) { std::cout << x + y << std::endl; }
+
+void func_2(int& x)
+{
+    while (true) {
+        std::cout << "Thread 1 value of X - " << x << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+}
+
+void run6()
+{
+    int x = 9;
+    std::cout << "Main thread value of x - " << x << std::endl;
+    std::thread thread_1(func_2, std::ref(x));
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    x = 15;
+    std::cout << "Main thread has been change to - " << x << std::endl;
+    thread_1.join();
 }
 
 enum class Command : std::uint16_t { INVALID_COMMAND, CLEAN = 1, FULL_SPEED = 2, STOP_ENGINE = 3, PROGRAM_EXIT = 100 };
@@ -194,5 +224,6 @@ int main()
         const auto& command = InttoCommand(input);
         isSailing = issueCommand(command);
     }
+    run6();
     return 0;
 }
