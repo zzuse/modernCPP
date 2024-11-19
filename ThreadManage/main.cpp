@@ -101,6 +101,83 @@ void run5()
     }
 }
 
+enum class Command : std::uint16_t { INVALID_COMMAND, CLEAN = 1, FULL_SPEED = 2, STOP_ENGINE = 3, PROGRAM_EXIT = 100 };
+
+void provideTheCommandCaptain()
+{
+    std::cout << "Captain please issue the command\n"
+                 "1: Clean the ship\n"
+                 "2: Full speed sailing\n"
+                 "3: Stop the ship\n"
+                 "100: End the program ship\n";
+}
+
+Command InttoCommand(std::uint16_t input)
+{
+    Command retVal = Command::INVALID_COMMAND;
+    switch (static_cast<Command>(input)) {
+        case Command::CLEAN:
+            retVal = Command::CLEAN;
+            break;
+        case Command::FULL_SPEED:
+            retVal = Command::FULL_SPEED;
+            break;
+        case Command::STOP_ENGINE:
+            retVal = Command::STOP_ENGINE;
+            break;
+        case Command::PROGRAM_EXIT:
+            retVal = Command::PROGRAM_EXIT;
+            break;
+        default:
+            retVal = Command::INVALID_COMMAND;
+            break;
+    }
+    return retVal;
+}
+
+bool issueCommand(const Command& command)
+{
+    switch (command) {
+        case Command::CLEAN: {
+            std::thread clean_ship([] {
+                std::cout << "Cleaning the ship id" << std::this_thread::get_id() << "\n";
+                std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+                std::cout << "Cleaning the ship done "
+                          << "\n";
+            });
+            clean_ship.detach();
+        }
+            return true;
+        case Command::FULL_SPEED: {
+            std::thread full_speed([] {
+                std::cout << "Ship on Full speed - id " << std::this_thread::get_id() << "\n";
+                std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+                std::cout << " Ship changed the speed done "
+                          << "\n";
+            });
+            full_speed.join();
+        }
+            return true;
+        case Command::STOP_ENGINE: {
+            std::thread stop_engine([] {
+                std::cout << "Stop the Engine - id " << std::this_thread::get_id() << "\n";
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                std::cout << " Stop the Engine done "
+                          << "\n";
+            });
+            stop_engine.join();
+        }
+            return true;
+        case Command::PROGRAM_EXIT:
+            std::cout << "Main: Docking the ship\n";
+            return false;
+        case Command::INVALID_COMMAND:
+        default:
+            std::cout << "Invalid order\n";
+            return true;
+    };
+}
+
 int main()
 {
     run1();
@@ -108,5 +185,14 @@ int main()
     // run3(); // std::terminated called
     run4();
     run5();
+    provideTheCommandCaptain();
+    bool isSailing = true;
+    while (isSailing) {
+        std::cout << "Captian : Please give the command\n";
+        std::uint16_t input;
+        std::cin >> input;
+        const auto& command = InttoCommand(input);
+        isSailing = issueCommand(command);
+    }
     return 0;
 }
