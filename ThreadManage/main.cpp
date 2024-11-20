@@ -114,9 +114,11 @@ void func_1(int x, int y) { std::cout << x + y << std::endl; }
 
 void func_2(int& x)
 {
-    while (true) {
+    int i = 0;
+    while (i < 10) {
         std::cout << "Thread 1 value of X - " << x << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        i++;
     }
 }
 
@@ -124,10 +126,38 @@ void run6()
 {
     int x = 9;
     std::cout << "Main thread value of x - " << x << std::endl;
+    // just need to mind the x will live out of the thread
     std::thread thread_1(func_2, std::ref(x));
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     x = 15;
     std::cout << "Main thread has been change to - " << x << std::endl;
+    thread_1.join();
+}
+
+void func_3(int& x)
+{
+    while (true) {
+        try {
+            std::cout << "thread 3 value of x - " << x << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        } catch (...) {
+            throw std::runtime_error("this is a runtime error");
+        }
+    }
+}
+
+void func_4()
+{
+    int x = 5;
+    std::thread thread_3(func_3, std::ref(x));
+    thread_3.detach();
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::cout << "thread_3 finished execution\n";
+}
+
+void run7()
+{
+    std::thread thread_1(func_4);
     thread_1.join();
 }
 
@@ -225,5 +255,6 @@ int main()
         isSailing = issueCommand(command);
     }
     run6();
+    run7();
     return 0;
 }
