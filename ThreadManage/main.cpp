@@ -169,11 +169,35 @@ void run8()
 
     thread_1 = std::thread(bar);
     std::thread thread_3(foo);
-    thread_1 = std::move(thread_3);
+    // not applicable
+    // thread_1 = std::move(thread_3);
 
     thread_1.join();
     thread_2.join();
     thread_3.join();
+}
+
+void foo9() { std::cout << "This thread id is - " << std::this_thread::get_id() << std::endl; }
+
+void run9()
+{
+    std::thread thread_1(foo9);
+    std::thread thread_2(foo9);
+    std::thread thread_3(foo9);
+    std::thread thread_4;
+
+    std::cout << "Thread 1 id - " << thread_1.get_id() << std::endl;
+    std::cout << "Thread 2 id - " << thread_2.get_id() << std::endl;
+    std::cout << "Thread 3 id - " << thread_3.get_id() << std::endl;
+    std::cout << "Thread 4 id - " << thread_4.get_id() << std::endl;
+
+    thread_1.join();
+    thread_2.join();
+    thread_3.join();
+
+    std::cout << "Thread 3 id - " << thread_3.get_id() << std::endl;
+    int allowed_threads = std::thread::hardware_concurrency();
+    printf("Allowed thread count in my device: %d\n", allowed_threads);
 }
 
 enum class Command : std::uint16_t { INVALID_COMMAND, CLEAN = 1, FULL_SPEED = 2, STOP_ENGINE = 3, PROGRAM_EXIT = 100 };
@@ -277,5 +301,6 @@ int main()
     run7();
     // transfer ownership
     run8();
+    run9();
     return 0;
 }
