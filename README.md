@@ -155,7 +155,8 @@ chapter 6.  Joinability of threads -- commit c63a00e2fa4181fa7d191c23885b12bec64
 chapter 8.  Join in exception -- commit 6ce76ce258bd5654ff43b882337fd50df0c53259
 chapter 9.  Sail a ship model -- commit 6e0843e6a8638ca493ac57b25b1d38f55e424419
 chapter 10. Pass a parameter between two threads -- commit 386efe9f4bdcbf70f4a850ce567771569dc86130
-chapter 11. Detach thread passing parameter
+chapter 11. Detach thread passing parameter -- commit 21486d530a589d3fdb495abfed9b32a0c629f4f8
+chapter 12. Thransfer ownership of a thread
 ```
 
 # 现代 C++ 编程实战

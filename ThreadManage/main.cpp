@@ -3,6 +3,7 @@
 #include <thread>
 
 void foo() { printf("Hello from foo \n"); }
+void bar() { printf("Hello from bar \n"); }
 
 class callable_class {
 public:
@@ -161,6 +162,20 @@ void run7()
     thread_1.join();
 }
 
+void run8()
+{
+    std::thread thread_1(foo);
+    std::thread thread_2 = std::move(thread_1);
+
+    thread_1 = std::thread(bar);
+    std::thread thread_3(foo);
+    thread_1 = std::move(thread_3);
+
+    thread_1.join();
+    thread_2.join();
+    thread_3.join();
+}
+
 enum class Command : std::uint16_t { INVALID_COMMAND, CLEAN = 1, FULL_SPEED = 2, STOP_ENGINE = 3, PROGRAM_EXIT = 100 };
 
 void provideTheCommandCaptain()
@@ -242,8 +257,10 @@ int main()
 {
     run1();
     run2();
+    // no default joinable
     // run3(); // std::terminated called
     run4();
+    // thread guard for exception destructor
     run5();
     provideTheCommandCaptain();
     bool isSailing = true;
@@ -254,7 +271,11 @@ int main()
         const auto& command = InttoCommand(input);
         isSailing = issueCommand(command);
     }
+    // joined thread have std::ref value
     run6();
+    // detached thread have std::ref value
     run7();
+    // transfer ownership
+    run8();
     return 0;
 }
