@@ -157,7 +157,9 @@ chapter 9.  Sail a ship model -- commit 6e0843e6a8638ca493ac57b25b1d38f55e424419
 chapter 10. Pass a parameter between two threads -- commit 386efe9f4bdcbf70f4a850ce567771569dc86130
 chapter 11. Detach thread passing parameter -- commit 21486d530a589d3fdb495abfed9b32a0c629f4f8
 chapter 12. Thransfer ownership of a thread -- commit e0d9c2005c06ea197ee8d3cb7cec2a070029d694
-chapter 13. Useful operation on thread
+chapter 13. Useful operation on thread -- commit aee84fe0a824a2be1bcaeb6d1f6100653c9ea5d1
+SailingCrew/
+chapter 14. Sail a ship with work queue
 ```
 
 # 现代 C++ 编程实战
