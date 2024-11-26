@@ -159,7 +159,8 @@ chapter 11. Detach thread passing parameter -- commit 21486d530a589d3fdb495abfed
 chapter 12. Thransfer ownership of a thread -- commit e0d9c2005c06ea197ee8d3cb7cec2a070029d694
 chapter 13. Useful operation on thread -- commit aee84fe0a824a2be1bcaeb6d1f6100653c9ea5d1
 SailingCrew/
-chapter 14. Sail a ship with work queue
+chapter 14. Sail a ship with work queue -- commit 043e79eda6f7e71332270db75b24b4aaf68a5c81
+chapter 15. Parallel accumulate
 ```
 
 # 现代 C++ 编程实战

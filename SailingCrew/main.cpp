@@ -1,5 +1,6 @@
 #include "common.h"
 #include <iostream>
+#include <numeric>
 #include <queue>
 #include <thread>
 
@@ -127,8 +128,22 @@ void issueCommand(const Command& command, std::queue<bool>& cq, std::queue<bool>
     };
 }
 
+void runAccumulate()
+{
+    // T accumulate(InputIt first, InputIt last, T init);
+    std::vector<int> v{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::cout << "sum - " << std::accumulate(v.begin(), v.end(), 0) << std::endl;
+    // T accumulate(InputIt first, InputIt last, T init, BinaryOperation op);
+    std::cout << "product - " << std::accumulate(v.begin(), v.end(), 1, std::multiplies<int>()) << std::endl;
+    // lambda for the operator
+    auto dash_fold = [](std::string a, int b) { return std::move(a) + "-" + std::to_string(b); };
+    std::cout << "dash fold : " << std::accumulate(v.begin(), v.end(), std::to_string(v[0]), dash_fold) << std::endl;
+}
+
 int main()
 {
+    runAccumulate();
+
     provideTheCommandCaptain();
     std::queue<bool> cq, eq;
     bool isSailing = true;
