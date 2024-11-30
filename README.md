@@ -160,7 +160,8 @@ chapter 12. Thransfer ownership of a thread -- commit e0d9c2005c06ea197ee8d3cb7c
 chapter 13. Useful operation on thread -- commit aee84fe0a824a2be1bcaeb6d1f6100653c9ea5d1
 SailingCrew/
 chapter 14. Sail a ship with work queue -- commit 043e79eda6f7e71332270db75b24b4aaf68a5c81
-chapter 16. Parallel accumulate
+chapter 16. Parallel accumulate -- commit c1f40054c6e0b99589e3fe23f4457ed215179489
+chapter 17. Thread local storage
 ```
 
 # 现代 C++ 编程实战

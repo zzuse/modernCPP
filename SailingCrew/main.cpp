@@ -1,4 +1,5 @@
 #include "common.h"
+#include <atomic>
 #include <iostream>
 #include <numeric>
 #include <queue>
@@ -187,10 +188,47 @@ void run_parallel_accumulate()
     std::cout << "Accumulated value: " << ref_val << std::endl;
 }
 
+std::atomic<int> atomic_i = 0;
+thread_local std::atomic<int> local_atomic_i = 0;
+
+void foo()
+{
+    ++atomic_i;
+    std::cout << atomic_i << " ";
+}
+
+void foo_local()
+{
+    ++local_atomic_i;
+    std::cout << local_atomic_i << " ";
+}
+
+void run_atomic()
+{
+    std::thread t1(foo);
+    std::thread t2(foo);
+    std::thread t3(foo);
+
+    t1.join();
+    t2.join();
+    t3.join();
+    std::cout << std::endl;
+
+    std::thread t4(foo_local);
+    std::thread t5(foo_local);
+    std::thread t6(foo_local);
+
+    t4.join();
+    t5.join();
+    t6.join();
+    std::cout << std::endl;
+}
+
 int main()
 {
     runAccumulate();
     run_parallel_accumulate();
+    run_atomic();
 
     provideTheCommandCaptain();
     std::queue<bool> cq, eq;
