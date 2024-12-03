@@ -161,7 +161,9 @@ chapter 13. Useful operation on thread -- commit aee84fe0a824a2be1bcaeb6d1f61006
 SailingCrew/
 chapter 14. Sail a ship with work queue -- commit 043e79eda6f7e71332270db75b24b4aaf68a5c81
 chapter 16. Parallel accumulate -- commit c1f40054c6e0b99589e3fe23f4457ed215179489
-chapter 17. Thread local storage
+chapter 17. Thread local storage -- commit f3abc0faba40efac7c84b9dc84d863bb5257088d
+ThreadSafe/
+chapter 19. Mutexes
 ```
 
 # 现代 C++ 编程实战
