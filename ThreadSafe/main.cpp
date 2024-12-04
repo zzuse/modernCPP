@@ -1,5 +1,4 @@
 #include "common.h"
-
 #include <iostream>
 #include <list>
 #include <mutex>
@@ -74,12 +73,13 @@ void malisious_function(data_object& data)
     // other threads can access this data pointer to do any work
     // so this case also not thread safe
     unprotected_data = &data;
+    unprotected_data->nothing = 5;
 }
+
 void run_malisious_code()
 {
     data_wrapper wrapper;
     wrapper.do_some_work(malisious_function);
-    unprotected_data->nothing = 5;
     std::cout << unprotected_data->nothing << std::endl;
 }
 
