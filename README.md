@@ -163,7 +163,8 @@ chapter 14. Sail a ship with work queue -- commit 043e79eda6f7e71332270db75b24b4
 chapter 16. Parallel accumulate -- commit c1f40054c6e0b99589e3fe23f4457ed215179489
 chapter 17. Thread local storage -- commit f3abc0faba40efac7c84b9dc84d863bb5257088d
 ThreadSafe/
-chapter 19. Mutexes
+chapter 19. Mutexes -- commit cddc442044e39224d1ec7e22a2a291c90b7b6e12
+chapter 22. Two senarios not thread safe even protected by mutex
 ```
 
 # 现代 C++ 编程实战
