@@ -146,10 +146,92 @@ void run_trivial_thread_safe_stack()
     std::cout << stk.top() << std::endl;
 }
 
+template <typename T>
+class thread_safe_stack {
+    // using pointer will reduce exception in return copied value
+    std::stack<std::shared_ptr<T>> stk;
+    std::mutex m;
+
+public:
+    void push(T element)
+    {
+        std::lock_guard<std::mutex> lg(m);
+        stk.push(std::make_shared<T>(element));
+    }
+
+    std::shared_ptr<T> pop()
+    {
+        std::lock_guard<std::mutex> lg(m);
+        if (stk.empty()) {
+            throw std::runtime_error("stack is empty");
+        }
+        std::shared_ptr<T> res(stk.top());
+        stk.pop();
+        return res;
+    }
+
+    void pop(T& value)
+    {
+        std::lock_guard<std::mutex> lg(m);
+        if (stk.empty()) throw std::runtime_error("stack is empty");
+        // assigning to reference will not throw exception
+        value = *(stk.top().get());
+        stk.pop();
+    }
+
+    std::shared_ptr<T> top()
+    {
+        std::lock_guard<std::mutex> lg(m);
+        if (stk.empty()) {
+            throw std::runtime_error("stack is empty");
+        }
+        std::shared_ptr<T> res(stk.top());
+        return res;
+    }
+
+    bool empty()
+    {
+        std::lock_guard<std::mutex> lg(m);
+        return stk.empty();
+    }
+
+    size_t size()
+    {
+        std::lock_guard<std::mutex> lg(m);
+        return stk.size();
+    }
+};
+
+void run_thread_safe_stack()
+{
+    thread_safe_stack<int> stk{};
+    stk.push(1);
+    stk.push(2);
+    stk.push(3);
+    std::thread thread_1([&stk] {
+        if (!stk.empty()) {
+            int value = *(stk.top());
+            std::cout << "value from thread 1 --" << value << std::endl;
+            stk.pop();
+        }
+    });
+    std::thread thread_2([&stk] {
+        if (!stk.empty()) {
+            int value = *(stk.top());
+            std::cout << "value from thread 2 --" << value << std::endl;
+            stk.pop();
+        }
+    });
+    thread_1.join();
+    thread_2.join();
+    std::cout << *(stk.top()) << std::endl;
+}
+
 int main()
 {
     run_code();
     run_malisious_code();
     run_trivial_thread_safe_stack();
+    run_thread_safe_stack();
     return 0;
 }
