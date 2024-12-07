@@ -164,7 +164,9 @@ chapter 16. Parallel accumulate -- commit c1f40054c6e0b99589e3fe23f4457ed2151794
 chapter 17. Thread local storage -- commit f3abc0faba40efac7c84b9dc84d863bb5257088d
 ThreadSafe/
 chapter 19. Mutexes -- commit cddc442044e39224d1ec7e22a2a291c90b7b6e12
-chapter 22. Two senarios not thread safe even protected by mutex
+chapter 22. Two senarios not thread safe even protected by mutex -- commit b9541f091cb331bc2bda86870cef245e40c601e7
+chapter 24. Trivial Thread safe stack implementation -- commit 47ebe6e9ac940384b7f74ae2182490d20880c5ad
+chapter 25. Thread safe stack implementation
 ```
 
 # 现代 C++ 编程实战

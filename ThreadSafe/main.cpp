@@ -126,17 +126,18 @@ void run_trivial_thread_safe_stack()
     trivial_thread_safe_stack<int> stk{};
     stk.push(1);
     stk.push(2);
+    stk.push(3);
     std::thread thread_1([&stk] {
         if (!stk.empty()) {
             int value = stk.top();
-            std::cout << "value --" << value << std::endl;
+            std::cout << "value from thread 1 --" << value << std::endl;
             stk.pop();
         }
     });
     std::thread thread_2([&stk] {
         if (!stk.empty()) {
             int value = stk.top();
-            std::cout << "value --" << value << std::endl;
+            std::cout << "value from thread 2 --" << value << std::endl;
             stk.pop();
         }
     });
