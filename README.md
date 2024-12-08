@@ -166,7 +166,8 @@ ThreadSafe/
 chapter 19. Mutexes -- commit cddc442044e39224d1ec7e22a2a291c90b7b6e12
 chapter 22. Two senarios not thread safe even protected by mutex -- commit b9541f091cb331bc2bda86870cef245e40c601e7
 chapter 24. Trivial Thread safe stack implementation -- commit 47ebe6e9ac940384b7f74ae2182490d20880c5ad
-chapter 25. Thread safe stack implementation
+chapter 25. Thread safe stack implementation -- commit 4367b851cbb32d061d3ef2f1d1d869b0747eddc4 
+chapter 27. unique locks
 ```
 
 # 现代 C++ 编程实战

@@ -227,11 +227,75 @@ void run_thread_safe_stack()
     std::cout << *(stk.top()) << std::endl;
 }
 
+// dead lock
+class bank_account_deadlock {
+    double balance;
+    std::string name;
+    std::mutex m;
+
+public:
+    // dead lock will happen when two people transfer to each other at same time.
+    void transfer(bank_account_deadlock& from, bank_account_deadlock& to, double amount)
+    {
+        std::lock_guard<std::mutex> lg_1(from.m);
+        std::lock_guard<std::mutex> lg_2(to.m);
+        from.balance -= amount;
+        to.balance += amount;
+    }
+};
+
+class bank_account {
+    double balance;
+    std::string name;
+    std::mutex m;
+
+public:
+    bank_account(){};
+    bank_account(double _balance, std::string _name)
+        : balance(_balance)
+        , name(_name)
+    {
+    }
+    bank_account(bank_account&) = delete;
+    bank_account& operator=(bank_account const) = delete;
+    void withdraw(double amount){};
+    void deposite(double amount){};
+    void transfer(bank_account& from, bank_account& to, double amount)
+    {
+        std::cout << std::this_thread::get_id() << "hold the lock for both mutex " << std::endl;
+        std::unique_lock<std::mutex> ul_1(from.m, std::defer_lock);
+        std::unique_lock<std::mutex> ul_2(to.m, std::defer_lock);
+        std::lock(ul_1, ul_2);
+        from.balance -= amount;
+        to.balance += amount;
+        std::cout << "transfer to - " << to.name << "  from - " << from.name << " end" << std::endl;
+    }
+};
+
+void x_operation() { std::cout << "this is some operations " << std::endl; }
+
+void y_operation() { std::cout << "this is some other operation " << std::endl; }
+
+std::unique_lock<std::mutex> get_lock()
+{
+    std::mutex m;
+    std::unique_lock<std::mutex> lk(m);
+    x_operation();
+    return lk;
+}
+
+void run_uniquelock()
+{
+    std::unique_lock<std::mutex> lk(get_lock());
+    y_operation();
+}
+
 int main()
 {
     run_code();
     run_malisious_code();
     run_trivial_thread_safe_stack();
     run_thread_safe_stack();
+    run_uniquelock();
     return 0;
 }
