@@ -258,8 +258,16 @@ public:
     }
     bank_account(bank_account&) = delete;
     bank_account& operator=(bank_account const) = delete;
-    void withdraw(double amount){};
-    void deposite(double amount){};
+    void withdraw(double amount)
+    {
+        std::lock_guard<std::mutex> lg(m);
+        balance -= amount;
+    };
+    void deposite(double amount)
+    {
+        std::lock_guard<std::mutex> lg(m);
+        balance += amount;
+    };
     void transfer(bank_account& from, bank_account& to, double amount)
     {
         std::cout << std::this_thread::get_id() << "hold the lock for both mutex " << std::endl;
