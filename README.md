@@ -168,7 +168,8 @@ chapter 22. Two senarios not thread safe even protected by mutex -- commit b9541
 chapter 24. Trivial Thread safe stack implementation -- commit 47ebe6e9ac940384b7f74ae2182490d20880c5ad
 chapter 25. Thread safe stack implementation -- commit 4367b851cbb32d061d3ef2f1d1d869b0747eddc4 
 chapter 27. unique locks -- commit a61b2c5d5da4fa37f77c6df963514a0af5491840
-chapter 29. introduction to condition variable
+chapter 29. introduction to condition variable -- commit a208f00dd532a3e166d2511399538cb472de232c
+chapter 31. Thread safe queue implementation
 ```
 
 # 现代 C++ 编程实战
