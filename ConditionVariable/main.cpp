@@ -72,15 +72,31 @@ class thread_safe_queue {
     // store pointer instead of raw value
     std::queue<std::shared_ptr<T>> queue;
 public:
-    thread_safe_queue();
-    thread_safe_queue(thread_safe_queue const& other_queue);
+    thread_safe_queue(){}
+
+    thread_safe_queue(thread_safe_queue const& other){
+        std::lock_guard<std::mutex> lg(other.m);
+        queue = other.queue;
+    }
 
     void push(T value) {
         std::lock_guard<std::mutex> lg(m);
         queue.push(std::make_shared<T>(value));
         cv.notify_one();
     }
-    bool pop(T& ref);
+
+    bool pop(T& ref){
+        std::lock_guard<std::mutex> lg(m);
+        if (queue.empty())
+        {
+            return false;
+        } else {
+            ref = queue.front();
+            queue.pop();
+            return true;
+        }
+    }
+
     std::shared_ptr<T> pop() {
         std::lock_guard<std::mutex> lg(m);
         if (queue.empty())
@@ -93,7 +109,16 @@ public:
             return ref;
         }
     }
-    void wait_pop(T& ref);
+
+    bool wait_pop(T& ref){
+        std::unique_lock<std::mutex> lg(m);
+        cv.wait(lg, [this]{
+            return !queue.empty();
+        });
+        ref = *(queue.front().get());
+        queue.pop();
+        return true;
+    }
 
     std::shared_ptr<T> wait_pop() {
         std::unique_lock<std::mutex> lg(m);
@@ -110,11 +135,31 @@ public:
         return queue.empty();
     }
 
-    size_t size();
+    size_t size() {
+        std::lock_guard<std::mutex> lg(m);
+        return queue.size();
+    }
 };
+
+void run_thread_safe_queue() {
+    thread_safe_queue<int> queue;
+    std::thread thread_1([&] {
+        int value;
+        queue.wait_pop(value);
+        std::cout << "value from thread 1 -- " << value << std::endl;
+    });
+    std::thread thread_2([&] {
+        int x = 10;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        queue.push(x);
+    });
+    thread_1.join();
+    thread_2.join();
+}
 
 int main()
 {
     run_code();
+    run_thread_safe_queue();
     return 0;
 }
