@@ -7,6 +7,7 @@
 #include <chrono>
 #include <queue>
 #include <condition_variable>
+#include <future>
 
 bool have_i_arrived = false;
 int distance_my_destination = 10;
@@ -157,9 +158,28 @@ void run_thread_safe_queue() {
     thread_2.join();
 }
 
+int find_answer_how_old_universe_is()
+{
+    //this is not the true value
+    return 5000;
+}
+
+void do_other_calculations()
+{
+    std::cout << "Doing other stuff" << std::endl;
+}
+
+void run_asnync()
+{
+    std::future<int> the_answer_future = std::async(find_answer_how_old_universe_is);
+    do_other_calculations();
+    std::cout << "The answer is " << the_answer_future.get() << std::endl;
+}
+
 int main()
 {
     run_code();
     run_thread_safe_queue();
+    run_asnync();
     return 0;
 }
