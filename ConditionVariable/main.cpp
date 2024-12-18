@@ -1,13 +1,13 @@
 #include "common.h"
+#include <chrono>
+#include <condition_variable>
+#include <future>
 #include <iostream>
 #include <list>
 #include <mutex>
+#include <queue>
 #include <stack>
 #include <thread>
-#include <chrono>
-#include <queue>
-#include <condition_variable>
-#include <future>
 
 bool have_i_arrived = false;
 int distance_my_destination = 10;
@@ -15,19 +15,20 @@ int distance_coverd = 0;
 std::condition_variable cv;
 std::mutex m;
 
-bool keep_driving() {
-    while(true) {
+bool keep_driving()
+{
+    while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         distance_coverd++;
         // notify when events occurs
-        if(distance_coverd == distance_my_destination)
-            cv.notify_one();
+        if (distance_coverd == distance_my_destination) cv.notify_one();
         if (distance_coverd > 20) return true;
     }
     return false;
 }
 
-void keep_awake_all_night() {
+void keep_awake_all_night()
+{
     while (distance_coverd < distance_my_destination) {
         std::cout << "keep check, whether i am there \n";
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -35,26 +36,29 @@ void keep_awake_all_night() {
     std::cout << "finally i am there, awake all night, distance_coverd = " << distance_coverd << std::endl;
 }
 
-void ask_driver_to_wake_u_up_at_right_time(){
+void ask_driver_to_wake_u_up_at_right_time()
+{
     std::unique_lock<std::mutex> ul(m);
     // need provide a lock and a condition to check after wake up
     // wake up can be due to notification from another thread or spurious wake
     // if condition is false, this thread will call unlock and goto sleep.
     // if condition is true, this thread will call lock and proceed until thread finish.
     // only unique_lock can provide that flexibility, so not lock_guard.
-    cv.wait(ul, [] {return distance_coverd == distance_my_destination;});
+    cv.wait(ul, [] { return distance_coverd == distance_my_destination; });
     std::cout << "finally i am there, notify by driver, distance_coverd = " << distance_coverd << std::endl;
 }
 
-void set_the_alarm_and_take_a_nap() {
-    if(distance_coverd < distance_my_destination) {
+void set_the_alarm_and_take_a_nap()
+{
+    if (distance_coverd < distance_my_destination) {
         std::cout << "let me take a nap\n";
         std::this_thread::sleep_for(std::chrono::milliseconds(10000));
     }
     std::cout << "finally i am there, take a nap, distance_coverd = " << distance_coverd << std::endl;
 }
 
-void run_code() {
+void run_code()
+{
     std::thread driver_thread(keep_driving);
     std::thread keep_awake_all_night_thread(keep_awake_all_night);
     std::thread set_the_alarm_and_take_a_nap_thread(set_the_alarm_and_take_a_nap);
@@ -72,24 +76,27 @@ class thread_safe_queue {
     std::condition_variable cv;
     // store pointer instead of raw value
     std::queue<std::shared_ptr<T>> queue;
-public:
-    thread_safe_queue(){}
 
-    thread_safe_queue(thread_safe_queue const& other){
+public:
+    thread_safe_queue() {}
+
+    thread_safe_queue(thread_safe_queue const& other)
+    {
         std::lock_guard<std::mutex> lg(other.m);
         queue = other.queue;
     }
 
-    void push(T value) {
+    void push(T value)
+    {
         std::lock_guard<std::mutex> lg(m);
         queue.push(std::make_shared<T>(value));
         cv.notify_one();
     }
 
-    bool pop(T& ref){
+    bool pop(T& ref)
+    {
         std::lock_guard<std::mutex> lg(m);
-        if (queue.empty())
-        {
+        if (queue.empty()) {
             return false;
         } else {
             ref = queue.front();
@@ -98,51 +105,51 @@ public:
         }
     }
 
-    std::shared_ptr<T> pop() {
+    std::shared_ptr<T> pop()
+    {
         std::lock_guard<std::mutex> lg(m);
-        if (queue.empty())
-        {
+        if (queue.empty()) {
             return std::shared_ptr<T>();
-        }
-        else {
+        } else {
             std::shared_ptr<T> ref(queue.front());
             queue.pop();
             return ref;
         }
     }
 
-    bool wait_pop(T& ref){
+    bool wait_pop(T& ref)
+    {
         std::unique_lock<std::mutex> lg(m);
-        cv.wait(lg, [this]{
-            return !queue.empty();
-        });
+        cv.wait(lg, [this] { return !queue.empty(); });
         ref = *(queue.front().get());
         queue.pop();
         return true;
     }
 
-    std::shared_ptr<T> wait_pop() {
+    std::shared_ptr<T> wait_pop()
+    {
         std::unique_lock<std::mutex> lg(m);
-        cv.wait(lg, [this]{
-            return !queue.empty();
-        });
+        cv.wait(lg, [this] { return !queue.empty(); });
         std::shared_ptr<T> ref = queue.front();
         queue.pop();
         return ref;
     }
 
-    bool empty(){
+    bool empty()
+    {
         std::lock_guard<std::mutex> lg(m);
         return queue.empty();
     }
 
-    size_t size() {
+    size_t size()
+    {
         std::lock_guard<std::mutex> lg(m);
         return queue.size();
     }
 };
 
-void run_thread_safe_queue() {
+void run_thread_safe_queue()
+{
     thread_safe_queue<int> queue;
     std::thread thread_1([&] {
         int value;
@@ -160,20 +167,41 @@ void run_thread_safe_queue() {
 
 int find_answer_how_old_universe_is()
 {
-    //this is not the true value
+    // this is not the true value
     return 5000;
 }
 
-void do_other_calculations()
-{
-    std::cout << "Doing other stuff" << std::endl;
-}
+void do_other_calculations() { std::cout << "Doing other stuff" << std::endl; }
 
 void run_asnync()
 {
     std::future<int> the_answer_future = std::async(find_answer_how_old_universe_is);
     do_other_calculations();
     std::cout << "The answer is " << the_answer_future.get() << std::endl;
+}
+
+void printing() { std::cout << "printing runs on-" << std::this_thread::get_id() << std::endl; }
+
+int addition(int x, int y) { std::cout << "addition runs on-" << std::this_thread::get_id() << std::endl; }
+
+int substract(int x, int y)
+{
+    std::cout << "substract runs on-" << std::this_thread::get_id() << std::endl;
+    return x - y;
+}
+
+void run_future()
+{
+    std::cout << "main thread id -" << std::this_thread::get_id() << std::endl;
+    int x = 100;
+    int y = 50;
+    std::future<void> f1 = std::async(std::launch::async, printing);
+    std::future<int> f2 = std::async(std::launch::deferred, addition, x, y);
+    std::future<int> f3 = std::async(std::launch::deferred | std::launch::async, substract, x, y);
+
+    f1.get();
+    std::cout << "value recieved using f2 future - " << f2.get() << std::endl;
+    std::cout << "value recieved using f2 future - " << f3.get() << std::endl;
 }
 
 int main()
