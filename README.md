@@ -171,7 +171,8 @@ chapter 27. unique locks -- commit a61b2c5d5da4fa37f77c6df963514a0af5491840
 chapter 29. introduction to condition variable -- commit a208f00dd532a3e166d2511399538cb472de232c
 chapter 31. Thread safe queue implementation -- commit 0e321f58e3be02df065d73c78a1033551af8ac1f
 chapter 32. introduction to futures and async tasks -- commit 9864be92a823ccc4ddb39df0dfcdfc4ef9d07d51
-chapter 33. async tasks detailed policy
+chapter 33. async tasks detailed policy -- commit 0596c58f5cd0c87eefcd4a1fa0c87f08ab040168
+chapter 34. parallel accumulate
 ```
 
 # 现代 C++ 编程实战
