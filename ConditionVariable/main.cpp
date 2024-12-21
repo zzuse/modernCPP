@@ -218,7 +218,7 @@ int parallel_accumulate(iterator begin, iterator end)
 {
     long length = std::distance(begin, end);
     if (length <= MIN_ELEMENT_COUNT) {
-        std::cout << std::this_thread::get_id() << std::endl;
+        std::cout << std::this_thread::get_id() << " " << length << std::endl;
         return std::accumulate(begin, end, 0);
     }
     iterator mid = begin;
@@ -227,8 +227,9 @@ int parallel_accumulate(iterator begin, iterator end)
     // recursive all to parallel
     std::future<int> f1
         = std::async(std::launch::deferred | std::launch::async, parallel_accumulate<iterator>, mid, end);
-    auto sum = parallel_accumulate(begin, mid);
-    return sum + f1.get();
+    std::future<int> f2
+        = std::async(std::launch::deferred | std::launch::async, parallel_accumulate<iterator>, begin, mid);
+    return f1.get() + f2.get();
 }
 
 void run_parallel_accumulate_with_async()
@@ -243,5 +244,6 @@ int main()
     run_thread_safe_queue();
     run_asnync();
     run_future();
+    run_parallel_accumulate_with_async();
     return 0;
 }
