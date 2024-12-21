@@ -1,6 +1,7 @@
 #include "common.h"
 #include <chrono>
 #include <condition_variable>
+#include <functional>
 #include <future>
 #include <iostream>
 #include <list>
@@ -212,7 +213,7 @@ void run_future()
     std::cout << "value recieved using f3 future - " << f3.get() << std::endl;
 }
 
-int MIN_ELEMENT_COUNT = 1000;
+const int MIN_ELEMENT_COUNT = 1000;
 template <typename iterator>
 int parallel_accumulate(iterator begin, iterator end)
 {
@@ -238,6 +239,30 @@ void run_parallel_accumulate_with_async()
     std::cout << "The sum is " << parallel_accumulate(v.begin(), v.end()) << std::endl;
 }
 
+int add(int x, int y)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::cout << "add function runs in : " << std::this_thread::get_id() << std::endl;
+    return x + y;
+}
+
+void task_same_thread()
+{
+    std::packaged_task<int(int, int)> task_1(add);
+    std::future<int> future_1 = task_1.get_future();
+    task_1(7, 8);
+    std::cout << "task same thread - " << future_1.get() << std::endl;
+}
+
+void task_another_thread()
+{
+    std::packaged_task<int(int, int)> task_1(add);
+    std::future<int> future_1 = task_1.get_future();
+    std::thread thread_1(std::move(task_1), 5, 6);
+    thread_1.detach();
+    std::cout << "task another thread - " << future_1.get() << std::endl;
+}
+
 int main()
 {
     run_code();
@@ -245,5 +270,7 @@ int main()
     run_asnync();
     run_future();
     run_parallel_accumulate_with_async();
+    task_same_thread();
+    task_another_thread();
     return 0;
 }
