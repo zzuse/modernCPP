@@ -168,13 +168,15 @@ chapter 22. Two senarios not thread safe even protected by mutex -- commit b9541
 chapter 24. Trivial Thread safe stack implementation -- commit 47ebe6e9ac940384b7f74ae2182490d20880c5ad
 chapter 25. Thread safe stack implementation -- commit 4367b851cbb32d061d3ef2f1d1d869b0747eddc4 
 chapter 27. unique locks -- commit a61b2c5d5da4fa37f77c6df963514a0af5491840
+ConditionVariable/
 chapter 29. introduction to condition variable -- commit a208f00dd532a3e166d2511399538cb472de232c
 chapter 31. Thread safe queue implementation -- commit 0e321f58e3be02df065d73c78a1033551af8ac1f
 chapter 32. introduction to futures and async tasks -- commit 9864be92a823ccc4ddb39df0dfcdfc4ef9d07d51
 chapter 33. async tasks detailed policy -- commit 0596c58f5cd0c87eefcd4a1fa0c87f08ab040168
 chapter 34. parallel accumulate -- commit af0050271087433fb8fe3aba41ecb3b848f0ca16
 chapter 35. introduction to package_task -- commit cc6b507a1f2368cceafab5d440d72515e124ea54
-chapter 36. Communication between threads using std::promises
+chapter 36. Communication between threads using std::promises -- commit b3a8a597deec8586708ab949d120150a5caa922b
+chapter 37. Retrieving exception using std::futures
 ```
 
 # 现代 C++ 编程实战

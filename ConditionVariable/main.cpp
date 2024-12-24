@@ -9,6 +9,7 @@
 #include <numeric>
 #include <queue>
 #include <stack>
+#include <stdexcept>
 #include <thread>
 #include <vector>
 
@@ -280,6 +281,42 @@ void run_promise()
     print_thread.join();
 }
 
+void print_result(std::future<int>& fut)
+{
+    try {
+        int x = fut.get();
+        std::cout << "value: " << x << '\n';
+    } catch (std::exception& e) {
+        std::cout << "[exception caught: " << e.what() << "]" << std::endl;
+    }
+}
+
+void calculate_square_root(std::promise<int>& prom)
+{
+    int x = 1;
+    std::cout << "Please, enter a integer value: ";
+    try {
+        std::cin >> x;
+        if (x < 0) {
+            throw;
+        }
+        prom.set_value(std::sqrt(x));
+    } catch (std::exception&) {
+        prom.set_exception(std::current_exception());
+    }
+}
+
+void run_except()
+{
+    std::promise<int> prom;
+    std::future<int> fut = prom.get_future();
+    std::thread printing_thread(print_result, std::ref(fut));
+    std::thread calculation_thread(calculate_square_root, std::ref(prom));
+
+    printing_thread.join();
+    calculation_thread.join();
+}
+
 int main()
 {
     run_code();
@@ -290,5 +327,6 @@ int main()
     task_same_thread();
     task_another_thread();
     run_promise();
+    run_except();
     return 0;
 }
