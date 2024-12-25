@@ -176,7 +176,8 @@ chapter 33. async tasks detailed policy -- commit 0596c58f5cd0c87eefcd4a1fa0c87f
 chapter 34. parallel accumulate -- commit af0050271087433fb8fe3aba41ecb3b848f0ca16
 chapter 35. introduction to package_task -- commit cc6b507a1f2368cceafab5d440d72515e124ea54
 chapter 36. Communication between threads using std::promises -- commit b3a8a597deec8586708ab949d120150a5caa922b
-chapter 37. Retrieving exception using std::futures
+chapter 37. Retrieving exception using std::futures -- commit 25c95d734c2db5cc924e7172916df7e92cf92ea4
+chapter 38. std::shared_futures
 ```
 
 # 现代 C++ 编程实战

@@ -284,8 +284,13 @@ void run_promise()
 void print_result(std::future<int>& fut)
 {
     try {
-        int x = fut.get();
-        std::cout << "value: " << x << '\n';
+        if (fut.valid()) {
+            std::cout << "this is valid future\n";
+            int x = fut.get();
+            std::cout << "value: " << x << '\n';
+        } else {
+            std::cout << "this is invalid future\n";
+        }
     } catch (std::exception& e) {
         std::cout << "[exception caught: " << e.what() << "]" << std::endl;
     }
@@ -298,7 +303,7 @@ void calculate_square_root(std::promise<int>& prom)
     try {
         std::cin >> x;
         if (x < 0) {
-            throw;
+            throw std::invalid_argument("input cannot be negative.");
         }
         prom.set_value(std::sqrt(x));
     } catch (std::exception&) {
@@ -317,6 +322,18 @@ void run_except()
     calculation_thread.join();
 }
 
+void run_get_futures()
+{
+    std::promise<int> prom;
+    std::future<int> fut(prom.get_future());
+
+    std::thread th1(print_result, std::ref(fut));
+    std::thread th2(print_result, std::ref(fut));
+    prom.set_value(5);
+    th1.join();
+    th2.join();
+}
+
 int main()
 {
     run_code();
@@ -328,5 +345,6 @@ int main()
     task_another_thread();
     run_promise();
     run_except();
+    run_get_futures();
     return 0;
 }
