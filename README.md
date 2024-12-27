@@ -177,7 +177,9 @@ chapter 34. parallel accumulate -- commit af0050271087433fb8fe3aba41ecb3b848f0ca
 chapter 35. introduction to package_task -- commit cc6b507a1f2368cceafab5d440d72515e124ea54
 chapter 36. Communication between threads using std::promises -- commit b3a8a597deec8586708ab949d120150a5caa922b
 chapter 37. Retrieving exception using std::futures -- commit 25c95d734c2db5cc924e7172916df7e92cf92ea4
-chapter 38. std::shared_futures
+chapter 38. std::shared_futures -- commit 69c97a6430cf078bb6872a535790db0aa3caf917
+LockBased/
+chapter 40. queue data structure implementation
 ```
 
 # 现代 C++ 编程实战
