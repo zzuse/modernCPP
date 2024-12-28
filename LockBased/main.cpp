@@ -1,5 +1,6 @@
 #include "common.h"
 #include <condition_variable>
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <queue>
@@ -84,7 +85,7 @@ class sequential_safe_queue {
     std::unique_ptr<node> wait_pop_head()
     {
         std::unique_lock<std::mutex> lock(head_mutex);
-        head_condition.wait(lock, [&] { return head.get() != get_tail(); });
+        cv.wait(lock, [&] { return head.get() != get_tail(); });
         std::unique_ptr<node> old_head = std::move(head);
         head = std::move(old_head->next);
         return old_head;
@@ -138,21 +139,40 @@ template <typename T>
 inline void sequential_safe_queue<T>::printData()
 {
     if (head.get() == get_tail()) {
-        std::cout << "Queue is empty...\n";
+        std::cout << "Queue is empty..." << std::endl;
         return;
     }
     std::lock_guard<std::mutex> hlg(head_mutex);
     node* current = head.get();
-    std::cout << "Queue from top...\n";
+    std::cout << "Queue from top..." << std::endl;
     int index{};
     while (current->data != nullptr) {
         std::cout << "current:" << current << ", value [" << index++ << "]:" << *(current->data) << std::endl;
         current = (current->next).get();
     }
-    std::cout << "End of Queue...\n";
+    std::cout << "End of Queue..." << std::endl;
 }
 
-void run_code() {}
+void run_code()
+{
+    sequential_safe_queue<int> queueInteger;
+    queueInteger.push(5645);
+    queueInteger.push(87456);
+    queueInteger.push(94564);
+    queueInteger.push(2347);
+    queueInteger.push(634);
+    queueInteger.printData();
+
+    std::cout << "Removing: " << *(queueInteger.pop().get()) << std::endl;
+    std::cout << "Removing: " << *(queueInteger.pop().get()) << std::endl;
+    std::cout << "Removing by wait_pop: " << *(queueInteger.wait_pop().get()) << std::endl;
+    queueInteger.printData();
+
+    std::cout << "Removing by wait_pop: " << *(queueInteger.wait_pop().get()) << std::endl;
+    queueInteger.printData();
+    std::cout << "Removing: " << *(queueInteger.pop().get()) << std::endl;
+    queueInteger.printData();
+}
 
 int main()
 {
