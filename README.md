@@ -180,7 +180,8 @@ chapter 37. Retrieving exception using std::futures -- commit 25c95d734c2db5cc92
 chapter 38. std::shared_futures -- commit 69c97a6430cf078bb6872a535790db0aa3caf917
 LockBased/
 chapter 40. queue data structure implementation -- commit 1632254cf2159b155cc9215f77b47add837613a9
-chapter 41. thread safe queue implementation
+chapter 41. thread safe queue implementation -- commit e9a7229d2de88d36bb2d5fc9cc130714868994ae
+chapter 42. Parallel STL introduction
 ```
 
 # 现代 C++ 编程实战

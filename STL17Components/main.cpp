@@ -337,6 +337,19 @@ std::vector<long> CreateVector()
     return vec;
 }
 
+const size_t testSize = 1000000;
+const int iterationCount = 5;
+
+void onemillionsort()
+{
+    std::random_device rd;
+    printf("Testing with %zu doubles...\n", testSize);
+    std::vector<double> doubles(testSize);
+    for (auto& d : doubles) {
+        d = static_cast<double>(rd());
+    }
+}
+
 int main()
 {
     // std::optional<int> value;
