@@ -28,3 +28,8 @@ target_link_libraries(STL17Components poolSTL::poolSTL)
 # cmake -DCMAKE_INSTALL_PREFIX=/tmp/my_installed_onetbb -DTBB_TEST=OFF ..
 # clang++ main.cpp -std=c++20 -o myprogram -I/opt/intel/tbb/include -L/opt/intel/tbb/lib -ltbb
 # export LD_LIBRARY_PATH=/opt/intel/tbb/lib:$LD_LIBRARY_PATH
+
+# default install gcc13
+# export CC=/opt/local/bin/gcc-mp-13
+# export CXX=/opt/local/bin/g++-mp-13
+# cmake .. or /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp

@@ -378,13 +378,17 @@ int main()
     } else {
         std::cout << "Unknown error number" << std::endl;
     }
-    // std::optional unknow behaviour
-    errormessage = GetErrorStringOp(3);
-    std::cout << *errormessage << std::endl;
-    // std::optional safely fail
     try {
+        // std::optional unknow behaviour
+        errormessage = GetErrorStringOp(3);
+        if (std::nullopt != errormessage) {
+            std::cout << *errormessage << std::endl;
+        }
+        // std::optional safely fail
         errormessage = GetErrorStringOp(4);
-        std::cout << errormessage.value() << std::endl;
+        if (std::nullopt != errormessage) {
+            std::cout << errormessage.value() << std::endl;
+        }
     } catch (std::exception& ex) {
         std::cout << "Exception: " << ex.what() << std::endl;
     }
@@ -508,9 +512,9 @@ int main()
 
     // filesystem
     UsingPath();
-    DirectoryOperations(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
-    TravelsingDirectory(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build)");
-    Permissions(R"(/Users/zhangzhen/Documents/Code/Self/modernCPP/STL17Components/build/CMakeFiles)");
+    DirectoryOperations(R"(/Users/zhen/Documents/code/modernCPP/STL17Components/build/build)");
+    TravelsingDirectory(R"(/Users/zhen/Documents/code/modernCPP/STL17Components/build)");
+    Permissions(R"(/Users/zhen/Documents/code/modernCPP/STL17Components/build/CMakeFiles)");
 
     // Parallel
     auto dataset = CreateVector();
