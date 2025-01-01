@@ -20,6 +20,7 @@
 #include <iostream>
 #include <optional>
 #include <random>
+#include <ratio>
 #include <string_view>
 #include <variant>
 #include <vector>
@@ -340,13 +341,35 @@ std::vector<long> CreateVector()
 const size_t testSize = 1000000;
 const int iterationCount = 5;
 
-void onemillionsort()
+void print_results(const char* const tag, const std::vector<double>& sorted,
+                   std::chrono::high_resolution_clock::time_point startTime,
+                   std::chrono::high_resolution_clock::time_point endTime)
+{
+    printf("%s: Lowest: %g Highest: %g Time: %fms\n", tag, sorted.front(), sorted.back(),
+           std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+}
+
+void one_million_sort()
 {
     std::random_device rd;
     printf("Testing with %zu doubles...\n", testSize);
     std::vector<double> doubles(testSize);
     for (auto& d : doubles) {
         d = static_cast<double>(rd());
+    }
+    for (int i = 0; i < iterationCount; ++i) {
+        std::vector<double> sorted(doubles);
+        const auto startTime = std::chrono::high_resolution_clock::now();
+        sort(sorted.begin(), sorted.end());
+        const auto endTime = std::chrono::high_resolution_clock::now();
+        print_results("Serial STL", sorted, startTime, endTime);
+    }
+    for (int i = 0; i < iterationCount; ++i) {
+        std::vector<double> sorted(doubles);
+        const auto startTime = std::chrono::high_resolution_clock::now();
+        std::sort(std::execution::par, sorted.begin(), sorted.end());
+        const auto endTime = std::chrono::high_resolution_clock::now();
+        print_results("Serial STL", sorted, startTime, endTime);
     }
 }
 
@@ -535,5 +558,7 @@ int main()
     Timer t4;
     std::reduce(dataset.begin(), dataset.end(), 0);
     t4.ShowResult("parallel reduce time in milliseconds");
+
+    one_million_sort();
     return 0;
 }
