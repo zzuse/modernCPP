@@ -181,7 +181,7 @@ chapter 38. std::shared_futures -- commit 69c97a6430cf078bb6872a535790db0aa3caf9
 LockBased/
 chapter 40. queue data structure implementation -- commit 1632254cf2159b155cc9215f77b47add837613a9
 chapter 41. thread safe queue implementation -- commit e9a7229d2de88d36bb2d5fc9cc130714868994ae
-STL17Components/
+Parallel/
 chapter 42. Parallel STL introduction -- commit 5ee4b4013988d7ace3c90232d8b5a9e5b7089e53
 chapter 43. Parallel quick sort implementation
 ```
