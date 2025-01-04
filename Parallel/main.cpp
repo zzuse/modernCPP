@@ -25,13 +25,28 @@
 const size_t testSize = 1000000;
 const int iterationCount = 5;
 
-void print_results(const char* const tag, const std::vector<double>& sorted,
-                   std::chrono::high_resolution_clock::time_point startTime,
+void print_results(const char* const tag, std::chrono::high_resolution_clock::time_point startTime,
                    std::chrono::high_resolution_clock::time_point endTime)
 {
-    printf("%s: Lowest: %g Highest: %g Time: %fms\n", tag, sorted.front(), sorted.back(),
+    printf("%s: Time: %fms\n", tag,
            std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
 }
+
+class join_threads {
+    std::vector<std::thread>& threads;
+
+public:
+    explicit join_threads(std::vector<std::thread>& _threads)
+        : threads(_threads)
+    {
+    }
+    ~join_threads()
+    {
+        for (long i = 0; i < threads.size(); i++) {
+            if (threads[i].joinable()) threads[i].join();
+        }
+    }
+};
 
 void one_million_sort()
 {
@@ -46,14 +61,16 @@ void one_million_sort()
         const auto startTime = std::chrono::high_resolution_clock::now();
         sort(sorted.begin(), sorted.end());
         const auto endTime = std::chrono::high_resolution_clock::now();
-        print_results("Serial STL", sorted, startTime, endTime);
+        std::cout << "Begin: " << sorted.front() << " End: " << sorted.back() << " ";
+        print_results("Serial STL", startTime, endTime);
     }
     for (int i = 0; i < iterationCount; ++i) {
         std::vector<double> sorted(doubles);
         const auto startTime = std::chrono::high_resolution_clock::now();
         std::sort(std::execution::par, sorted.begin(), sorted.end());
         const auto endTime = std::chrono::high_resolution_clock::now();
-        print_results("Parallel STL", sorted, startTime, endTime);
+        std::cout << "Begin: " << sorted.front() << " End: " << sorted.back() << " ";
+        print_results("Parallel STL", startTime, endTime);
     }
 }
 
@@ -116,16 +133,20 @@ void one_million_quick_sort()
         const auto startTime = std::chrono::high_resolution_clock::now();
         sequential_quick_sort(sorted);
         const auto endTime = std::chrono::high_resolution_clock::now();
-        printf("Serial quick sort: Lowest: %g Highest: %g Time: %fms\n", sorted.begin(), sorted.end(),
-               std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+        // printf(": Lowest: %g Highest: %g Time: %fms\n", sorted.begin(), sorted.end(),
+        //        std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+        std::cout << "Begin: " << sorted.front() << " End: " << sorted.back() << " ";
+        print_results("Serial quick sort", startTime, endTime);
     }
     for (int i = 0; i < iterationCount; ++i) {
         std::list<double> sorted(doubles);
         const auto startTime = std::chrono::high_resolution_clock::now();
         parallel_quick_sort(sorted);
         const auto endTime = std::chrono::high_resolution_clock::now();
-        printf("Parallel quick sort: Lowest: %g Highest: %g Time: %fms\n", sorted.begin(), sorted.end(),
-               std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+        // printf("Parallel quick sort: Lowest: %g Highest: %g Time: %fms\n", sorted.begin(), sorted.end(),
+        //    std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+        std::cout << "Begin: " << sorted.front() << " End: " << sorted.back() << " ";
+        print_results("Parallel quick sort", startTime, endTime);
     }
 }
 
@@ -146,7 +167,7 @@ void parallel_for_each_pt(Iterator first, Iterator last, Func f)
     join_threads joiner(threads);
 
     Iterator block_start = first;
-    for (unsigned long i = 0; i < = (num_threads - 2); i++) {
+    for (unsigned long i = 0; i <= (num_threads - 2); i++) {
         Iterator block_end = block_start;
         std::advance(block_end, block_size);
 
@@ -176,9 +197,61 @@ void parallel_for_each_async(Iterator first, Iterator last, Func f)
     }
 }
 
+void one_million_parallel_for()
+{
+    std::vector<int> ints(1000);
+    for (auto& i : ints) {
+        i = 1;
+    }
+    auto long_function = [](const int& n) {
+        int sum = 0;
+        for (auto i = 0; i < 100000; i++) {
+            sum += 1 * (i - 499);
+        }
+    };
+    auto startTime = std::chrono::high_resolution_clock::now();
+    std::for_each(ints.cbegin(), ints.cend(), long_function);
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("std::for_each ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    for_each(std::execution::seq, ints.cbegin(), ints.cend(), long_function);
+    endTime = std::chrono::high_resolution_clock::now();
+    // printf("STL-seq : start: %g end: %g Time: %fms\n", startTime, endTime,
+    //    std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("STL-seq : ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    std::for_each(std::execution::par, ints.cbegin(), ints.cend(), long_function);
+    endTime = std::chrono::high_resolution_clock::now();
+    // printf("STL-par : start: %g end: %g Time: %fms\n", startTime, endTime,
+    //        std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("STL-par : ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    parallel_for_each_pt(ints.cbegin(), ints.cend(), long_function);
+    endTime = std::chrono::high_resolution_clock::now();
+    // printf("Parallel package task : start: %g end: %g Time: %fms\n", startTime, endTime,
+    //        std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("Parallel package task : ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    parallel_for_each_async(ints.cbegin(), ints.cend(), long_function);
+    endTime = std::chrono::high_resolution_clock::now();
+    // printf("Parallel async : start: %g end: %g Time: %fms\n", startTime, endTime,
+    //        std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count());
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("Parallel async ", startTime, endTime);
+}
+
 int main()
 {
     one_million_sort();
     one_million_quick_sort();
+    one_million_parallel_for();
     return 0;
 }
