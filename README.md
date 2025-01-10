@@ -184,7 +184,8 @@ chapter 41. thread safe queue implementation -- commit e9a7229d2de88d36bb2d5fc9c
 Parallel/
 chapter 42. Parallel STL introduction -- commit bd71441fa3d8179085283d433d5eeba81cb7ce61
 chapter 43. Parallel quick sort implementation -- commit bd71441fa3d8179085283d433d5eeba81cb7ce61
-chapter 44. parallel for each -- commit 4956294fc223a1720932af9066f98fefa0989fd8
+chapter 44. parallel for each -- commit 74b6a99de22af256de8eb676259297246d9f8811
+chapter 45. parallel find algorithm
 ```
 
 # 现代 C++ 编程实战
