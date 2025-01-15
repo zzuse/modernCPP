@@ -185,7 +185,7 @@ Parallel/
 chapter 42. Parallel STL introduction -- commit bd71441fa3d8179085283d433d5eeba81cb7ce61
 chapter 43. Parallel quick sort implementation -- commit bd71441fa3d8179085283d433d5eeba81cb7ce61
 chapter 44. parallel for each -- commit 74b6a99de22af256de8eb676259297246d9f8811
-chapter 45. parallel find algorithm
+chapter 45. parallel find algorithm -- commit 4386f861b68ee0535b99e8c38756b316f15f2528
 ```
 
 # 现代 C++ 编程实战
