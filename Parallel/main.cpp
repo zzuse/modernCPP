@@ -137,7 +137,8 @@ void one_million_quick_sort()
         print_results("Serial quick sort", startTime, endTime);
     }
     for (int i = 0; i < iterationCount; ++i) {
-        // very slow alg
+        // very slow alg, simply return;
+        return;
         std::list<double> sorted(doubles);
         const auto startTime = std::chrono::high_resolution_clock::now();
         parallel_quick_sort(sorted);
@@ -301,9 +302,9 @@ Iterator parallel_find_async(Iterator first, Iterator last, MatchType match, std
         unsigned long const min_per_thread = 25;
 
         if (length < 2 * min_per_thread) {
-            for (; (first != last) && done_flag; ++first) {
+            for (; (first != last) && !std::atomic_load(done_flag); ++first) {
                 if (*first == match) {
-                    *done_flag = true;
+                    std::atomic_store(done_flag, true);
                     return first;
                 }
             }
@@ -317,7 +318,7 @@ Iterator parallel_find_async(Iterator first, Iterator last, MatchType match, std
         }
 
     } catch (const std::exception&) {
-        *done_flag = true;
+        std::atomic_store(done_flag, true);
         throw;
     }
 }
@@ -334,7 +335,32 @@ void one_million_parallel_find()
     parallel_find_pt(ints.begin(), ints.end(), looking_for);
     auto endTime = std::chrono::high_resolution_clock::now();
     std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
-    print_results("Parallel package task : ", startTime, endTime);
+    print_results("Parallel find future: ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    std::find(ints.begin(), ints.end(), looking_for);
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("STL sequential find: ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    std::find(std::execution::seq, ints.begin(), ints.end(), looking_for);
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("STL parallel-seq find: ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    std::find(std::execution::par, ints.begin(), ints.end(), looking_for);
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("STL parallel-par find: ", startTime, endTime);
+
+    std::atomic<bool> done_flag(false);
+    startTime = std::chrono::high_resolution_clock::now();
+    parallel_find_async(ints.begin(), ints.end(), looking_for, &done_flag);
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("Parallel find async: ", startTime, endTime);
 }
 
 int main()
