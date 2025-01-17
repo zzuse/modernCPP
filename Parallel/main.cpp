@@ -137,6 +137,7 @@ void one_million_quick_sort()
         print_results("Serial quick sort", startTime, endTime);
     }
     for (int i = 0; i < iterationCount; ++i) {
+        // very slow alg
         std::list<double> sorted(doubles);
         const auto startTime = std::chrono::high_resolution_clock::now();
         parallel_quick_sort(sorted);
@@ -292,10 +293,55 @@ Iterator parallel_find_pt(Iterator first, Iterator last, MatchType match)
     return result.get_future().get();
 }
 
+template <typename Iterator, typename MatchType>
+Iterator parallel_find_async(Iterator first, Iterator last, MatchType match, std::atomic<bool>* done_flag)
+{
+    try {
+        unsigned long const length = std::distance(first, last);
+        unsigned long const min_per_thread = 25;
+
+        if (length < 2 * min_per_thread) {
+            for (; (first != last) && done_flag; ++first) {
+                if (*first == match) {
+                    *done_flag = true;
+                    return first;
+                }
+            }
+            return last;
+        } else {
+            Iterator const mid_point = first + length / 2;
+            std::future<Iterator> async_result
+                = std::async(&parallel_find_async<Iterator, MatchType>, mid_point, last, match, std::ref(done_flag));
+            Iterator const direct_result = parallel_find_async(first, mid_point, match, done_flag);
+            return (direct_result == mid_point) ? async_result.get() : direct_result;
+        }
+
+    } catch (const std::exception&) {
+        *done_flag = true;
+        throw;
+    }
+}
+
+void one_million_parallel_find()
+{
+    std::vector<int> ints(testSize);
+    for (size_t i = 0; i < testSize; i++) {
+        ints[i] = i;
+    }
+    int looking_for = 5000000;
+
+    auto startTime = std::chrono::high_resolution_clock::now();
+    parallel_find_pt(ints.begin(), ints.end(), looking_for);
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("Parallel package task : ", startTime, endTime);
+}
+
 int main()
 {
     one_million_sort();
     one_million_quick_sort();
     one_million_parallel_for();
+    one_million_parallel_find();
     return 0;
 }
