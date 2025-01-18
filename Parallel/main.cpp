@@ -363,11 +363,56 @@ void one_million_parallel_find()
     print_results("Parallel find async: ", startTime, endTime);
 }
 
+template <typename Iterator, typename OutIterator>
+void sequential_partial_sum(Iterator first, Iterator last, OutIterator y)
+{
+    unsigned long const length = std::distance(first, last);
+    y[0] = first[0];
+    for (size_t i = 1; i < length; i++) {
+        y[i] = first[i] + y[i - 1];
+    }
+}
+
+void sum_ten_nums()
+{
+    std::vector<int> ints(10);
+    std::vector<int> outs(10);
+    for (size_t i = 0; i < ints.size(); i++) {
+        ints[i] = i;
+    }
+    auto startTime = std::chrono::high_resolution_clock::now();
+    sequential_partial_sum(ints.begin(), ints.end(), outs.begin());
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("sequential_partial_sum: ", startTime, endTime);
+
+    for (size_t i = 0; i < outs.size(); i++) {
+        std::cout << outs[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void one_million_sum_nums()
+{
+    std::vector<int> ints(testSize);
+    std::vector<int> outs(testSize);
+    for (auto& i : ints) {
+        i = 1;
+    }
+    auto startTime = std::chrono::high_resolution_clock::now();
+    std::inclusive_scan(ints.begin(), ints.end(), outs.begin());
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("inclusive_scan: ", startTime, endTime);
+}
+
 int main()
 {
     one_million_sort();
     one_million_quick_sort();
     one_million_parallel_for();
     one_million_parallel_find();
+    sum_ten_nums();
+    one_million_sum_nums();
     return 0;
 }
