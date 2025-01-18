@@ -403,7 +403,13 @@ void one_million_sum_nums()
     std::inclusive_scan(ints.begin(), ints.end(), outs.begin());
     auto endTime = std::chrono::high_resolution_clock::now();
     std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
-    print_results("inclusive_scan: ", startTime, endTime);
+    print_results("sequential inclusive_scan: ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    std::inclusive_scan(std::execution::par, ints.cbegin(), ints.cend(), outs.begin());
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("parallel inclusive_scan: ", startTime, endTime);
 }
 
 int main()
