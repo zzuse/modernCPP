@@ -390,7 +390,17 @@ void parallel_partial_sum(Iterator first, Iterator last)
                     auto addend = previous_end_value->get();
                     *last += addend;
                     if (end_value) {
+                        end_value->set_value(*last);
                     }
+                    std::for_each(begin, last, [addend](value_type& item) { item += addend; });
+                } else if (end_value) {
+                    end_value->set_value(*last);
+                }
+            } catch (...) {
+                if (end_value) {
+                    end_value->set_exception(std::current_exception());
+                } else {
+                    throw;
                 }
             }
         }
@@ -400,13 +410,15 @@ void parallel_partial_sum(Iterator first, Iterator last)
     if (!length) return;
 
     unsigned long const min_per_thread = 25;
-    unsigned long const max_thread = (length + min_per_thread - 1) / min_per_thread;
+    unsigned long const max_threads = (length + min_per_thread - 1) / min_per_thread;
     unsigned long const hardware_threads = std::thread::hardware_concurrency();
     unsigned long const num_threads = std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
     unsigned long const block_size = length / num_threads;
 
     std::vector<std::thread> threads(num_threads - 1);
+    // i == 0 future is 0, first block only have promise
     std::vector<std::promise<value_type>> end_values(num_threads - 1);
+    // last block only have future, promise = 0
     std::vector<std::future<value_type>> previous_end_values;
     previous_end_values.reserve(num_threads - 1);
 
@@ -416,12 +428,16 @@ void parallel_partial_sum(Iterator first, Iterator last)
     for (unsigned long i = 0; i < (num_threads - 1); ++i) {
         Iterator block_last = block_start;
         std::advance(block_last, block_size - 1);
-        threads[i] = std::thread(process_chunk(), block_start, block_last, (i != 0) ? &previous_end_value[i - 1] : 0,
+        threads[i] = std::thread(process_chunk(), block_start, block_last, (i != 0) ? &previous_end_values[i - 1] : 0,
                                  &end_values[i]);
         block_start = block_last;
         ++block_start;
         previous_end_values.push_back(end_values[i].get_future());
     }
+
+    Iterator final_element = block_start;
+    std::advance(final_element, std::distance(block_start, last) - 1);
+    process_chunk()(block_start, final_element, (num_threads > 1) ? &previous_end_values.back() : 0, 0);
 }
 
 void sum_ten_nums()
@@ -458,6 +474,12 @@ void one_million_sum_nums()
 
     startTime = std::chrono::high_resolution_clock::now();
     std::inclusive_scan(std::execution::par, ints.cbegin(), ints.cend(), outs.begin());
+    endTime = std::chrono::high_resolution_clock::now();
+    std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
+    print_results("parallel inclusive_scan: ", startTime, endTime);
+
+    startTime = std::chrono::high_resolution_clock::now();
+    parallel_partial_sum(ints.begin(), ints.end());
     endTime = std::chrono::high_resolution_clock::now();
     std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
     print_results("parallel inclusive_scan: ", startTime, endTime);
