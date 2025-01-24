@@ -482,7 +482,7 @@ void one_million_sum_nums()
     parallel_partial_sum(ints.begin(), ints.end());
     endTime = std::chrono::high_resolution_clock::now();
     std::cout << "Begin: " << ints.front() << " End: " << ints.back() << " ";
-    print_results("parallel inclusive_scan: ", startTime, endTime);
+    print_results("parallel parallel_partial_sum: ", startTime, endTime);
 }
 
 int main()
