@@ -188,7 +188,8 @@ chapter 44. parallel for each -- commit 74b6a99de22af256de8eb676259297246d9f8811
 chapter 45. parallel find algorithm -- commit 4386f861b68ee0535b99e8c38756b316f15f2528
 chapter 46. parallel find async -- commit 01a3660594a4825fc41761866927b64d0b246cf1
 chapter 47. Partial sum algorithm -- commit c8e7f7f22e3090272286dfade061a029eea31a13
-chapter 48. Partial sum parallel implementation
+chapter 48. Partial sum parallel implementation -- commit 99b8430987d44f64f47f1c5f6c7ab4cfe89ec423
+chapter 49. Introduction to Matrix
 ```
 
 # 现代 C++ 编程实战

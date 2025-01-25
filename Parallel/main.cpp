@@ -485,6 +485,41 @@ void one_million_sum_nums()
     print_results("parallel parallel_partial_sum: ", startTime, endTime);
 }
 
+class Matrix {
+    int* data;
+    int rows;
+    int columns;
+
+public:
+    // row major format
+    Matrix(int _n, int _m)
+        : rows(_n)
+        , columns(_m)
+    {
+        data = new int[rows * columns];
+        std::fill(data, data + rows * columns, 0);
+    }
+
+    void set_value(int i, int j, int value) { data[i * columns + j] = value; }
+
+    void set_all(int value) { std::fill(data, data + rows * columns, value); }
+
+    // index in results matrix: row = index/columns, column = index % rows
+    static void multiply(Matrix* x, Matrix* y, Matrix* results)
+    {
+        if (!(x->columns == y->rows) || !((x->rows == results->rows) && (y->columns == results->columns))) {
+            std::cout << "Error: Invalid dimension of matrix for multiplication" << std::endl;
+        }
+        int r = results->rows * results->columns;
+        for (size_t i = 0; i < r; i++) {
+            for (size_t j = 0; j < x->columns; j++) {
+                results->data[i]
+                    = x->data[(i / results->columns) * x->columns + j] * y->data[i % results->rows + j * y->columns];
+            }
+        }
+    }
+};
+
 int main()
 {
     one_million_sort();
