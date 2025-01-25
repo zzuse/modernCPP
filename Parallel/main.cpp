@@ -504,7 +504,7 @@ public:
 
     void set_all(int value) { std::fill(data, data + rows * columns, value); }
 
-    // index in results matrix: row = index/columns, column = index % rows
+    // index in results matrix: row = index/columns, column = index % columns
     static void multiply(Matrix* x, Matrix* y, Matrix* results)
     {
         if (!(x->columns == y->rows) || !((x->rows == results->rows) && (y->columns == results->columns))) {
@@ -513,12 +513,36 @@ public:
         int r = results->rows * results->columns;
         for (size_t i = 0; i < r; i++) {
             for (size_t j = 0; j < x->columns; j++) {
-                results->data[i]
-                    = x->data[(i / results->columns) * x->columns + j] * y->data[i % results->rows + j * y->columns];
+                results->data[i] += x->data[(i / results->columns) * x->columns + j]
+                                    * y->data[i % results->columns + j * y->columns];
             }
         }
     }
+
+    void print()
+    {
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < columns; i++) {
+                std::cout << data[0] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
 };
+
+void showMatrix()
+{
+    Matrix A(3, 4);
+    Matrix B(4, 5);
+    Matrix results(3, 5);
+
+    A.set_all(1);
+    B.set_all(1);
+
+    Matrix::multiply(&A, &B, &results);
+
+    results.print();
+}
 
 int main()
 {
@@ -528,5 +552,6 @@ int main()
     one_million_parallel_find();
     sum_ten_nums();
     one_million_sum_nums();
+    showMatrix();
     return 0;
 }
