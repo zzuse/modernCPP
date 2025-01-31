@@ -536,7 +536,7 @@ public:
         int length = results->rows * results->columns;
         if (!length) return;
 
-        unsigned long const min_per_thread = 10000;
+        unsigned long const min_per_thread = 1000;
         unsigned long const max_threads = (length + min_per_thread - 1) / min_per_thread;
         unsigned long const hardware_threads = std::thread::hardware_concurrency();
         unsigned long const num_threads = std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
@@ -554,7 +554,7 @@ public:
                 threads[i] = std::thread(process_data_chunk(), x, y, results, block_start, block_end);
             }
 
-            process_data_chunk()(results, x, y, block_end, length);
+            process_data_chunk()(x, y, results, block_end, length);
         }
     }
 
@@ -578,11 +578,11 @@ void showMatrix()
 
     A.set_all(1);
     B.set_all(1);
-
     Matrix::multiply(&A, &B, &results);
     Matrix::parallel_multiply(&A, &B, &results_parallel);
 
     results.print();
+    std::cout << std::endl;
     results_parallel.print();
 }
 
