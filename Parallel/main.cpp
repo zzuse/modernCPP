@@ -519,6 +519,45 @@ public:
         }
     }
 
+    static void parallel_multiply(Matrix* x, Matrix* y, Matrix* results)
+    {
+        struct process_data_chunk {
+            void operator()(Matrix* x, Matrix* y, Matrix* results, int start_index, int end_index)
+            {
+                for (size_t i = start_index; i < end_index; i++) {
+                    for (size_t j = 0; j < x->columns; j++) {
+                        results->data[i] += x->data[(i / results->columns) * x->columns + j]
+                                            * y->data[i % results->columns + j * y->columns];
+                    }
+                }
+            }
+        };
+
+        int length = results->rows * results->columns;
+        if (!length) return;
+
+        unsigned long const min_per_thread = 10000;
+        unsigned long const max_threads = (length + min_per_thread - 1) / min_per_thread;
+        unsigned long const hardware_threads = std::thread::hardware_concurrency();
+        unsigned long const num_threads = std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
+        unsigned long const block_size = length / num_threads;
+
+        std::vector<std::thread> threads(num_threads - 1);
+        int block_start = 0;
+        int block_end = 0;
+
+        {
+            join_threads join(threads);
+            for (unsigned long i = 0; i < (num_threads - 1); i++) {
+                block_start = i * block_size;
+                block_end = block_start + block_size;
+                threads[i] = std::thread(process_data_chunk(), x, y, results, block_start, block_end);
+            }
+
+            process_data_chunk()(results, x, y, block_end, length);
+        }
+    }
+
     void print()
     {
         for (int j = 0; j < rows; j++) {
@@ -535,13 +574,16 @@ void showMatrix()
     Matrix A(3, 4);
     Matrix B(4, 5);
     Matrix results(3, 5);
+    Matrix results_parallel(3, 5);
 
     A.set_all(1);
     B.set_all(1);
 
     Matrix::multiply(&A, &B, &results);
+    Matrix::parallel_multiply(&A, &B, &results_parallel);
 
     results.print();
+    results_parallel.print();
 }
 
 int main()
