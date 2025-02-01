@@ -558,6 +558,48 @@ public:
         }
     }
 
+    static void transpose(Matrix* x, Matrix* results)
+    {
+        if (!((x->columns == results->rows) && (x->rows == results->columns))) {
+            std::cout << " Error : Invalid matrix sizes for transpose \n";
+            return;
+        }
+        int r = results->rows * results->columns;
+        int result_column = 0;
+        int result_row = 0;
+        int input_column = 0;
+        int input_row = 0;
+
+        for (size_t i = 0; i < r; i++) {
+            result_row = i / results->columns;
+            result_column = i % results->columns;
+            input_row = result_column;
+            input_column = result_row;
+            results->data[i] = x->data[input_row * x->columns + input_column];
+        }
+    }
+
+    static void parallel_transpose(Matrix* x, Matrix* results)
+    {
+        struct process_data_truck {
+            void operator()(Matrix* results, Matrix* x, int start_index, int end_index)
+            {
+                int result_column = 0;
+                int result_row = 0;
+                int input_column = 0;
+                int input_row = 0;
+
+                for (size_t i = start_index; i < end_index; i++) {
+                    result_row = i / results->columns;
+                    result_column = i % results->columns;
+                    input_row = result_column;
+                    input_column = result_row;
+                    results->data[i] = x->data[input_row * x->columns + input_column];
+                }
+            }
+        };
+    }
+
     void print()
     {
         for (int j = 0; j < rows; j++) {
