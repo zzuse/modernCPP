@@ -581,7 +581,7 @@ public:
 
     static void parallel_transpose(Matrix* x, Matrix* results)
     {
-        struct process_data_truck {
+        struct process_data_chunk {
             void operator()(Matrix* results, Matrix* x, int start_index, int end_index)
             {
                 int result_column = 0;
@@ -598,6 +598,33 @@ public:
                 }
             }
         };
+        if (!((x->columns == results->rows) && (x->rows == results->columns))) {
+            std::cout << " Error : Invalid matrix sizes for transpose \n";
+            return;
+        }
+        int length = results->rows * results->columns;
+        if (!length) return;
+
+        unsigned long const min_per_thread = 1000;
+        unsigned long const max_threads = (length + min_per_thread - 1) / min_per_thread;
+        unsigned long const hardware_threads = std::thread::hardware_concurrency();
+        unsigned long const num_threads = std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
+        unsigned long const block_size = length / num_threads;
+
+        std::vector<std::thread> threads(num_threads - 1);
+        int block_start = 0;
+        int block_end = 0;
+
+        {
+            join_threads join(threads);
+            for (unsigned long i = 0; i < (num_threads - 1); i++) {
+                block_start = i * block_size;
+                block_end = block_start + block_size;
+                threads[i] = std::thread(process_data_chunk(), results, x, block_start, block_end);
+            }
+
+            process_data_chunk()(results, x, block_end, length);
+        }
     }
 
     void print()
@@ -617,15 +644,25 @@ void showMatrix()
     Matrix B(4, 5);
     Matrix results(3, 5);
     Matrix results_parallel(3, 5);
+    Matrix T_A(4, 3);
+    Matrix T_B(5, 4);
 
     A.set_all(1);
     B.set_all(1);
     Matrix::multiply(&A, &B, &results);
     Matrix::parallel_multiply(&A, &B, &results_parallel);
 
+    Matrix::transpose(&A, &T_A);
+    Matrix::parallel_transpose(&B, &T_B);
+
     results.print();
     std::cout << std::endl;
     results_parallel.print();
+    std::cout << std::endl;
+
+    T_A.print();
+    std::cout << std::endl;
+    T_B.print();
 }
 
 int main()
