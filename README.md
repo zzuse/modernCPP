@@ -193,6 +193,8 @@ chapter 49. Introduction to Matrix -- commit 48e8551f5e6d0612b3ffc839450ef943267
 chapter 50. Parallel Matrix multiplication -- commit c1806ff37014a622a75c681271d1913c8a81dd60
 chapter 51. Parallel matrix transpose -- commit 56ca91b3d6daf7765220bf55858c2e0fea2e6f1e
 CPP20ConCurrency/
+chapter 53. Jthread -- commit cf6598298997796e28ce5d9d7860fe5932e70671
+chapter 54. Jthread own implementation
 ```
 
 # 现代 C++ 编程实战
