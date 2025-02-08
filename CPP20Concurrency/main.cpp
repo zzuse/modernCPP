@@ -1,13 +1,14 @@
 // INSTALL: sudo port install gcc13
 // COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp
 // jthread only supported by gcc
+#include <future>
 #include <iostream>
 #include <thread>
 using namespace ::std::literals;
 
 void do_some_work() { std::cout << "Do some work \n" << std::endl; }
 
-void do_some_thing(std::stop_token token)
+void do_some_thing1(std::stop_token token)
 {
     int counter{0};
     while (counter < 10) {
@@ -15,7 +16,7 @@ void do_some_thing(std::stop_token token)
             return;
         }
         std::this_thread::sleep_for(0.2s);
-        std::cerr << "This is interruptible thread: " << counter << std::endl;
+        std::cerr << "This is interruptible thread: " << std::this_thread::get_id() << counter << std::endl;
         ++counter;
     }
 }
@@ -25,7 +26,7 @@ void do_something_else()
     int counter{0};
     while (counter < 10) {
         std::this_thread::sleep_for(0.2s);
-        std::cerr << "This is non-interruptible thread : " << counter << std::endl;
+        std::cerr << "This is non-interruptible thread : " << std::this_thread::get_id() << counter << std::endl;
         ++counter;
     }
 }
@@ -61,13 +62,39 @@ public:
     }
 };
 
+bool interrupt_point()
+{
+    if (this_thread_flag.is_set()) return true;
+    return false;
+}
+
+void do_some_thing2()
+{
+    int counter{0};
+    while (counter < 10) {
+        if (interrupt_point()) {
+            return;
+        }
+        std::this_thread::sleep_for(0.2s);
+        std::cerr << "This is interruptible thread: " << std::this_thread::get_id() << counter << std::endl;
+        ++counter;
+    }
+}
+
 int main()
 {
     std::jthread thread1(do_some_work);
-    std::jthread nonInterruptable(do_something_else);
-    std::jthread interruptable(do_some_thing);
+    std::jthread nonInterruptable1(do_something_else);
+    std::jthread interruptable1(do_some_thing1);
     std::this_thread::sleep_for(1.0s);
-    interruptable.request_stop();
-    nonInterruptable.request_stop();
+    interruptable1.request_stop();
+    nonInterruptable1.request_stop();
+
+    std::cout << std::endl;
+    jthread_local nonInterruptable2(do_something_else);
+    jthread_local interruptable2(do_some_thing2);
+    interruptable2.interrupt();
+    nonInterruptable2.interrupt();
+
     return 0;
 }
