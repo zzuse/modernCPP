@@ -1,6 +1,7 @@
 // INSTALL: sudo port install gcc13
-// COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -o main main.cpp
+// COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -fcoroutines -pthread -o main main.cpp
 // jthread only supported by gcc
+#include <coroutine>
 #include <future>
 #include <iostream>
 #include <thread>
@@ -81,6 +82,15 @@ void do_some_thing2()
     }
 }
 
+resumable foo()
+{
+    std::cout << "a" << std::endl;
+    co_await std::suspend_always();
+    std::cout << "b" << std::endl;
+    co_await std::suspend_always();
+    std::cout << "c" << std::endl;
+}
+
 int main()
 {
     std::jthread thread1(do_some_work);
@@ -96,5 +106,7 @@ int main()
     interruptable2.interrupt();
     nonInterruptable2.interrupt();
 
+    resumable res1 = foo();
+    res1.resume();
     return 0;
 }
