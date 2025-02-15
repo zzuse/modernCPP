@@ -1,7 +1,10 @@
 // INSTALL: sudo port install gcc13
 // COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -fcoroutines -pthread -o main main.cpp
 // jthread only supported by gcc
+#include <atomic>
+#include <condition_variable>
 #include <coroutine>
+#include <functional>
 #include <future>
 #include <iostream>
 #include <thread>
@@ -180,6 +183,75 @@ Generator<int> getNext(int start = 0, int step = 1) noexcept
     }
 }
 
+class barrier_spin {
+    unsigned const thresh_hold;
+    std::atomic<unsigned> count;
+    std::atomic<unsigned> generation;
+
+public:
+    explicit barrier_spin(unsigned _thresh_hold)
+        : thresh_hold(_thresh_hold)
+        , count(_thresh_hold)
+        , generation(0)
+    {
+    }
+
+    void wait()
+    {
+        unsigned const my_generation = generation;
+        if (!--count) {
+            count = thresh_hold;
+            ++generation;
+        } else {
+            while (generation == my_generation) std::this_thread::yield();
+        }
+    }
+};
+
+void func(barrier_spin& cur_barier, std::atomic<int>& counter)
+{
+    ++counter;
+    cur_barier.wait();
+    std::cout << "Current value after barrier: " << counter << "\n";
+}
+
+class barrier_cond {
+public:
+    explicit barrier_cond(std::size_t iCount)
+        : mThreshold(iCount)
+        , mCount(iCount)
+        , mGeneration(0)
+    {
+    }
+
+    void wait()
+    {
+        std::unique_lock<std::mutex> lLock{mMutex};
+        auto lGen = mGeneration;
+        if (!--mCount) {
+            mGeneration++;
+            mCount = mThreshold;
+            mCond.notify_all();
+        } else {
+            mCond.wait(lLock, [this, lGen] { return lGen != mGeneration; });
+        }
+    }
+
+private:
+    std::mutex mMutex;
+    std::condition_variable mCond;
+    std::size_t mThreshold;
+    std::size_t mCount;
+    std::size_t mGeneration;
+};
+
+void func_cond(barrier_cond& cur_barier, std::atomic<int>& counter)
+{
+    ++counter;
+    cur_barier.wait();
+    std::cout << "Current value after barrier cond: " << counter << "\n";
+}
+
 int main()
 {
     std::jthread thread1(do_some_work);
@@ -221,12 +293,23 @@ int main()
     }
 
     barrier_spin bar(3);
-    atomic<int> current(0);
-    thread thr1(bind(&func, ref(bar), ref(current)));
-    thread thr2(bind(&func, ref(bar), ref(current)));
-    thread thr3(bind(&func, ref(bar), ref(current)));
+    std::atomic<int> current(0);
+    std::thread thr1(std::bind(&func, std::ref(bar), std::ref(current)));
+    std::thread thr2(std::bind(&func, std::ref(bar), std::ref(current)));
+    std::thread thr3(std::bind(&func, std::ref(bar), std::ref(current)));
     thr1.join();
     thr2.join();
     thr3.join();
+
+    std::cout << std::endl;
+
+    barrier_cond bar_cond(3);
+    std::atomic<int> current_cond(0);
+    std::thread thr4(std::bind(&func_cond, std::ref(bar_cond), std::ref(current_cond)));
+    std::thread thr5(std::bind(&func_cond, std::ref(bar_cond), std::ref(current_cond)));
+    std::thread thr6(std::bind(&func_cond, std::ref(bar_cond), std::ref(current_cond)));
+    thr4.join();
+    thr5.join();
+    thr6.join();
     return 0;
 }
