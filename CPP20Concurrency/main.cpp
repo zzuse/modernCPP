@@ -219,5 +219,14 @@ int main()
         gen2.next();
         std::cout << " " << gen2.getValue();
     }
+
+    barrier_spin bar(3);
+    atomic<int> current(0);
+    thread thr1(bind(&func, ref(bar), ref(current)));
+    thread thr2(bind(&func, ref(bar), ref(current)));
+    thread thr3(bind(&func, ref(bar), ref(current)));
+    thr1.join();
+    thr2.join();
+    thr3.join();
     return 0;
 }
