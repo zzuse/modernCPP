@@ -197,7 +197,10 @@ chapter 53. Jthread -- commit cf6598298997796e28ce5d9d7860fe5932e70671
 chapter 54. Jthread own implementation -- commit 616282beb3b5b89c21b79eacb03ed5e78998fa5f
 chapter 55. C++ coroutines -- commit a82187cd4ac3b306b35c1017da2931cad3a98386
 chapter 57. C++ coroutines Generators -- commit 62ceaa61a0df167f5b1cb464c018aa5e7410af73
-chapter 58. C++ Barriers
+chapter 58. C++ Barriers -- commit 64abcfeb8d31abee8db1b273dbccc3b482081f9a
+MemAtomic/
+chapter 60. atomic_flag
+
 ```
 
 # 现代 C++ 编程实战
