@@ -30,6 +30,19 @@ void run_bool()
     std::cout << "flag 4 = " << flag_4 << std::endl;
     std::atomic<bool> flag_5 = non_atomic_bool;
     std::cout << "flag 5 = " << flag_5 << std::endl;
+
+    std::atomic<bool> x(false);
+    std::cout << "atomic boolean is implemented lock free - " << (x.is_lock_free() ? "yes" : "no") << std::endl;
+
+    std::atomic<bool> y(true);
+
+    x.store(false);
+    x.store(y);
+
+    std::cout << "value of the atomic bool y - " << y.load() << std::endl;
+    bool z = x.exchange(false);
+    std::cout << "current value of atomic bool x - " << x.load() << std::endl;
+    std::cout << "previous value of atomic bool x - " << z << std::endl;
 }
 
 int main()
