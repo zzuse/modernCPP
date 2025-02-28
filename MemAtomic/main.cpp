@@ -6,7 +6,7 @@
 #include <thread>
 #include <vector>
 
-void run_code()
+void run_flag()
 {
     std::atomic_flag flag1 = true;
     std::atomic_flag flag2 = ATOMIC_FLAG_INIT;
@@ -16,8 +16,25 @@ void run_code()
     std::cout << "3. previous flag value: " << flag2.test_and_set() << std::endl;
 }
 
+void run_bool()
+{
+    std::atomic<bool> flag_1;
+    std::cout << "flag 1 = " << flag_1 << std::endl;
+
+    // not compile because atomic_bool is not copyable and not assignable
+    // std::atomic<bool> flag_2(flag_1);
+    // std::atomic<bool> flag_3 = flag_1;
+
+    bool non_atomic_bool = true;
+    std::atomic<bool> flag_4(non_atomic_bool);
+    std::cout << "flag 4 = " << flag_4 << std::endl;
+    std::atomic<bool> flag_5 = non_atomic_bool;
+    std::cout << "flag 5 = " << flag_5 << std::endl;
+}
+
 int main()
 {
-    run_code();
+    run_flag();
+    run_bool();
     return 0;
 }

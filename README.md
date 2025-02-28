@@ -199,7 +199,8 @@ chapter 55. C++ coroutines -- commit a82187cd4ac3b306b35c1017da2931cad3a98386
 chapter 57. C++ coroutines Generators -- commit 62ceaa61a0df167f5b1cb464c018aa5e7410af73
 chapter 58. C++ Barriers -- commit 64abcfeb8d31abee8db1b273dbccc3b482081f9a
 MemAtomic/
-chapter 60. atomic_flag
+chapter 60. atomic_flag -- commit 538d75ea47bfb835da1a06d5ec5aa47f9fa678b4
+chapter 61. atomic_bool
 
 ```
 
