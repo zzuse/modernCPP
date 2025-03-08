@@ -87,8 +87,22 @@ void run_atomic_pointer()
     std::cout << "new value pointer by atomic pointer : " << *x_pointer << std::endl;
 }
 
-void reader_func() {}
-void writer_func() {}
+std::atomic<bool> data_ready = false;
+std::vector<int> data_vector;
+void reader_func()
+{
+    while (!data_ready) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    std::cout << "ready" << std::endl;
+    std::cout << data_vector[0] << std::endl;
+}
+void writer_func()
+{
+    data_vector.push_back(3);
+    std::cout << "not ready" << std::endl;
+    data_ready.store(true);
+}
 
 void run_happen_before()
 {
