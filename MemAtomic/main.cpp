@@ -2,6 +2,7 @@
 // COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -fcoroutines -pthread -o main main.cpp
 // jthread only supported by gcc
 #include <atomic>
+#include <chrono>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -86,11 +87,24 @@ void run_atomic_pointer()
     std::cout << "new value pointer by atomic pointer : " << *x_pointer << std::endl;
 }
 
+void reader_func() {}
+void writer_func() {}
+
+void run_happen_before()
+{
+    std::thread reader_thread(reader_func);
+    std::thread writer_thread(writer_func);
+
+    reader_thread.join();
+    writer_thread.join();
+}
+
 int main()
 {
     run_flag();
     run_bool();
     run_compare_exchange();
     run_atomic_pointer();
+    run_happen_before();
     return 0;
 }
