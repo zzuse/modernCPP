@@ -1,6 +1,7 @@
 // INSTALL: sudo port install gcc13
 // COMPILE: /opt/local/bin/g++-mp-13 -std=c++20 -fcoroutines -pthread -o main main.cpp
 // jthread only supported by gcc
+#include <assert.h>
 #include <atomic>
 #include <chrono>
 #include <iostream>
@@ -113,6 +114,61 @@ void run_happen_before()
     writer_thread.join();
 }
 
+void run_mem_order()
+{
+    std::atomic<int> x;
+    x.store(5, std::memory_order_seq_cst);
+    x.store(10, std::memory_order_release);
+    x.load(std::memory_order_acquire);
+
+    int value = 11;
+    bool ret_val = x.compare_exchange_weak(value, 13, std::memory_order_release, std::memory_order_relaxed);
+}
+
+std::atomic<bool> x, y;
+std::atomic<int> z;
+void write_x() { x.store(true, std::memory_order_seq_cst); }
+void write_y() { y.store(true, std::memory_order_seq_cst); }
+void read_x_then_y()
+{
+    // loop until x is true
+    while (!x.load(std::memory_order_seq_cst));
+
+    // check wether y is true
+    if (y.load(std::memory_order_seq_cst)) {
+        z++;
+    }
+}
+void read_y_then_x()
+{
+    // loop until y is true
+    while (!y.load(std::memory_order_seq_cst));
+
+    // check wether x is true
+    if (x.load(std::memory_order_seq_cst)) {
+        z++;
+    }
+}
+
+void run_memory_order_seq_cst()
+{
+    x = false;
+    y = false;
+    z = 0;
+    std::thread thread_a(write_x);
+    std::thread thread_b(write_y);
+    std::thread thread_c(read_x_then_y);
+    std::thread thread_d(read_y_then_x);
+
+    thread_a.join();
+    thread_b.join();
+    thread_c.join();
+    thread_d.join();
+
+    assert(z != 0);
+    std::cout << z << std::endl;
+}
+
 int main()
 {
     run_flag();
@@ -120,5 +176,7 @@ int main()
     run_compare_exchange();
     run_atomic_pointer();
     run_happen_before();
+    run_mem_order();
+    run_memory_order_seq_cst();
     return 0;
 }
