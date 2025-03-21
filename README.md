@@ -204,8 +204,9 @@ chapter 61. atomic_bool -- commit 68b0183ab729361d543d30a46f10f1e2308d63d7
 chapter 62. compare_exchange -- commit 6f425e325946eaea763de14fe47eed064f60d8a5
 chapter 63. atomic pointers -- commit 7a6b09affc8d924d56f0aa6f49b6dc9777be48ec
 chapter 65. happen before relation -- commit 95aa34e4a5f17454c37273c6dd83695ed0624775
-chapter 66. memory ordering options
-chapter 67. memory_order_seq_cst
+chapter 66. memory ordering options -- commit c208e352e90fd978704aec52e7503377b6e38192
+chapter 67. memory_order_seq_cst -- commit c208e352e90fd978704aec52e7503377b6e38192
+chapter 69. memory_order_relaxed -- 
 
 ```
 

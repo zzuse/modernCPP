@@ -125,48 +125,81 @@ void run_mem_order()
     bool ret_val = x.compare_exchange_weak(value, 13, std::memory_order_release, std::memory_order_relaxed);
 }
 
-std::atomic<bool> x, y;
-std::atomic<int> z;
-void write_x() { x.store(true, std::memory_order_seq_cst); }
-void write_y() { y.store(true, std::memory_order_seq_cst); }
-void read_x_then_y()
+std::atomic<bool> x_0, y_0;
+std::atomic<int> z_0;
+void write_x0() { x_0.store(true, std::memory_order_seq_cst); }
+void write_y0() { y_0.store(true, std::memory_order_seq_cst); }
+void read_x0_then_y0()
 {
     // loop until x is true
-    while (!x.load(std::memory_order_seq_cst));
+    while (!x_0.load(std::memory_order_seq_cst));
 
     // check wether y is true
-    if (y.load(std::memory_order_seq_cst)) {
-        z++;
+    if (y_0.load(std::memory_order_seq_cst)) {
+        z_0++;
     }
 }
-void read_y_then_x()
+void read_y0_then_x0()
 {
     // loop until y is true
-    while (!y.load(std::memory_order_seq_cst));
+    while (!y_0.load(std::memory_order_seq_cst));
 
     // check wether x is true
-    if (x.load(std::memory_order_seq_cst)) {
-        z++;
+    if (x_0.load(std::memory_order_seq_cst)) {
+        z_0++;
     }
 }
 
 void run_memory_order_seq_cst()
 {
-    x = false;
-    y = false;
-    z = 0;
-    std::thread thread_a(write_x);
-    std::thread thread_b(write_y);
-    std::thread thread_c(read_x_then_y);
-    std::thread thread_d(read_y_then_x);
+    x_0 = false;
+    y_0 = false;
+    z_0 = 0;
+    std::thread thread_a(write_x0);
+    std::thread thread_b(write_y0);
+    std::thread thread_c(read_x0_then_y0);
+    std::thread thread_d(read_y0_then_x0);
 
     thread_a.join();
     thread_b.join();
     thread_c.join();
     thread_d.join();
 
-    assert(z != 0);
-    std::cout << z << std::endl;
+    assert(z_0 != 0);
+    std::cout << z_0 << std::endl;
+}
+
+std::atomic<bool> x_1, y_1;
+std::atomic<int> z_1;
+
+void write_x1_then_y1()
+{
+    x_1.store(true, std::memory_order_relaxed);
+    y_1.store(true, std::memory_order_relaxed);
+}
+
+void read_y1_then_x1()
+{
+    while (!y_1.load(std::memory_order_relaxed));
+    if (x_1.load(std::memory_order_relaxed)) {
+        z_1++;
+    }
+}
+
+void run_memory_order_relaxed()
+{
+    x_1 = false;
+    y_1 = false;
+    z_1 = 0;
+
+    std::thread writer_thread(write_x1_then_y1);
+    std::thread reader_thread(read_y1_then_x1);
+
+    writer_thread.join();
+    reader_thread.join();
+    // it may fire not sure
+    assert(z_1 != 0);
+    std::cout << z_1 << std::endl;
 }
 
 int main()
@@ -178,5 +211,6 @@ int main()
     run_happen_before();
     run_mem_order();
     run_memory_order_seq_cst();
+    run_memory_order_relaxed();
     return 0;
 }
