@@ -202,6 +202,39 @@ void run_memory_order_relaxed()
     std::cout << z_1 << std::endl;
 }
 
+std::atomic<bool> x_2, y_2;
+std::atomic<int> z_2;
+
+void write_x2_then_y2()
+{
+    x_2.store(true, std::memory_order_relaxed);
+    y_2.store(true, std::memory_order_release);
+}
+
+void read_y2_then_x2()
+{
+    while (!y_2.load(std::memory_order_acquire));
+    if (x_2.load(std::memory_order_relaxed)) {
+        z_2++;
+    }
+}
+
+void run_memory_order_release()
+{
+    x_2 = false;
+    y_2 = false;
+    z_2 = 0;
+
+    std::thread writer_thread(write_x2_then_y2);
+    std::thread reader_thread(read_y2_then_x2);
+
+    writer_thread.join();
+    reader_thread.join();
+
+    assert(z_2 != 0);
+    std::cout << z_2 << std::endl;
+}
+
 int main()
 {
     run_flag();
@@ -212,5 +245,6 @@ int main()
     run_mem_order();
     run_memory_order_seq_cst();
     run_memory_order_relaxed();
+    run_memory_order_release();
     return 0;
 }
