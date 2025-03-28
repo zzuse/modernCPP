@@ -206,7 +206,8 @@ chapter 63. atomic pointers -- commit 7a6b09affc8d924d56f0aa6f49b6dc9777be48ec
 chapter 65. happen before relation -- commit 95aa34e4a5f17454c37273c6dd83695ed0624775
 chapter 66. memory ordering options -- commit c208e352e90fd978704aec52e7503377b6e38192
 chapter 67. memory_order_seq_cst -- commit c208e352e90fd978704aec52e7503377b6e38192
-chapter 69. memory_order_relaxed -- 
+chapter 69. memory_order_relaxed -- commit c024ba73d95da1665dfc02368b0f8c86716e25ac
+chapter 70. memory_order_acquire and memory_order_release
 
 ```
 

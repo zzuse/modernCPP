@@ -235,6 +235,52 @@ void run_memory_order_release()
     std::cout << z_2 << std::endl;
 }
 
+std::atomic<bool> x_3, y_3;
+std::atomic<int> z_3;
+
+void write_x3() { x_3.store(true, std::memory_order_release); }
+
+void write_y3() { y_3.store(true, std::memory_order_release); }
+
+void read_x3_then_y3()
+{
+    while (!x_3.load(std::memory_order_acquire));
+
+    if (y_3.load(std::memory_order_acquire)) {
+        z_3++;
+    }
+}
+
+void read_y3_then_x3()
+{
+    while (!y_3.load(std::memory_order_acquire));
+
+    if (x_3.load(std::memory_order_acquire)) {
+        z_3++;
+    }
+}
+
+void run_memory_order_release_acquire()
+{
+
+    x_3 = false;
+    y_3 = false;
+    z_3 = 0;
+
+    std::thread thread_a(write_x3);
+    std::thread thread_b(write_y3);
+    std::thread thread_c(read_x3_then_y3);
+    std::thread thread_d(read_y3_then_x3);
+
+    thread_a.join();
+    thread_b.join();
+    thread_c.join();
+    thread_d.join();
+
+    assert(z_3 != 0);
+    std::cout << z_3 << std::endl;
+}
+
 int main()
 {
     run_flag();
@@ -246,5 +292,6 @@ int main()
     run_memory_order_seq_cst();
     run_memory_order_relaxed();
     run_memory_order_release();
+    run_memory_order_release_acquire();
     return 0;
 }
