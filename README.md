@@ -207,7 +207,8 @@ chapter 65. happen before relation -- commit 95aa34e4a5f17454c37273c6dd83695ed06
 chapter 66. memory ordering options -- commit c208e352e90fd978704aec52e7503377b6e38192
 chapter 67. memory_order_seq_cst -- commit c208e352e90fd978704aec52e7503377b6e38192
 chapter 69. memory_order_relaxed -- commit c024ba73d95da1665dfc02368b0f8c86716e25ac
-chapter 70. memory_order_acquire and memory_order_release
+chapter 70. memory_order_acquire and memory_order_release -- commit 8e96eaa1a82c8ae246e429b7500a17b9d0b3e557
+chapter 71. transitive synchronization
 
 ```
 
