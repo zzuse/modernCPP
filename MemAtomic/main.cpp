@@ -120,6 +120,7 @@ void run_mem_order()
        memory_order_seq_cst make sure different thread have same view of order
        memory_order_release and memory_order_acquire make sure thread release happen before thread acquire
        memory_order_relaxed make sure in the same thread have same order
+       memory_order_consume is a special case of memory_order_acquire, depend operand relation of memory_order_release
     */
     std::atomic<int> x;
     x.store(5, std::memory_order_seq_cst);
@@ -328,6 +329,42 @@ void run_transitive_sync()
     thread_3.join();
 }
 
+struct OPE {
+    int i;
+    std::string s;
+};
+
+std::atomic<OPE*> p;
+std::atomic<int> a;
+
+void create_ope()
+{
+    OPE* o = new OPE;
+    o->i = 42;
+    o->s = "hello";
+    a.store(20, std::memory_order_relaxed);
+    p.store(o, std::memory_order_release);
+}
+
+void use_ope()
+{
+    OPE* o;
+    while (!(o = p.load(std::memory_order_consume)));
+    assert(o->i == 42);
+    assert(o->s == "hello");
+    // not guaranty a equal 20
+    assert(a.load(std::memory_order_relaxed) == 20);
+    std::cout << o->s << std::endl;
+}
+
+void run_carries_a_dependency()
+{
+    std::thread thread_1(create_ope);
+    std::thread thread_2(use_ope);
+    thread_1.join();
+    thread_2.join();
+}
+
 int main()
 {
     run_flag();
@@ -341,5 +378,6 @@ int main()
     run_memory_order_release();
     run_memory_order_release_acquire();
     run_transitive_sync();
+    run_carries_a_dependency();
     return 0;
 }
