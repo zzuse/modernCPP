@@ -5,6 +5,7 @@
 #include <atomic>
 #include <chrono>
 #include <iostream>
+#include <queue>
 #include <thread>
 #include <vector>
 
@@ -365,6 +366,54 @@ void run_carries_a_dependency()
     thread_2.join();
 }
 
+std::atomic<int> count;
+std::queue<int> data_queue;
+int max_count = 20;
+
+void writer_queue()
+{
+    for (int i = 0; i < 20; i++) {
+        data_queue.push(i);
+    }
+    count.store(20, std::memory_order_release);
+}
+
+void reader_queue()
+{
+    int item_index = 0;
+    while (true) {
+        // count.fetch_sub(1, std::memory_order_acquire) operation atomically decrements the value of count by 1.
+        // This ensures that the decrement operation is thread-safe, meaning multiple threads can safely modify count
+        // without causing data races.
+        // The loop ensures that threads only proceed when there are items available (count > 0). If no items are
+        // available (count <= 0), the thread sleeps briefly 500ms before retrying.
+        // if (!(item_index = count.fetch_sub(1, std::memory_order_acquire) <= 0)) {
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        //     // std::cout << item_index << std::endl;
+        //     continue;
+        // }
+        int current_count = count.fetch_sub(1, std::memory_order_acquire);
+        if (current_count <= 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            break;
+        }
+        item_index = current_count;
+        std::cout << item_index << std::endl;
+        // process the item
+    }
+}
+
+void run_release_sequence()
+{
+    std::thread writer_thread(writer_queue);
+    std::thread reader_thread1(reader_queue);
+    std::thread reader_thread2(reader_queue);
+
+    writer_thread.join();
+    reader_thread1.join();
+    reader_thread2.join();
+}
+
 int main()
 {
     run_flag();
@@ -379,5 +428,6 @@ int main()
     run_memory_order_release_acquire();
     run_transitive_sync();
     run_carries_a_dependency();
+    run_release_sequence();
     return 0;
 }
