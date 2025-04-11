@@ -414,6 +414,34 @@ void run_release_sequence()
     reader_thread2.join();
 }
 
+class spinlock_mutex {
+    std::atomic_flag flag = ATOMIC_FLAG_INIT;
+
+public:
+    spinlock_mutex() {}
+
+    void lock() { while (flag.test_and_set(std::memory_order_acquire)); }
+    void unlock() { flag.clear(std::memory_order_release); }
+};
+
+spinlock_mutex mutex;
+
+void spinfunc()
+{
+    std::lock_guard<spinlock_mutex> lg(mutex);
+    std::cout << std::this_thread::get_id() << " hello " << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+}
+
+void run_spin_lock()
+{
+    std::thread thread_1(spinfunc);
+    std::thread thread_2(spinfunc);
+
+    thread_1.join();
+    thread_2.join();
+}
+
 int main()
 {
     run_flag();
@@ -429,5 +457,6 @@ int main()
     run_transitive_sync();
     run_carries_a_dependency();
     run_release_sequence();
+    run_spin_lock();
     return 0;
 }

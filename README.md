@@ -210,8 +210,8 @@ chapter 69. memory_order_relaxed -- commit c024ba73d95da1665dfc02368b0f8c86716e2
 chapter 70. memory_order_acquire and memory_order_release -- commit 8e96eaa1a82c8ae246e429b7500a17b9d0b3e557
 chapter 71. transitive synchronization -- commit a101e32fadf24505dfddac6caa3b942246f8bb41
 chapter 73. memory_order_consume -- commit 1c25796ce87cd82b6d1e2f53f4e9fd34e48d4f1b
-chapter 74. concept of release sequence
-
+chapter 74. concept of release sequence -- commit d37be6bb4374b5a304dc7ba92170a9681edb9ae9
+chapter 75. spin lock mutex
 ```
 
 # 现代 C++ 编程实战
