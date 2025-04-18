@@ -211,7 +211,10 @@ chapter 70. memory_order_acquire and memory_order_release -- commit 8e96eaa1a82c
 chapter 71. transitive synchronization -- commit a101e32fadf24505dfddac6caa3b942246f8bb41
 chapter 73. memory_order_consume -- commit 1c25796ce87cd82b6d1e2f53f4e9fd34e48d4f1b
 chapter 74. concept of release sequence -- commit d37be6bb4374b5a304dc7ba92170a9681edb9ae9
-chapter 75. spin lock mutex
+chapter 75. spin lock mutex -- commit b4f02db05dbf4fc89e6a45baa1f82a6508faecac
+chapter 77. lock free safe stack push -- commit 3aed789ee2a2e96d8512dced35563f472558bc8e
+chapter 78. lock free safe stack pop -- commit 3aed789ee2a2e96d8512dced35563f472558bc8e
+chapter 79. memory reclaim in thread counting -- commit 77272d66bad8ef847ed0b136a8faa1c8ec26d9c9
 ```
 
 # 现代 C++ 编程实战
