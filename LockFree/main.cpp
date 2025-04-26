@@ -88,4 +88,126 @@ public:
     }
 };
 
+template <typename T>
+class lock_free_stack_hazard {
+private:
+    struct node {
+        std::shared_ptr<T> data;
+        node* next;
+        node(T const& _data)
+            : data(std::make_shared<T>(_data))
+        {
+        }
+    };
+    std::atomic<node*> head;
+    static const int max_hazard_pointers = 100;
+
+    // Hazard pointers are used to indicate that a thread is currently accessing a specific node, preventing it from
+    // being deleted prematurely.
+    struct hazard_pointer {
+        std::atomic<std::thread::id> id;
+        std::atomic<void*> pointer;
+    };
+    hazard_pointer hazard_pointers[max_hazard_pointers];
+
+    // This class manages hazard pointers for the current thread. It ensures that each thread gets a unique hazard
+    // pointer and releases it when no longer needed.
+    class hp_manager {
+        hazard_pointer* hp;
+
+    public:
+        hp_owner()
+            : hp(nullptr)
+        {
+            for (unsigned i = 0; i < max_hazard_pointers; ++i) {
+
+                std::thread::id old_id;
+                if (hazard_pointers[i].id.compare_exchange_strong(old_id, std::this_thread::get_id())) {
+                    hp = &hazard_pointers[i];
+                    break;
+                }
+            }
+
+            if (!hp) {
+                throw std::runtime_error("no hazard pointers available");
+            }
+        }
+        std::atomic<void*>& get_pointer() { return hp->pointer; }
+        ~hp_owner()
+        {
+            hp->pointer.store(nullptr);
+            hp->id.store(std::thread::id());
+        }
+    };
+
+    // This function provides a thread-local hazard pointer for the current thread.
+    std::atomic<void*>& get_hazard_pointer_for_current_thread()
+    {
+        static thread_local hp_manager hz_owner;
+        return hz_owner.get_pointer();
+    }
+    // Checks if a node is still being accessed by any thread by iterating through all hazard pointers.
+    bool any_outstanding_hazards(node* p)
+    {
+        for (unsigned i = 0; i < max_hazard_pointers; ++i) {
+            if (hazard_pointers[i].pointer.load() == p) {
+                return true;
+            }
+            return false;
+        }
+    }
+    // Adds a node to a deferred reclamation list if it cannot be deleted immediately.
+    void reclaim_later(node* _node)
+    {
+        _node->next = nodes_to_reclaim.load();
+        while (!nodes_to_reclaim.compare_exchange_weak(_node->next, _node));
+    }
+    // Deletes nodes from the deferred list if they are no longer being accessed by any thread.
+    void delete_nodes_with_no_hazards()
+    {
+        node* current = nodes_to_reclaim.exchange(nullptr);
+        while (current) {
+            node* const next = current->next;
+            if (!any_outstanding_hazards(current)) {
+                delete current;
+            } else {
+                reclaim_later(current);
+            }
+            current = next;
+        }
+    }
+
+public:
+    lock_free_stack_hazard() {}
+
+    void push(T const& _data)
+    {
+        node* const new_node = new node(_data);
+        new_node->next = head.load();
+        while (!head.compare_exchange_weak(new_node->next, new_node));
+    }
+
+    void pop(T& result)
+    {
+        // Uses a hazard pointer to protect the node being accessed.
+        std::atomic<void*>& hp = get_hazard_pointer_for_current_thread();
+        node* old_head = head.load();
+        do {
+            hp.store(old_head);
+        } while (old_head && !head.compare_exchange_strong(old_head, old_head->next));
+
+        hp.store(nullptr);
+        std::shared_ptr<T> res;
+        if (old_head) {
+            res.swap(old_head->data);
+
+            if (any_outstanding_hazards(old_head)) {
+                reclaim_later(old_head);
+            } else {
+                delete old_head;
+            }
+        }
+    }
+};
+
 int main() { return 0; }
