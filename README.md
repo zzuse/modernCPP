@@ -215,7 +215,8 @@ chapter 75. spin lock mutex -- commit b4f02db05dbf4fc89e6a45baa1f82a6508faecac
 chapter 77. lock free safe stack push -- commit 3aed789ee2a2e96d8512dced35563f472558bc8e
 chapter 78. lock free safe stack pop -- commit 3aed789ee2a2e96d8512dced35563f472558bc8e
 chapter 79. memory reclaim in thread counting -- commit 5cf914061b9a757dadc52aa85095adeb6b57c57a
-chapter 80. memory reclaim using hazard pointers
+chapter 80. memory reclaim using hazard pointers -- commit d7e8f148abf4ca43e292be34e7006ea7cc7844b5
+chapter 81. memory reclaim using reference counting
 ```
 
 # 现代 C++ 编程实战
