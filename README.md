@@ -219,7 +219,8 @@ chapter 79. memory reclaim in thread counting -- commit 5cf914061b9a757dadc52aa8
 chapter 80. memory reclaim using hazard pointers -- commit d7e8f148abf4ca43e292be34e7006ea7cc7844b5
 chapter 81. memory reclaim using reference counting -- commit 4f19fc2742e8615c3dbfc5071639bcf491d9e023
 ThreadPool/
-chapter 82. simple thread pool
+chapter 82. simple thread pool -- commit 8a91cc657726b5ba880ae126415f86bdbd9ff6f2
+chapter 83. thread pool allowed to wait result
 ```
 
 # 现代 C++ 编程实战
