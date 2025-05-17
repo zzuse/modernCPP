@@ -314,6 +314,75 @@ void run_thread_pool_wait_other_task()
     }
 }
 
+class thread_pool_with_local_work_queue {
+    std::atomic_bool done;
+    threadsafe_queue<function_wrapper> global_work_queue;
+    // Each thread in a thread pool can have its own local_work_queue, allow it to
+    // 1. Retrieve tasks from its own queue without competing with other threads.
+    // 2. Push tasks into its queue for deferred execution or recursive task handling.
+    // 3. Reduce contention on a global task queue, which is typically shared among all threads.
+    typedef std::queue<function_wrapper> local_queue_type;
+    static thread_local std::unique_ptr<local_queue_type> local_work_queue;
+
+    std::vector<std::thread> threads;
+    join_threads joiner;
+
+    void worker_thread()
+    {
+        local_work_queue.reset(new local_queue_type);
+        while (!done) {
+            run_pending_task();
+        }
+    }
+
+public:
+    thread_pool_with_local_work_queue()
+        : done(false)
+        , joiner(threads)
+    {
+        int const thread_count = std::thread::hardware_concurrency();
+        try {
+            for (int i = 0; i < thread_count; i++) {
+                threads.push_back(std::thread(&thread_pool_with_local_work_queue::worker_thread, this));
+            }
+        } catch (...) {
+            done = true;
+            throw;
+        }
+    }
+    ~thread_pool_with_local_work_queue() { done = true; }
+
+    template <typename Function_type>
+    std::future<typename std::result_of<Function_type()>::type> submit(Function_type f)
+    {
+        typedef typename std::result_of<Function_type()>::type result_type;
+        std::packaged_task<result_type()> task(std::move(f));
+        std::future<result_type> res(task.get_future());
+
+        if (local_work_queue) {
+            local_work_queue->push(std::move(task));
+        } else {
+            global_work_queue.push(std::move(task));
+        }
+        return res;
+    }
+
+    // executed by invoking it, if no tasks are available, the function may Yield
+    void run_pending_task()
+    {
+        function_wrapper task;
+        if (local_work_queue && !local_work_queue->empty()) {
+            task = std::move(local_work_queue->front());
+            local_work_queue->pop();
+            task();
+        } else if (global_work_queue.try_pop(task)) {
+            task();
+        } else {
+            std::this_thread::yield();
+        }
+    }
+};
+
 int main()
 {
     run();

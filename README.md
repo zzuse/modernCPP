@@ -221,7 +221,8 @@ chapter 81. memory reclaim using reference counting -- commit 4f19fc2742e8615c3d
 ThreadPool/
 chapter 82. simple thread pool -- commit 8a91cc657726b5ba880ae126415f86bdbd9ff6f2
 chapter 83. thread pool allowed to wait result -- commit 1b3c96e9c95c5976e4011d540802028c33459291
-chapter 84. thread pool with waiting other tasks exec
+chapter 84. thread pool with waiting other tasks exec -- commit eebdb57c8f5bab2becdd29586c671c69ad5468d9
+chapter 85. thread pool with thread local queue
 ```
 
 # 现代 C++ 编程实战
