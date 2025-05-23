@@ -9,6 +9,7 @@
 #include <iostream>
 #include <list>
 #include <numeric>
+#include <vector>
 
 class thread_pool {
     std::atomic_bool done;
@@ -383,10 +384,225 @@ public:
     }
 };
 
+class work_stealing_queue {
+private:
+    typedef function_wrapper data_type;
+    std::deque<data_type> the_queue;
+    mutable std::mutex the_mutex;
+
+public:
+    work_stealing_queue() {}
+    work_stealing_queue(const work_stealing_queue& other) = delete;
+    work_stealing_queue& operator=(const work_stealing_queue& other) = delete;
+
+    // Why push_front?
+    // Each worker thread pushes its own new tasks to the front of its local deque using push_front. When the thread
+    // wants to execute a task, it also pops from the front (pop_front). This makes the thread process its own most
+    // recently added tasks first (LIFO order), which is efficient for recursive or nested tasks (like in parallel
+    // quicksort).
+    //
+    // Why not always use the back?
+    // When another thread tries to "steal" work (because its own queue is empty), it steals from the back (pop_back).
+    // This minimizes contention: the owner thread works from the front, and thieves steal from the back.
+    void push(data_type data)
+    {
+        std::lock_guard<std::mutex> lock(the_mutex);
+        the_queue.push_front(std::move(data));
+    }
+
+    bool empty() const
+    {
+        std::lock_guard<std::mutex> lock(the_mutex);
+        return the_queue.empty();
+    }
+
+    bool try_pop(data_type& res)
+    {
+        std::lock_guard<std::mutex> lock(the_mutex);
+        if (the_queue.empty()) {
+            return false;
+        }
+
+        res = std::move(the_queue.front());
+        the_queue.pop_front();
+        return true;
+    }
+
+    bool try_steal(data_type& res)
+    {
+        std::lock_guard<std::mutex> lock(the_mutex);
+        if (the_queue.empty()) {
+            return false;
+        }
+
+        res = std::move(the_queue.back());
+        the_queue.pop_back();
+        return true;
+    }
+};
+
+class thread_pool_with_work_steal {
+    typedef function_wrapper task_type;
+    std::atomic_bool done;
+    threadsafe_queue<task_type> global_work_queue;
+    std::vector<std::unique_ptr<work_stealing_queue>> queues;
+    std::vector<std::thread> threads;
+    join_threads joiner;
+
+    static thread_local work_stealing_queue* local_work_queue;
+    static thread_local unsigned my_index;
+
+    void worker_thread(unsigned my_index_)
+    {
+        my_index = my_index_;
+        local_work_queue = queues[my_index].get();
+        while (!done) {
+            run_pending_task();
+        }
+    }
+
+    bool pop_task_from_local_queue(task_type& task) { return local_work_queue && local_work_queue->try_pop(task); }
+
+    bool pop_task_from_pool_queue(task_type& task) { return global_work_queue.try_pop(task); }
+
+    bool pop_task_from_other_thread_queue(task_type& task)
+    {
+        for (unsigned i = 0; i < queues.size(); ++i) {
+            unsigned const index = (my_index + i + 1) % queues.size();
+            if (queues[index]->try_steal(task)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+public:
+    thread_pool_with_work_steal()
+        : joiner(threads)
+        , done(false)
+    {
+        unsigned const thread_count = std::thread::hardware_concurrency();
+
+        try {
+            for (unsigned i = 0; i < thread_count; ++i) {
+                queues.push_back(std::unique_ptr<work_stealing_queue>(new work_stealing_queue));
+                threads.push_back(std::thread(&thread_pool_with_work_steal::worker_thread, this, i));
+            }
+        } catch (...) {
+            done = true;
+            throw;
+        }
+    }
+
+    ~thread_pool_with_work_steal() { done = true; }
+
+    template <typename FunctionType>
+    std::future<typename std::result_of<FunctionType()>::type> submit(FunctionType f)
+    {
+        typedef typename std::result_of<FunctionType()>::type result_type;
+
+        std::packaged_task<result_type()> task(std::move(f));
+        std::future<result_type> res(task.get_future());
+
+        if (local_work_queue) {
+            local_work_queue->push(std::move(task));
+        } else {
+            global_work_queue.push(std::move(task));
+        }
+        return res;
+    }
+
+    void run_pending_task()
+    {
+        task_type task;
+        if (pop_task_from_local_queue(task) || pop_task_from_pool_queue(task)
+            || pop_task_from_other_thread_queue(task)) {
+            task();
+        } else {
+            std::this_thread::yield();
+        }
+    }
+};
+
+// One definition in code.
+// One instance per thread at runtime.
+// This is exactly what you want for thread-local data: each thread has its own storage, but you only need to define it
+// once.
+thread_local work_stealing_queue* thread_pool_with_work_steal::local_work_queue;
+thread_local unsigned thread_pool_with_work_steal::my_index;
+
+template <typename T>
+struct sorter2 {
+
+    thread_pool_with_work_steal pool;
+
+    std::list<T> do_sort(std::list<T>& chunk_data)
+    {
+        if (chunk_data.size() < 2) return chunk_data;
+
+        std::list<T> result;
+        result.splice(result.begin(), chunk_data, chunk_data.begin());
+        T const& partition_val = *result.begin();
+
+        typename std::list<T>::iterator divide_point
+            = std::partition(chunk_data.begin(), chunk_data.end(), [&](T const& val) { return val < partition_val; });
+
+        std::list<T> new_lower_chunk;
+        new_lower_chunk.splice(new_lower_chunk.end(), chunk_data, chunk_data.begin(), divide_point);
+
+        std::future<std::list<T>> new_lower
+            = pool.submit(std::bind(&sorter2::do_sort, this, std::move(new_lower_chunk)));
+
+        std::list<T> new_higher(do_sort(chunk_data));
+
+        result.splice(result.end(), new_higher);
+
+        // while (!new_lower._Is_ready()) {
+        while (new_lower.wait_for(std::chrono::seconds(0)) == std::future_status::timeout) {
+            pool.run_pending_task();
+        }
+
+        result.splice(result.begin(), new_lower.get());
+
+        return result;
+    }
+};
+
+template <typename T>
+std::list<T> parallel_quick_sort2(std::list<T> input)
+{
+    if (input.empty()) {
+        return input;
+    }
+
+    sorter2<T> s;
+    return s.do_sort(input);
+}
+
+void run_thread_pool_steal_task()
+{
+    const int size = 800;
+    std::list<int> my_array;
+
+    srand(0);
+
+    for (size_t i = 0; i < size; i++) {
+        my_array.push_back(rand());
+    }
+    my_array = parallel_quick_sort2(my_array);
+
+    for (size_t i = 0; i < size; i++) {
+        std::cout << my_array.front() << std::endl;
+        my_array.pop_front();
+    }
+}
+
 int main()
 {
     run();
     run_thread_pool_wait();
     run_thread_pool_wait_other_task();
+    run_thread_pool_steal_task();
     return 0;
 }
