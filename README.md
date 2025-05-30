@@ -223,7 +223,9 @@ chapter 82. simple thread pool -- commit 8a91cc657726b5ba880ae126415f86bdbd9ff6f
 chapter 83. thread pool allowed to wait result -- commit 1b3c96e9c95c5976e4011d540802028c33459291
 chapter 84. thread pool with waiting other tasks exec -- commit eebdb57c8f5bab2becdd29586c671c69ad5468d9
 chapter 85. thread pool with thread local queue -- commit b70be8c474b57766818ca5328da901c7653ae6ab
-chapter 86. thread pool with work stealing
+chapter 86. thread pool with work stealing -- commit 997740dff082bc9a274ac6c853a8391d1ab8ea41
+Cuda/
+chapter 87. Dimention of the CUDA
 ```
 
 # 现代 C++ 编程实战
