@@ -3,6 +3,7 @@
 // jthread only supported by gcc
 #include "common.h"
 #include <stdio.h>
+#include <time.h>
 
 __global__ void hello_cuda() { printf("Hello CUDA world\n"); }
 
@@ -59,6 +60,37 @@ int showThreadidx()
 
     cudaDeviceReset();
     return 0;
+}
+
+void cputime()
+{
+    // CPU time
+    clock_t cpu_start, cpu_end;
+    cpu_start = clock();
+    // do some cpu thing;
+    cpu_end = clock();
+    printf("Sum CPU execution time: %4.6f \n", (double)((double)(cpu_end - cpu_start) / CLOCKS_PER_SEC));
+}
+
+void gputime()
+{
+    clock_t htod_start, htod_end;
+    htod_start = clock();
+    // cudaMemcpy(,,,cudaMemcpyHostToDevice);
+    htod_end = clock();
+
+    clock_t gpu_start, gpu_end;
+    gpu_start = clock();
+    // do some gpu thing;
+    cudaDeviceSynchronize();
+    gpu_end = clock();
+
+    clock_t dtoh_start, dtoh_end;
+    dtoh_start = clock();
+    // cudaMemcpy(, , , cudaMemcpyDeviceToHost);
+    dtoh_end = clock();
+
+    printf("Sum GPU execution time: %4.6f \n", (double)((double)(dtoh_end - htod_start) / CLOCKS_PER_SEC));
 }
 
 int main()

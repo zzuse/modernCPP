@@ -226,6 +226,8 @@ chapter 85. thread pool with thread local queue -- commit b70be8c474b57766818ca5
 chapter 86. thread pool with work stealing -- commit 997740dff082bc9a274ac6c853a8391d1ab8ea41
 Cuda/
 chapter 87. Dimention of the CUDA -- commit 805624f287cbd814c67c468e213bdb1c4c1dfcac
+chapter 90. CUDA thread idx -- commit d253c1b2737765157c265534d490cbfbea49b423
+chapter 94. Timing a CUDA program
 ```
 
 # 现代 C++ 编程实战
